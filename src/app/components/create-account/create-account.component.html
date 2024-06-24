@@ -1,0 +1,12 @@
+<div class="new-account-div">
+    <h1>Create An Account</h1>
+    <form class="new-account-form" [formGroup]='signupForm' (ngSubmit)="onSubmit()">
+          <input type="text" formControlName="username" placeholder="Username" name="username" required>
+          <input type="password" formControlName="password" placeholder="Password" name="password" required>
+          <button type="submit">Create Account</button>
+          <div class="sub-links">
+            <a routerLink="../login">Return to Login</a>
+          </div>
+      </form>
+  </div>
+  

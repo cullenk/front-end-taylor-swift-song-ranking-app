@@ -1,0 +1,31 @@
+.container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px; 
+  }
+
+  // .song-slot-wrapper {
+//     display: flex;
+// }
+
+.list {
+    display: flex;
+    flex-direction: column;
+  }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 1rem;
+  }
+
+.tile{
+    // border: 1px solid black;
+    border-radius: 0px 10px 10px 0px;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    background-color: aliceblue;
+    // padding: 10px;
+    margin-bottom: 10px;
+}

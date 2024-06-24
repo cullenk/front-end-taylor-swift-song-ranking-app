@@ -1,0 +1,16 @@
+<div class="header-main-div">
+    <div class="logo-div">
+    <a class="nav-link" routerLink="./userHome">Taylor Swift Song Ranking App</a>
+    </div>
+    <ul class="header-menu-list">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="./top13list">Top 13 List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="./userProfile">My Profile</a>
+        </li>
+        <li *ngIf="userAuthenticated"><button type="submit" class="logout-btn" (click)="logout()">Logout</button></li>
+    </ul>
+    
+    <!-- <button mat-flat-button color="primary">Primary</button> -->
+</div>

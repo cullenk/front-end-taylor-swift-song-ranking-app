@@ -1,0 +1,12 @@
+<div class="login-div">
+  <h1>Welcome to the Taylor Swift Ranking App!</h1>
+  <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+        <input type="text" formControlName="username" placeholder="Username" name="username" required>
+        <input type="password" formControlName="password" placeholder="Password" name="password" required>
+        <button type="submit">Sign In</button>
+        <div class="sub-links">
+          <a routerLink="../create-account">Create Account</a>
+          <a routerLink="../forgot-password">Forgot Password</a>
+        </div>
+    </form>
+</div>

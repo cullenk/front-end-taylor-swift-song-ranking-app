@@ -1,0 +1,19 @@
+.page-background {
+    background-color: aquamarine;
+    height: 100%;
+}
+
+.container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px; 
+   background-color: aqua;
+    height: 100%;
+  }
+
+  .hero-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }

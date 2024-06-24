@@ -1,0 +1,44 @@
+.header-main-div {
+    background-color: black;
+    color: white;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-div {
+    color: black;
+    background-color: aquamarine;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.logo-div a {
+    text-decoration: none;
+}
+
+.header-menu-list {
+    list-style-type: none;
+    display: flex;
+}
+
+.nav-item a {
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    transition: .1s ease-in-out;
+    margin-right: 25px;
+}
+
+.nav-item a:hover {
+    color: rgb(142, 142, 255);  
+}
+
+.header-menu-list > li:last-child > a {
+    margin-right: 0px;
+}
+
+.logout-btn {
+    background-color: yellow;
+}

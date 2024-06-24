@@ -1,0 +1,41 @@
+<!-- song-slot.component.html -->
+
+
+<div class="song-slot" >
+    <div class="ranking-box">
+        <p>{{ slotIndex + 1 }}</p>
+       </div>
+       
+    <div class="song-search-card" *ngIf="!selectedSong">
+        <div class="dropdown-parent">
+            <input class="search-input" type="text"[(ngModel)]="searchQuery" placeholder="Search for a song" (input)="searchSongs()">
+            <div class="search-dropdown" *ngIf="searchResults.length > 0">
+              <div class="dropdown-option" *ngFor="let song of searchResults" (click)="selectSong(song)">
+                {{ song.title }}
+              </div>
+            </div>
+        </div>
+    </div>
+   
+    
+
+    <div class="chosen-song-card" *ngIf="selectedSong" [style.background-color]="getColorFromAlbum(selectedAlbum?.title)">
+        <button class="reset-button" (click)="resetSong()">X</button>
+        <div class="chosen-song-card-content">
+            <div class="album-cover-div">
+                <img class="album-cover"[src]="selectedAlbum?.albumCover" alt="{{ selectedAlbum?.title }} Cover">
+            </div>
+            <div class="chosen-song-details-div">
+                <h3 class="song-title">{{ selectedSong?.title }}</h3>
+                <p class="album-name">{{ selectedAlbum?.title }}</p>
+            </div>
+            <div>
+                <audio controls>
+                    <source [src]="selectedSong?.audioSource" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+            </div>
+        </div>
+    </div>
+  </div>
+  
