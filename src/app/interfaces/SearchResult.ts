@@ -2,6 +2,8 @@ import { Album } from './Album'
 import { Song } from './Song';
 
 export interface SearchResult {
-    album: Album;
-    song: Song;
+  _id: string;  // Assuming each song has an _id
+  title: string;
+  duration: string;
+  audioSource: string;
   }

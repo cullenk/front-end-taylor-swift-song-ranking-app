@@ -6,18 +6,8 @@ import { Top13SongSlotComponent } from '../top-13-song-slot/top-13-song-slot.com
   selector: 'app-top-13-song-slot-list',
   standalone: true,
   imports: [CommonModule, Top13SongSlotComponent],
-  template: `
-    <div class="top-13-list">
-      <app-top-13-song-slot *ngFor="let slot of slots; let i = index" [slotIndex]="i + 1"></app-top-13-song-slot>
-    </div>
-  `,
-  styles: [`
-    .top-13-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-  `]
+  templateUrl: './top-13-song-slot-list.component.html',
+  styles: []
 })
 export class Top13SongSlotListComponent implements OnInit {
   slots: number[] = Array(13).fill(0);
