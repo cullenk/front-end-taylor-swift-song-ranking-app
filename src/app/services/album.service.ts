@@ -36,7 +36,7 @@ export class AlbumService {
         console.log('Album response:', response); // Add this log
         return {
           ...response,
-          albumImage: response.albumImage || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg' // Ensure albumImage is always set
+          albumCover: response.albumCover || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png' // Ensure albumCover is always set
         };
       }),
       catchError(error => {

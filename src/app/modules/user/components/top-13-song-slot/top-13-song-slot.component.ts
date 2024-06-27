@@ -9,6 +9,8 @@ import { Album } from '../../../../interfaces/Album';
 import { Song } from '../../../../interfaces/Song';
 import { TopThirteenItem } from '../../../../interfaces/Top13Item';
 import { ToastrService } from 'ngx-toastr';
+import { AlbumThemeService } from '../../../../services/album-theme.service';
+import { AlbumTheme } from '../../../../interfaces/AlbumTheme';
 
 @Component({
   selector: 'app-top-13-song-slot',
@@ -24,13 +26,17 @@ export class Top13SongSlotComponent implements OnInit {
   selectedSong: Song | null = null;
   selectedAlbum: Album | null = null;
   topThirteen: TopThirteenItem[] = [];
+  albumTheme: AlbumTheme;
 
   constructor(
     private albumService: AlbumService,
     private topThirteenService: TopThirteenService,
     private topThirteenStateService: TopThirteenStateService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private albumThemeService: AlbumThemeService
+  ) {
+   this.albumTheme = this.albumThemeService.getTheme(undefined); 
+  }
 
   ngOnInit() {
     this.topThirteenStateService.topThirteen$.subscribe(
@@ -38,6 +44,15 @@ export class Top13SongSlotComponent implements OnInit {
     );
     this.loadTopThirteenList();
   }
+
+    // Add a method to update the theme when a song is selected
+    updateAlbumTheme() {
+      if (this.selectedAlbum) {
+        this.albumTheme = this.albumThemeService.getTheme(this.selectedAlbum.title);
+      } else {
+        this.albumTheme = this.albumThemeService.getTheme(undefined);
+      }
+    }
 
   loadTopThirteenList() {
     this.topThirteenService.getTopThirteen().subscribe(
@@ -59,6 +74,7 @@ export class Top13SongSlotComponent implements OnInit {
         (album: Album) => {
           this.selectedAlbum = album;
           this.selectedSong = album.songs.find(song => song.title === existingSong.songTitle) || null;
+          this.updateAlbumTheme();
         },
         error => {
           console.error('Error loading album:', error);
@@ -67,6 +83,7 @@ export class Top13SongSlotComponent implements OnInit {
       );
     } else {
       console.log(`No song selected for slot ${this.slotIndex}`);
+      this.updateAlbumTheme();
     }
   }
 
@@ -86,6 +103,7 @@ export class Top13SongSlotComponent implements OnInit {
   selectSong(song: SearchResult) {
     console.log('Audio source:', song.audioSource);
     this.fetchAlbumForSong(song.title);
+    this.updateAlbumTheme();
   }
 
   handleAudioError(event: any) {
@@ -125,6 +143,7 @@ export class Top13SongSlotComponent implements OnInit {
     // If not a duplicate, update the selection and the top 13 list
     this.selectedAlbum = album;
     this.selectedSong = song;
+    this.updateAlbumTheme();
     console.log('Selected album:', this.selectedAlbum); // Add this log
     this.updateTopThirteen();
   }
@@ -157,11 +176,7 @@ export class Top13SongSlotComponent implements OnInit {
     this.searchQuery = '';
     this.searchResults = [];
   }
-
-  getColorFromAlbum(albumTitle: string | undefined): string {
-    return albumTitle === 'Taylor Swift' ? '#00FF00' : 'red';
-  }
-
+  
   handleImageError(event: any) {
     event.target.src = 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg'; // Set a fallback image
     console.error('Failed to load album image');

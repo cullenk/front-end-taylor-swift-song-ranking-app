@@ -14,22 +14,21 @@
       </div>
     </div>
   
-    <div class="chosen-song-card" *ngIf="selectedSong && selectedAlbum" [style.background-color]="getColorFromAlbum(selectedAlbum.title)">
-      <button class="reset-button" (click)="resetSong()">X</button>
+    <div class="chosen-song-card" *ngIf="selectedSong && selectedAlbum" [ngStyle]="{'background-image': albumTheme.backgroundImage}">
+      <div class="overlay" [ngStyle]="{'background': albumTheme.overlay}"></div>
       <div class="chosen-song-card-content">
+        <button class="reset-button" (click)="resetSong()">X</button>
         <div class="album-cover-div" *ngIf="selectedAlbum">
-            <img class="album-cover" [src]="selectedAlbum.albumImage" [alt]="selectedAlbum.title + ' Cover'" (error)="handleImageError($event)">
-          </div>
+          <img class="album-cover" [src]="selectedAlbum.albumCover" [alt]="selectedAlbum.title + ' Cover'" (error)="handleImageError($event)">
+        </div>
         <div class="chosen-song-details-div">
           <h3 class="song-title">{{ selectedSong.title }}</h3>
           <p class="album-name">{{ selectedAlbum.title }}</p>
         </div>
-        
-            <audio controls (error)="handleAudioError($event)">
-                <source [src]="selectedSong.audioSource" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-        
+        <audio controls (error)="handleAudioError($event)">
+          <source [src]="selectedSong.audioSource" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
       </div>
     </div>
   </div>

@@ -1,0 +1,12 @@
+<div *ngIf="songs.length > 0">
+    <div cdkDropList (cdkDropListDropped)="onDrop($event)">
+      <div *ngFor="let song of songs; let i = index" cdkDrag class="song-item">
+        <span class="rank-number">{{ i + 1 }}</span>
+        <span class="song-title">{{ song.title }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="songs.length === 0">
+    No songs available.
+  </div>
+  
