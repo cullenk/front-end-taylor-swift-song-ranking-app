@@ -1,44 +1,88 @@
+
 .header-main-div {
-    background-color: black;
-    color: white;
-    padding: 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--padding-base);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.logo-div {
-    color: black;
-    background-color: aquamarine;
-    padding: 15px;
-    cursor: pointer;
-}
+.logo {
+    width: 200px;
 
-.logo-div a {
+  a {
+    color: var(--logo-text-color);
     text-decoration: none;
+    font-weight: 700;
+    transition: opacity .2s ease;
+    cursor: pointer;
+  }
+
+  &:hover {
+    opacity: .8;
+  }
 }
 
 .header-menu-list {
-    list-style-type: none;
-    display: flex;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-item a {
-    cursor: pointer;
+.nav-item {
+  margin-right: var(--padding-base);
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  a {
+    color: var(--text-color);
     text-decoration: none;
-    color: white;
-    transition: .1s ease-in-out;
-    margin-right: 25px;
-}
+    transition: color 0.2s ease-in-out;
 
-.nav-item a:hover {
-    color: rgb(142, 142, 255);  
-}
-
-.header-menu-list > li:last-child > a {
-    margin-right: 0px;
+    &:hover {
+      color: var(--secondary-color);
+    }
+  }
 }
 
 .logout-btn {
-    background-color: yellow;
+  padding: calc(var(--padding-base) * 0.5) var(--padding-base);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-main-div {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .header-menu-list {
+    margin-top: var(--padding-base);
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .nav-item {
+    margin-right: 0;
+    margin-bottom: calc(var(--padding-base) * 0.8);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

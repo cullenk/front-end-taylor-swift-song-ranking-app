@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RankingsService } from "../../../../../services/rankings.service";
 import { AlbumService } from "../../../../../services/album.service";
@@ -18,6 +18,8 @@ export class DebutRankingComponent implements OnInit {
   rankings: Ranking[] = [];
   album: Album | null = null;
   songs: Song[] = [];
+  @ViewChildren('audioPlayer') audioPlayers!: QueryList<ElementRef>;
+  currentlyPlaying: Song | null = null;
 
   constructor(
     private rankingsService: RankingsService,
@@ -95,5 +97,45 @@ export class DebutRankingComponent implements OnInit {
       response => console.log('Rankings updated'),
       error => console.error('Error updating rankings:', error)
     );
+  }
+
+  //Audio Player Behavior
+  // togglePlay(song: Song, audioElement: HTMLAudioElement) {
+  //   if (this.currentlyPlaying && this.currentlyPlaying !== song) {
+  //     // Stop the currently playing song
+  //     this.stopCurrentSong();
+  //   }
+
+  //   if (this.currentlyPlaying === song) {
+  //     // Pause the current song
+  //     audioElement.pause();
+  //     this.currentlyPlaying = null;
+  //   } else {
+  //     // Play the selected song
+  //     audioElement.play();
+  //     this.currentlyPlaying = song;
+  //   }
+  // }
+
+  // stopCurrentSong() {
+  //   if (this.currentlyPlaying) {
+  //     const audioElement = this.audioPlayers.find(player => 
+  //       player.nativeElement.src === this.currentlyPlaying?.audioSource
+  //     )?.nativeElement;
+  //     if (audioElement) {
+  //       audioElement.pause();
+  //       audioElement.currentTime = 0;
+  //     }
+  //     this.currentlyPlaying = null;
+  //   }
+  // }
+
+  // isPlaying(song: Song): boolean {
+  //   return this.currentlyPlaying === song;
+  // }
+
+  handleAudioError(event: any) {
+    console.error('Audio failed to load:', event);
+    // You can add error handling logic here, e.g., showing a toast message
   }
 }

@@ -1,6 +1,14 @@
-<div class="rankings-nav">
-    <a routerLink="./debut" class="nav-bubble">Debut</a>
-    <a routerLink="./tortured-poets-department" class="nav-bubble">Tortured Poets Department</a>
-    <!-- Add more navigation bubbles as needed -->
+<div class="rankings-container">
+  <div class="albums-grid">
+    <div *ngFor="let album of albums" class="album-container">
+      <a [routerLink]="album.routerLink" class="album-link">
+        <img [src]="album.coverImage" [alt]="album.title" class="album-cover"
+             (mouseenter)="playSample(album, $event)" 
+             (mouseleave)="stopSample(album)">
+        <img [src]="shelfImage" alt="Shelf" class="shelf-image">
+      </a>
+    </div>
   </div>
-  
+</div>
+
+<router-outlet></router-outlet>

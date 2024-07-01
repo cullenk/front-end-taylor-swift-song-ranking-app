@@ -19,7 +19,7 @@
       <div class="chosen-song-card-content">
         <button class="reset-button" (click)="resetSong()">X</button>
         <div class="album-cover-div" *ngIf="selectedAlbum">
-          <img class="album-cover" [src]="selectedAlbum.albumCover" [alt]="selectedAlbum.title + ' Cover'" (error)="handleImageError($event)">
+          <img class="album-cover" [src]="selectedAlbum.albumImage" [alt]="selectedAlbum.title + ' Cover'" (error)="handleImageError($event)">
         </div>
         <div class="chosen-song-details-div">
           <h3 class="song-title">{{ selectedSong.title }}</h3>

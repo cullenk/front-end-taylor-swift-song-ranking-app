@@ -9,9 +9,9 @@ import { Album } from '../interfaces/Album';
   providedIn: 'root'
 })
 export class AlbumService {
-  private allAlbumSearchUrl = 'http://localhost:3000/allAlbums';
-  private songSearchUrl = 'http://localhost:3000/songSearch';
-  private albumSearchBySongUrl = 'http://localhost:3000/albumBySong';
+  private allAlbumSearchUrl = 'http://localhost:3000/api/search/allAlbums';
+  private songSearchUrl = 'http://localhost:3000/api/search/songSearch';
+  private albumSearchBySongUrl = 'http://localhost:3000/api/search/albumBySong';
   
   constructor(private http: HttpClient) {}
 
@@ -36,7 +36,7 @@ export class AlbumService {
         console.log('Album response:', response); // Add this log
         return {
           ...response,
-          albumCover: response.albumCover || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png' // Ensure albumCover is always set
+          albumImage: response.albumImage || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png' // Ensure albumCover is always set
         };
       }),
       catchError(error => {

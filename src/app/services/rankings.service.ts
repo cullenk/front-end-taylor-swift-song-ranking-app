@@ -10,7 +10,7 @@ import { Rankings, Ranking } from '../interfaces/Rankings';
 })
 
 export class RankingsService {
-  private apiUrl = 'http://localhost:3000'; // Adjust this to your API URL
+  private apiUrl = 'http://localhost:3000/api/rankings'; // Adjust this to your API URL
 
   constructor(private http: HttpClient) {}
 

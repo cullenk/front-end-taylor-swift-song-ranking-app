@@ -1,19 +1,116 @@
-.page-background {
-    background-color: aquamarine;
-    height: 100%;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #344055;
 }
 
-.container {
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 20px; 
-   background-color: aqua;
-    height: 100%;
-  }
 
-  .hero-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
+.hero {
+  width: 100%;
+  height: 50vh; // Adjust this value between 30vh and 50vh as needed
+  // background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/brick-wall.png');
+  // background-size: cover;
+  // background-position: center;
+  display: flex;
+  align-items: center;
+  background-color: #344055;
+
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-graphic {
+  // flex: 2;
+  img {
+    max-width: 100%;
+    height: auto;
   }
+}
+
+.hero-text {
+  flex: 1;
+  color: #fff; 
+  
+  h1 {
+    font-size: 2.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.home-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: #344055;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.content-text {
+  flex: 1;
+  padding-right: 30px;
+
+  
+  h2 {
+    color: #70D6F6;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  color: #fff; 
+
+  }
+}
+
+.content-images {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  
+  img {
+    max-width: 45%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content, .main-content {
+    flex-direction: column;
+  }
+  
+  .hero-text, .content-text {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .content-images img {
+    max-width: 100%;
+  }
+}

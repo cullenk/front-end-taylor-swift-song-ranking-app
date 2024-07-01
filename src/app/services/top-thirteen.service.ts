@@ -8,7 +8,7 @@ import { TopThirteenItem } from '../interfaces/Top13Item';
   providedIn: 'root'
 })
 export class TopThirteenService {
-  private apiUrl = 'http://localhost:3000/user/top-thirteen';
+  private apiUrl = 'http://localhost:3000/api/rankings/user/top-thirteen';
 
   constructor(private http: HttpClient) {}
 
