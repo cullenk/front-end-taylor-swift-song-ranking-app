@@ -14,7 +14,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/ttpd-grid.png');
+      background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/evermore-grid.png');
       background-size: cover;
       background-position: center;
       filter: blur(5px); // Optional: adds a slight blur to the background
@@ -80,10 +80,10 @@
   }
   
   .helper-text {
-    color: #E3E0C8 !important;
+    color: #BC7150 !important;
     font-style: italic;
   }
-
+  
   .song-item {
     display: flex;
     align-items: center;
@@ -96,7 +96,7 @@
     transition: background-color 0.3s ease;
   
     &:hover {
-      background-color: #E3E0C8;
+      background-color: #BC7150; 
     }
   }
   

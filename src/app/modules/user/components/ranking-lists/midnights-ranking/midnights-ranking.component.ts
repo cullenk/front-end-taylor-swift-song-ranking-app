@@ -8,13 +8,13 @@ import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-
 import { Ranking, Rankings } from '../../../../../interfaces/Rankings';
 
 @Component({
-  selector: 'app-debut-ranking',
+  selector: 'app-midnights-ranking',
   standalone: true,
   imports: [DragDropModule, CommonModule],
-  templateUrl: './tortured-poets-department-ranking.component.html',
-  styleUrls: ['./tortured-poets-department-ranking.component.scss']
+  templateUrl: './midnights-ranking.component.html',
+  styleUrls: ['./midnights-ranking.component.scss']
 })
-export class TorturedPoetsDepartmentRankingComponent implements OnInit {
+export class MidnightsRankingComponent implements OnInit {
   rankings: Ranking[] = [];
   album: Album | null = null;
   songs: Song[] = [];
@@ -31,7 +31,7 @@ export class TorturedPoetsDepartmentRankingComponent implements OnInit {
   }
 
   loadData() {
-    this.albumService.getAlbumBySong('The Tortured Poets Department').subscribe(
+    this.albumService.getAlbumBySong('Lavender Haze').subscribe(
       (album: Album) => {
         this.album = album;
         this.songs = [...album.songs];
@@ -47,8 +47,8 @@ export class TorturedPoetsDepartmentRankingComponent implements OnInit {
   loadRankings() {
     this.rankingsService.getUserRankings().subscribe(
       (rankings: Rankings) => {
-        if (rankings && rankings.albumRankings && rankings.albumRankings['theTorturedPoetsDepartment']) {
-          this.rankings = rankings.albumRankings['theTorturedPoetsDepartment'].sort((a, b) => a.rank - b.rank);
+        if (rankings && rankings.albumRankings && rankings.albumRankings['midnights']) {
+          this.rankings = rankings.albumRankings['midnights'].sort((a, b) => a.rank - b.rank);
           console.log('Loaded rankings:', this.rankings);
         } else {
           this.rankings = [];
@@ -93,7 +93,7 @@ export class TorturedPoetsDepartmentRankingComponent implements OnInit {
       rank: index + 1
     }));
   
-    this.rankingsService.updateRanking('theTorturedPoetsDepartment', newRankings).subscribe(
+    this.rankingsService.updateRanking('midnights', newRankings).subscribe(
       response => console.log('Rankings updated'),
       error => console.error('Error updating rankings:', error)
     );

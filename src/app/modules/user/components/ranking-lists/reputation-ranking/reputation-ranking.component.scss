@@ -14,7 +14,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/ttpd-grid.png');
+      background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/reputation-grid.png');
       background-size: cover;
       background-position: center;
       filter: blur(5px); // Optional: adds a slight blur to the background
@@ -78,12 +78,12 @@
       color: #666;
     }
   }
-  
+
   .helper-text {
-    color: #E3E0C8 !important;
+    color: #1A1A1A !important;
     font-style: italic;
   }
-
+  
   .song-item {
     display: flex;
     align-items: center;
@@ -93,10 +93,15 @@
     border-radius: 5px;
     background-color: #fff;
     cursor: grab;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
   
     &:hover {
-      background-color: #E3E0C8;
+      background-color: #1A1A1A;
+      color: #fff; // This will change the color of all text within the song-item
+  
+      .song-title, .rank-number {
+        color: #fff; // This ensures both the title and rank number turn white on hover
+      }
     }
   }
   
@@ -105,12 +110,14 @@
     text-align: center;
     font-weight: bold;
     color: #333;
+    transition: color 0.3s ease;
   }
   
   .song-title {
     flex-grow: 1;
     padding-left: 10px;
     color: #333;
+    transition: color 0.3s ease;
   }
   
   audio {

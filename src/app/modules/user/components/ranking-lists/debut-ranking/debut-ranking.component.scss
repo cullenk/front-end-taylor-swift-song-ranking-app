@@ -1,30 +1,139 @@
+.album-ranking-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  overflow: hidden; // Ensures the background doesn't spill out
+
+  // Background image
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/debut-grid.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px); // Optional: adds a slight blur to the background
+    z-index: -2;
+  }
+
+  // Overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+  }
+}
+
+.media-column, .ranking-column {
+  position: relative; // Ensures content stays above the background/overlay
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.media-column {
+  align-self: flex-start; // This will make the column only as tall as its content
+  padding: 10px; // Reduced padding
+  margin-right: 20px; // Add some space between columns
+}
+.album-cover {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.ranking-column {
+  flex: 1;
+  background-color: #fff; // White background for the ranking area
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.content-div {
+  margin-bottom: 20px;
+  color: #333;
+
+  h1 {
+    font-size: 2rem;
+    margin: 10px 0;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #666;
+  }
+}
+
+.helper-text {
+  color: #9BD47D !important;
+  font-style: italic;
+}
+
 .song-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #344055;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: grab;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #9BD47D; // Light blue on hover
+  }
+}
+
+.rank-number {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.song-title {
+  flex-grow: 1;
+  padding-left: 10px;
+  color: #333;
+}
+
+audio {
+  width: 200px; // Adjust as needed
+  margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .album-ranking-container {
+    flex-direction: column;
+  }
+
+  .media-column, .ranking-column {
+    width: 100%;
+    margin: 10px 0; // Adjust margin for mobile view
+  }
+
+  .media-column {
+    align-self: center; // Center the album cover on mobile
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .rank-number {
-    width: 30px;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  .song-title {
-    flex-grow: 1;
-    padding-left: 10px;
   }
 
-  span {
-    flex-grow: 1;
-  }
-
-  audio {
-     /* or any other size */
-    margin-left: 10px;
-  }
-  
-
-  
+ 
+}
