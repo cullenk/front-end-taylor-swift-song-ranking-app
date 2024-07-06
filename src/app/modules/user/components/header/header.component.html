@@ -1,13 +1,21 @@
 <header class="header-main-div">
       <a routerLink="./userHome"><img class="logo" src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/logo2.svg"></a>
-    <nav>
-      <ul class="header-menu-list">
+      <div class="hamburger-icon" (click)="toggleMobileMenu()" (keydown.enter)="toggleMobileMenu()" tabindex="0" role="button" aria-label="Toggle menu" [attr.aria-expanded]="isMobileMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav [class.mobile-menu-open]="isMobileMenuOpen" [attr.aria-hidden]="!isMobileMenuOpen">
+        <ul class="header-menu-list">
         <li class="nav-item">
-          <a routerLink="./rankings">My Rankings</a>
+          <a routerLink="./rankings">Album Rankings</a>
         </li>
         <li class="nav-item">
-          <a routerLink="./top13list">My Top 13 List</a>
+          <a routerLink="./top13list">Top 13 List</a>
         </li>
+        <li class="nav-item">
+            <a routerLink="./rankings">Eras Tour Builder</a>
+          </li>
         <li class="nav-item">
           <a routerLink="./userProfile">My Profile</a>
         </li>

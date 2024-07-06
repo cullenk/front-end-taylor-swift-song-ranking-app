@@ -33,8 +33,8 @@ export class AuthService {
     return this.authenticatedSub.asObservable();
   }
 
-  getToken() {
-    return this.token;
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   createNewUser(username: string, email: string, password: string): Observable<any> {

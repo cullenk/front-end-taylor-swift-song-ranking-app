@@ -1,6 +1,17 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
+import { UserModule } from './app/modules/user/user.module';
+import { HttpClientModule } from '@angular/common/http';
+import { appConfig } from './app/app.config';
 
-bootstrapApplication(AppComponent, appConfig)
+const updatedConfig = {
+  ...appConfig,
+  providers: [
+    ...(appConfig.providers || []),
+    importProvidersFrom(UserModule, HttpClientModule)
+  ]
+};
+
+bootstrapApplication(AppComponent, updatedConfig)
   .catch((err) => console.error(err));

@@ -13,7 +13,7 @@
         <div class="song-item" *ngFor="let song of songs; let i = index" cdkDrag >
           <span class="rank-number">{{ i + 1 }}.</span>
           <span class="song-title">{{ song.title }}</span>
-          <audio controls [src]="song.audioSource" (error)="handleAudioError($event)"></audio>
+          <audio controls [src]="song.audioSource" (error)="handleAudioError($event)" controlsList="nodownload"></audio>
         </div>
       </div>
     </div>

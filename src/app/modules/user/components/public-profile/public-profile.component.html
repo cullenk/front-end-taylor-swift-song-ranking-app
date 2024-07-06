@@ -1,0 +1,38 @@
+<div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
+    <header>
+      <h1>{{ publicProfile?.username }}'s Profile</h1>
+    </header>
+  
+    <div class="profile-content">
+      <section class="top-13-list">
+        <h2>Top 13 Songs</h2>
+        <ol>
+          <li *ngFor="let song of publicProfile?.rankings?.topThirteen">
+            <div class="song-item">
+              <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
+              <div class="song-details">
+                <h3>{{ song.songTitle }}</h3>
+              </div>
+              <audio controls *ngIf="song.audioSource">
+                <source [src]="song.audioSource" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </li>
+        </ol>
+      </section>
+  
+      <section class="questionnaire">
+        <h2>Swiftie Questionnaire</h2>
+        <div class="question-list">
+          <div *ngFor="let questionObj of publicProfile?.profileQuestions" class="question-item">
+            <p class="question">{{ questionObj.question }}</p>
+            <div class="answer">{{ questionObj.answer }}</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
-@import 'ngx-toastr/toastr';
 .user-profile {
   max-width: 1400px;
   margin: 0 auto;
@@ -208,14 +207,14 @@ audio {
 
     .edit-button, .save-button {
       background-color: transparent;
-      border: 2px solid #515151;
-      color: #515151;
+      border: 2px solid #fff;
+      color: #ffffff;
       padding: 5px 10px;
       font-family: 'Caveat', cursive;
       font-size: 1.3em;
       cursor: pointer;
       transition: all 0.3s;
-      border-radius: 5px;
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.4);
       }

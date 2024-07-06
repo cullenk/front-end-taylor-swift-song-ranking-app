@@ -1,12 +1,253 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserProfileService } from "../../../../services/user-profile.service";
+import { AlbumService } from "../../../../services/album.service";
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { Album } from '../../../../interfaces/Album';
+import { Song } from '../../../../interfaces/Song';
+import { ToastrService } from 'ngx-toastr';
+
+interface UserProfileSong extends Omit<Song, 'title'> {
+  slot: number;
+  albumId: string;
+  songTitle: string;  // This replaces 'title' from Song
+  albumImage?: string;
+}
+
+interface UserProfile {
+  username: string;
+  theme: string;
+  rankings: {
+    topThirteen: UserProfileSong[];
+  };
+  profileQuestions: Array<{ question: string; answer: string }>;
+}
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.scss'
+  styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnInit {
+  userProfile: UserProfile = {
+    theme: '',
+    username: '',
+    rankings: { topThirteen: [] },
+    profileQuestions: []
+  };
+  defaultTheme = 'Fearless';
+  defaultQuestions = [
+    { question: 'What is your cry in the car song?', answer: 'Not answered yet' },
+    { question: 'What are your dream surprise songs?', answer: 'Not answered yet' },
+    { question: 'What album made you a Swiftie?', answer: 'Not answered yet' },
+  ];
+  themes = ['Debut', 'Fearless', 'Speak Now', 'Red', '1989', 'Reputation', 'Lover', 'Folklore', 'Evermore', 'Midnights', 'The Tortured Poets Department'];
+  themeClassMap: { [key: string]: string } = {
+    'Debut': 'Debut',
+    'Fearless': 'Fearless',
+    'Speak Now': 'SpeakNow',
+    'Red': 'Red',
+    '1989': '_1989',
+    'Reputation': 'Reputation',
+    'Lover': 'Lover',
+    'Folklore': 'Folklore',
+    'Evermore': 'Evermore',
+    'Midnights': 'Midnights',
+    'The Tortured Poets Department': 'TorturedPoets'
+  };
+  themeBackgrounds: { [key: string]: string } = {
+    'Debut': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/debut-profile-bg.jpeg',
+    'Fearless': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/fearless-profile-bg.jpeg',
+    'Speak Now': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/speak-now-profile-bg.jpeg',
+    'Red': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/red-profile-bg.jpeg',
+    '1989': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/1989-profile-bg.jpeg',
+    'Reputation': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/rep-profile-bg.jpeg',
+    'Lover': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/lover-profile-bg.jpeg',
+    'Folklore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/folklore-profile-bg.jpeg',
+    'Evermore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/evermore-profile-bg.jpeg',
+    'Midnights': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/midnights-profile-bg.jpeg',
+    'The Tortured Poets Department': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/ttpd-profile-bg.jpeg'
+  };
+  questions = [
+    'What album made you a Swiftie?',
+    'What are your dream surprise songs? (Mashups allowed!)',
+    'What song would you play first for a non-swiftie?',
+    'What would be your cry in the car song?',
+    'Which song makes you have a dance party in your room?',
+    'Which song would you want to walk down the aisle to?',
+    'Hot take: What are three songs you usually skip?',
+    'Which Eras Tour set is your favorite?',
+    'Which album cover is your favorite?',
+    'What song has your favorite bridge?',
+    'What song has your favorite chorus?',
+    'What is your favorite lyric from any song?',
+    'Dream artist collaboration with Taylor?'
+  ];
+  isLoading: boolean = false;
+  loadingError: string | null = null;
+  isEditing: boolean = false;
 
+  constructor(
+    private userProfileService: UserProfileService,
+    private albumService: AlbumService,
+    private toastr: ToastrService
+  ) { }
+
+  ngOnInit() {
+    this.loadUserProfile();
+    this.disableAudioRightClick();
+  }
+
+  loadUserProfile() {
+    this.isLoading = true;
+    this.loadingError = null;
+    this.userProfileService.getUserProfile().subscribe(
+      profile => {
+        console.log('Received profile:', profile);
+        this.userProfile = this.setDefaultsIfNeeded(profile);
+        console.log('Profile after setDefaultsIfNeeded:', this.userProfile);
+        this.loadTopThirteenDetails();
+      },
+      error => {
+        console.error('Error loading user profile', error);
+        this.loadingError = 'Failed to load user profile. Please try again.';
+        this.isLoading = false;
+      }
+    );
+  }
+
+  setDefaultsIfNeeded(profile: any): UserProfile {
+    if (!profile) {
+      return {
+        username: 'New Swiftie',
+        theme: this.defaultTheme,
+        rankings: { topThirteen: [] },
+        profileQuestions: this.questions.map(question => ({ question, answer: 'Not answered yet' }))
+      };
+    }
+  
+    return {
+      ...profile,
+      theme: profile.theme || this.defaultTheme,
+      rankings: profile.rankings || { topThirteen: [] },
+      profileQuestions: this.questions.map(question => {
+        const existingAnswer = profile.profileQuestions?.find((q: { question: string; answer: string }) => q.question === question);
+        return existingAnswer || { question, answer: 'Not answered yet' };
+      })
+    };
+  }
+  
+
+  loadTopThirteenDetails() {
+    console.log('Entering loadTopThirteenDetails');
+    if (this.userProfile.rankings && this.userProfile.rankings.topThirteen && this.userProfile.rankings.topThirteen.length > 0) {
+      const albumRequests = this.userProfile.rankings.topThirteen.map(song =>
+        this.albumService.getAlbumBySong(song.songTitle)
+      );
+      forkJoin<Album[]>(albumRequests).subscribe(
+        (albums: Album[]) => {
+          this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => ({
+            ...song,
+            albumImage: albums[index].albumImage,
+            audioSource: albums[index].songs.find(s => s.title === song.songTitle)?.audioSource
+          }));
+          // Ensure the list is sorted by slot
+          this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
+          this.isLoading = false;
+        },
+        error => {
+          console.error('Error loading album details', error);
+          this.loadingError = 'Failed to load album details. Please try again.';
+          this.isLoading = false;
+        }
+      );
+    } else {
+      console.log('No top thirteen songs, setting isLoading to false');
+      this.isLoading = false;
+    }
+  }
+
+  disableAudioRightClick() {
+    document.addEventListener('contextmenu', (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
+        e.preventDefault();
+      }
+    }, false);
+  }
+
+  getThemeClass(): string {
+    return this.themeClassMap[this.userProfile?.theme] || '';
+  }
+
+  getThemeBackground(): string {
+    return this.userProfile?.theme ? this.themeBackgrounds[this.userProfile.theme] : '';
+  }
+
+  startEditing() {
+    this.isEditing = true;
+  }
+
+  saveAnswers() {
+    this.isEditing = false;
+    this.updateProfileQuestions();
+  }
+
+  updateTheme(theme: string) {
+    if (this.userProfile) {
+      this.userProfile.theme = theme;
+      this.userProfileService.updateTheme(theme).subscribe(
+        () => this.loadUserProfile(),
+        error => console.error('Error updating theme', error)
+      );
+    }
+  }
+
+  updateProfileQuestions() {
+    if (this.userProfile && this.userProfile.profileQuestions) {
+      this.userProfileService.updateProfileQuestions(this.userProfile.profileQuestions).subscribe(
+        () => this.loadUserProfile(),
+        error => console.error('Error updating profile questions', error)
+      );
+    }
+  }
+
+  updateQuestionAnswer(index: number, event: any) {
+    const answer = (event.target as HTMLElement)?.textContent ?? '';
+    if (!this.userProfile.profileQuestions) {
+      this.userProfile.profileQuestions = [];
+    }
+    if (!this.userProfile.profileQuestions[index]) {
+      this.userProfile.profileQuestions[index] = { question: this.questions[index], answer: '' };
+    }
+    this.userProfile.profileQuestions[index].answer = answer || '';
+  }
+
+  isProfileShareable(): boolean {
+    const hasTopThirteenSong = this.userProfile.rankings.topThirteen.length > 0;
+    const hasAnsweredQuestion = this.userProfile.profileQuestions.some(q => q.answer && q.answer !== 'Not answered yet');
+    return hasTopThirteenSong && hasAnsweredQuestion;
+  }
+
+  shareProfile() {
+    if (!this.isProfileShareable()) {
+      this.toastr.warning('Please add at least one song to your Top 13 and answer at least one question before sharing your profile.', 'Cannot Share Yet', {
+        timeOut: 5000
+      });
+      return;
+    }
+    const shareUrl = `${window.location.origin}/public-profile/${this.userProfile.username}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      this.toastr.success('Profile link copied to clipboard!', 'Success', {
+        timeOut: 3000
+      });
+    }, (err) => {
+      this.toastr.error('Could not copy profile link', 'Error', {
+        timeOut: 3000
+      });
+    });
+  }
+  
 }

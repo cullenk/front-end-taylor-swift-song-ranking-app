@@ -84,6 +84,7 @@ export class RankingsComponent implements OnInit, OnDestroy {
     const audio = this.audioElements[album.id];
     if (audio) {
       audio.currentTime = 0;
+      audio.volume = 0.3;
       audio.play();
     }
   }

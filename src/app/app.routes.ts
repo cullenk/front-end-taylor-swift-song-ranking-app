@@ -3,10 +3,14 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 // import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RouteGuard } from './services/route-guard';
+import { PublicProfileComponent } from './modules/user/components/public-profile/public-profile.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: SignInComponent },
+{ path: 'public-profile/:username', component: PublicProfileComponent },
+
+  
   //Below is for lazy loading
   {
     path: 'user',

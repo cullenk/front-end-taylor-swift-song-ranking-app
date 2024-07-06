@@ -1,8 +1,62 @@
-<div class="page-background">
-    <div class="container">
-        <div class="hero-div">
-            <h1>Your Profile!</h1>
-            <p>Your personal hub to sort your favorite songs and albums.</p>
+<div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
+    <header>
+      <div>
+        <h1>Welcome, {{ userProfile.username || 'New Swiftie' }}!</h1>
+        <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+      </div>
+      <div class="theme-selector">
+        <label for="theme">Choose your profile theme:</label>
+        <select id="theme" [(ngModel)]="userProfile.theme" (ngModelChange)="updateTheme($event)">
+          <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>
+        </select>
+      </div>
+    </header>
+  
+    <div *ngIf="isLoading" class="loading">Loading...</div>
+    <div *ngIf="loadingError" class="error">{{ loadingError }}</div>
+  
+    <div *ngIf="!isLoading && !loadingError" class="profile-content">
+      <section class="top-13-list">
+        <h2>My Top 13 Songs</h2>
+        <ng-container *ngIf="userProfile.rankings.topThirteen.length > 0; else noTopThirteen">
+            <ol>
+                <li *ngFor="let song of userProfile.rankings.topThirteen">
+                  <div class="song-item">
+                    <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
+                    <div class="song-details">
+                      <h3>{{ song.songTitle }}</h3>
+                    </div>
+                    <audio controls *ngIf="song.audioSource" controlsList="nodownload">
+                      <source [src]="song.audioSource" type="audio/mpeg">
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                </li>
+              </ol>
+        </ng-container>
+        <ng-template #noTopThirteen>
+          <p>You haven't chosen your Top 13 songs yet! Visit the Top 13 page to create your list.</p>
+        </ng-template>
+      </section>
+  
+  <section class="questionnaire">
+    <div class="btn-container">
+        <h2>Swiftie Questionnaire</h2>
+        <div>
+            <button *ngIf="!isEditing" (click)="startEditing()" class="edit-button">Edit Answers</button>
+            <button *ngIf="isEditing" (click)="saveAnswers()" class="save-button">Save Answers</button>
         </div>
     </div>
+    <div class="question-list">
+      <div *ngFor="let questionObj of userProfile.profileQuestions; let i = index" class="question-item">
+        <p class="question">{{ questionObj.question }}</p>
+        <div class="answer" 
+             [contentEditable]="isEditing" 
+             (blur)="updateQuestionAnswer(i, $event)"
+             [innerHTML]="questionObj.answer">
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
+  

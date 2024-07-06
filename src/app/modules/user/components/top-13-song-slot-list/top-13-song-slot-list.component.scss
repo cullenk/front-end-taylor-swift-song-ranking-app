@@ -1,31 +1,83 @@
 .container {
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 20px; 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-container {
+  position: relative;
+  width: 100%;
+  height: 200px; // Adjust as needed
+  margin-bottom: 30px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.background-graphic {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  // opacity: .3;
+} 
+
+.header-div {
+  background-color: #ffd78c;
+  height: 100%;
+  border-radius: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 20px 20px;
+}
+
+.header-title {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  color: black;
+  text-align: left;
+  margin: 0px 0px 10px 0px;
+  font-size: 3rem;
+  // text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header-sub-title {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  color: #266DD3;
+  text-align: left;
+  margin: 0px;
+  font-size: 3.6rem;
+  // text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+.song-slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.song-slot {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    height: 150px; 
   }
 
-  // .song-slot-wrapper {
-//     display: flex;
-// }
-
-.list {
-    display: flex;
-    flex-direction: column;
+  .header-title {
+    font-size: 1.8rem;
   }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 1rem;
+  .header-sub-title {
+    font-size: 2.4rem;
   }
-
-.tile{
-    // border: 1px solid black;
-    border-radius: 0px 10px 10px 0px;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    background-color: aliceblue;
-    // padding: 10px;
-    margin-bottom: 10px;
 }

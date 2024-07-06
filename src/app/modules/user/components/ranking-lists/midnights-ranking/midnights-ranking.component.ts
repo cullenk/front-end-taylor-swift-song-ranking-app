@@ -28,6 +28,15 @@ export class MidnightsRankingComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.disableAudioRightClick();
+  }
+
+  disableAudioRightClick() {
+    document.addEventListener('contextmenu', (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
+        e.preventDefault();
+      }
+    }, false);
   }
 
   loadData() {

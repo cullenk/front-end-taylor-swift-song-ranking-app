@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private 'authenticationSub': Subscription;
   userAuthenticated = false;
+  isMobileMenuOpen = false;
 
   constructor(private AuthService: AuthService) { }
 
@@ -27,6 +28,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authenticationSub = this.AuthService.getAuthenticatedSub().subscribe(status => {
       this.userAuthenticated = status;
     })
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   logout(){

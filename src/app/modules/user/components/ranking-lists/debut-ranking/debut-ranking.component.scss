@@ -114,9 +114,27 @@
 }
 
 audio {
-  width: 200px; // Adjust as needed
-  margin-left: 10px;
+  width: 200px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  outline: 1px solid white;
+
+  &::-webkit-media-controls-panel {
+    background-color: none;
+  }
+
+  &::-webkit-media-controls-play-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+  }
+
+  &::-webkit-media-controls-current-time-display,
+  &::-webkit-media-controls-time-remaining-display {
+    color: black;
+  }
 }
+
 
 @media (max-width: 768px) {
   .album-ranking-container {

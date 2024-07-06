@@ -17,6 +17,7 @@ import { LoverRankingComponent } from './components/ranking-lists/lover-ranking/
 import { FolkloreRankingComponent } from './components/ranking-lists/folklore-ranking/folklore-ranking.component';
 import { EvermoreRankingComponent } from './components/ranking-lists/evermore-ranking/evermore-ranking.component';
 import { MidnightsRankingComponent } from './components/ranking-lists/midnights-ranking/midnights-ranking.component';
+import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 
 const routes: Routes = [
   {

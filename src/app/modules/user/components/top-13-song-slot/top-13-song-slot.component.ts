@@ -43,6 +43,7 @@ export class Top13SongSlotComponent implements OnInit {
       list => this.topThirteen = list
     );
     this.loadTopThirteenList();
+    this.disableAudioRightClick();
   }
 
     // Add a method to update the theme when a song is selected
@@ -52,6 +53,14 @@ export class Top13SongSlotComponent implements OnInit {
       } else {
         this.albumTheme = this.albumThemeService.getTheme(undefined);
       }
+    }
+
+    disableAudioRightClick() {
+      document.addEventListener('contextmenu', (e: MouseEvent) => {
+        if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
+          e.preventDefault();
+        }
+      }, false);
     }
 
   loadTopThirteenList() {

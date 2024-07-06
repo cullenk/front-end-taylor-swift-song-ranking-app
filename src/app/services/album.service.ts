@@ -33,10 +33,10 @@ export class AlbumService {
     const encodedSongTitle = encodeURIComponent(songTitle);
     return this.http.get<Album>(`${this.albumSearchBySongUrl}/?songTitle=${encodedSongTitle}`, { headers: this.getHeaders() }).pipe(
       map(response => {
-        console.log('Album response:', response); // Add this log
+        console.log('Album response:', response);
         return {
           ...response,
-          albumImage: response.albumImage || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png' // Ensure albumCover is always set
+          albumImage: response.albumImage || 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png'
         };
       }),
       catchError(error => {
@@ -45,6 +45,7 @@ export class AlbumService {
       })
     );
   }
+  
   
 
 
