@@ -1,0 +1,17 @@
+<div class="era-widget">
+    <h2>{{ era.era }}</h2>
+    <div class="song-inputs">
+      <ng-container *ngIf="isEditing; else viewMode">
+        <input *ngFor="let song of editableSongs; let i = index" 
+               [(ngModel)]="editableSongs[i]"
+               placeholder="Enter song name">
+        <button (click)="saveChanges()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </ng-container>
+      <ng-template #viewMode>
+        <p *ngFor="let song of era.songs">{{ song || 'No song selected' }}</p>
+        <button (click)="startEditing()">Edit</button>
+      </ng-template>
+    </div>
+  </div>
+  

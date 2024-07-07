@@ -18,6 +18,7 @@ import { FolkloreRankingComponent } from './components/ranking-lists/folklore-ra
 import { EvermoreRankingComponent } from './components/ranking-lists/evermore-ranking/evermore-ranking.component';
 import { MidnightsRankingComponent } from './components/ranking-lists/midnights-ranking/midnights-ranking.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
+import { ErasTourBuilderComponent } from './components/eras-tour-builder/eras-tour-builder.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     { path: 'userHome', component: HomeComponent},
     { path: 'userProfile', component: UserProfileComponent},
     { path: 'top13list', component: Top13SongSlotListComponent},
+    { path: 'erasTourBuilder', component: ErasTourBuilderComponent},
     { path: 'rankings', component: RankingsComponent },
     { path: 'rankings/debut', component: DebutRankingComponent},
     { path: 'rankings/fearless', component: FearlessRankingComponent },

@@ -1,14 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { SearchResult } from '../interfaces/SearchResult';
 import { Album } from '../interfaces/Album';
+import { Song } from '../interfaces/Song';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumService {
+  private albumNameMapping: { [key: string]: string } = {
+    'Debut': 'Taylor Swift',
+    'Fearless': 'Fearless (Taylor\'s Version)',
+    'Speak Now': 'Speak Now (Taylor\'s Version)',
+    'Red': 'Red (Taylor\'s Version)',
+    '1989': '1989 (Taylor\'s Version)',
+    'Reputation': 'reputation',
+    'Lover': 'Lover',
+    'Folklore': 'folklore',
+    'Evermore': 'evermore',
+    'Midnights': 'Midnights',
+    'The Tortured Poets Department': 'The Tortured Poets Department'
+  };
+  private songsByAlbumUrl = 'http://localhost:3000/api/search';
   private allAlbumSearchUrl = 'http://localhost:3000/api/search/allAlbums';
   private songSearchUrl = 'http://localhost:3000/api/search/songSearch';
   private albumSearchBySongUrl = 'http://localhost:3000/api/search/albumBySong';
@@ -46,31 +61,25 @@ export class AlbumService {
     );
   }
   
-  
+  private getMappedAlbumName(albumName: string): string {
+    return this.albumNameMapping[albumName] || albumName;
+  }
 
+  getSongsByAlbum(albumName: string): Observable<Song[]> {
+    const mappedAlbumName = this.getMappedAlbumName(albumName);
+    const encodedAlbumName = encodeURIComponent(mappedAlbumName);
+    return this.http.get<Song[]>(`${this.songsByAlbumUrl}/${encodedAlbumName}`).pipe(
+      catchError(error => {
+        console.error('Error fetching songs:', error);
+        return throwError(error);
+      })
+    );
+  }
 
   getAlbums(): Observable<any[]> {
     return this.http.get<any[]>(this.allAlbumSearchUrl);
   }
 
 }
-  // searchSongs(query: string): Observable<any[]> {
-  //   const url = `${this.songSearchUrl}?q=${encodeURIComponent(query)}`;
-  //   return this.http.get<any[]>(url);
-  // }
-
-  // searchSongs(query: string): Observable<SearchResult[]> {
-  //   return this.http.get<SearchResult[]>(`${this.songSearchUrl}?q=${query}`);
-  // }
-  
-  // getAlbumBySong(songTitle: string): Observable<any[]> {
-  //   const url = `${this.albumSearchBySongUrl}?songTitle=${encodeURIComponent(songTitle)}`;
-  //   return this.http.get<any[]>(url);
-  // }
-
-  // const encodedSongTitle = encodeURIComponent(songTitle);
-  // getAlbumBySong(encodedSongTitle: string): Observable<Album> {
-  //   return this.http.get<Album>(`${this.albumSearchBySongUrl}?songTitle=${songTitle}`);
-  // }
 
 

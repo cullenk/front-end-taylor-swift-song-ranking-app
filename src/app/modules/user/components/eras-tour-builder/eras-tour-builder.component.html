@@ -1,0 +1,14 @@
+<div class="eras-tour-builder">
+    <h1>Create Your Eras Tour Setlist</h1>
+    
+    <div cdkDropList class="era-list" (cdkDropListDropped)="onDrop($event)">
+      <div *ngFor="let era of setList; let i = index" cdkDrag class="era-item">
+        <app-era-widget 
+          [era]="era" 
+          (eraUpdated)="updateEra($event)">
+        </app-era-widget>
+      </div>
+    </div>
+    <button (click)="saveSetList()">Save Entire Setlist</button>
+  </div>
+  
