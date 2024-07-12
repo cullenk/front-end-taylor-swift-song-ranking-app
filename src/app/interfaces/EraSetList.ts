@@ -1,11 +1,12 @@
-import { Song } from "./Song";
 
-export interface SongWithAlbum extends Song {
-    album: string;
-  }
+export interface EraSetListSong {
+  _id: string;
+  title: string;
+  audioSource: string;
+}
 
-  export interface EraSetList {
-    order: number;
-    era: string;
-    songs: (SongWithAlbum | null)[];
-  }
+export interface EraSetList {
+  era: string;
+  songs: EraSetListSong[];
+  order: number;
+}

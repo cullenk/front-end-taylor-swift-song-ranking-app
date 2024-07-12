@@ -4,13 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { AlbumService } from '../../../../services/album.service';
 import { forkJoin } from 'rxjs';
+import { Song } from '../../../../interfaces/Song';
 
 interface TopThirteenSong {
   songTitle: string;
   slot: number;
-  albumId?: string;
+  albumName?: string;
   albumImage?: string;
   audioSource?: string;
+  songId: string;
 }
 
 @Component({
@@ -103,25 +105,29 @@ export class PublicProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
+    console.log('Entering loadTopThirteenDetails');
     if (this.publicProfile?.rankings?.topThirteen) {
-      const albumRequests = this.publicProfile.rankings.topThirteen.map((song: TopThirteenSong) => 
-        this.albumService.getAlbumBySong(song.songTitle)
+      const songRequests = this.publicProfile.rankings.topThirteen.map(song =>
+        this.albumService.getSongById(song.songId)
       );
-
-      forkJoin(albumRequests).subscribe(
-        (albums: any[]) => {
-          this.publicProfile!.rankings.topThirteen = this.publicProfile!.rankings.topThirteen.map((song: TopThirteenSong, index: number) => ({
-            ...song,
-            albumImage: albums[index].albumImage,
-            audioSource: albums[index].songs.find((s: { title: string }) => s.title === song.songTitle)?.audioSource
-          }));
+  
+      forkJoin(songRequests).subscribe(
+        (songs: Song[]) => {
+          this.publicProfile!.rankings.topThirteen = this.publicProfile!.rankings.topThirteen.map((song, index) => {
+            const songDetails = songs[index];
+            return {
+              ...song,
+              albumImage: songDetails.albumImageSource,
+              audioSource: songDetails.audioSource
+            };
+          });
           // Ensure the list is sorted by slot
-          this.publicProfile!.rankings.topThirteen.sort((a: TopThirteenSong, b: TopThirteenSong) => a.slot - b.slot);
+          this.publicProfile!.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
           this.isLoading = false;
         },
         error => {
-          console.error('Error loading album details', error);
-          this.error = 'Failed to load album details. Please try again.';
+          console.error('Error loading song details', error);
+          this.error = 'Failed to load song details. Please try again.';
           this.isLoading = false;
         }
       );

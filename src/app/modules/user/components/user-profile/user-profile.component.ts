@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserProfileService } from "../../../../services/user-profile.service";
-import { AlbumService } from "../../../../services/album.service";
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { UserProfileService } from '../../../../services/user-profile.service';
+import { AlbumService } from '../../../../services/album.service';
+import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { Album } from '../../../../interfaces/Album';
 import { Song } from '../../../../interfaces/Song';
-import { ToastrService } from 'ngx-toastr';
 
-interface UserProfileSong extends Omit<Song, 'title'> {
+interface UserProfileSong {
   slot: number;
-  albumId: string;
-  songTitle: string;  // This replaces 'title' from Song
+  albumName: string;
+  songTitle: string; // This replaces 'title' from Song
   albumImage?: string;
+  audioSource?: string;
+  songId: string;
 }
 
 interface UserProfile {
@@ -21,7 +23,10 @@ interface UserProfile {
   rankings: {
     topThirteen: UserProfileSong[];
   };
-  profileQuestions: Array<{ question: string; answer: string }>;
+  profileQuestions: {
+    question: string;
+    answer: string;
+  }[];
 }
 
 @Component({
@@ -125,42 +130,47 @@ export class UserProfileComponent implements OnInit {
         username: 'New Swiftie',
         theme: this.defaultTheme,
         rankings: { topThirteen: [] },
-        profileQuestions: this.questions.map(question => ({ question, answer: 'Not answered yet' }))
+        profileQuestions: this.questions.map(question => ({
+          question,
+          answer: ''
+        }))
       };
     }
-  
+
     return {
       ...profile,
       theme: profile.theme || this.defaultTheme,
       rankings: profile.rankings || { topThirteen: [] },
       profileQuestions: this.questions.map(question => {
-        const existingAnswer = profile.profileQuestions?.find((q: { question: string; answer: string }) => q.question === question);
-        return existingAnswer || { question, answer: 'Not answered yet' };
+        const existingAnswer = profile.profileQuestions?.find((pq: { question: string; answer: string }) => pq.question === question);
+        return existingAnswer || { question, answer: '' };
       })
     };
   }
-  
 
   loadTopThirteenDetails() {
     console.log('Entering loadTopThirteenDetails');
     if (this.userProfile.rankings && this.userProfile.rankings.topThirteen && this.userProfile.rankings.topThirteen.length > 0) {
-      const albumRequests = this.userProfile.rankings.topThirteen.map(song =>
-        this.albumService.getAlbumBySong(song.songTitle)
+      const songRequests = this.userProfile.rankings.topThirteen.map(song =>
+        this.albumService.getSongById(song.songId)
       );
-      forkJoin<Album[]>(albumRequests).subscribe(
-        (albums: Album[]) => {
-          this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => ({
-            ...song,
-            albumImage: albums[index].albumImage,
-            audioSource: albums[index].songs.find(s => s.title === song.songTitle)?.audioSource
-          }));
+      forkJoin(songRequests).subscribe(
+        (songs: Song[]) => {
+          this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => {
+            const songDetails = songs[index];
+            return {
+              ...song,
+              albumImage: songDetails.albumImageSource,
+              audioSource: songDetails.audioSource
+            };
+          });
           // Ensure the list is sorted by slot
           this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
           this.isLoading = false;
         },
         error => {
-          console.error('Error loading album details', error);
-          this.loadingError = 'Failed to load album details. Please try again.';
+          console.error('Error loading song details', error);
+          this.loadingError = 'Failed to load song details. Please try again.';
           this.isLoading = false;
         }
       );
@@ -227,7 +237,7 @@ export class UserProfileComponent implements OnInit {
 
   isProfileShareable(): boolean {
     const hasTopThirteenSong = this.userProfile.rankings.topThirteen.length > 0;
-    const hasAnsweredQuestion = this.userProfile.profileQuestions.some(q => q.answer && q.answer !== 'Not answered yet');
+    const hasAnsweredQuestion = this.userProfile.profileQuestions.some(q => q.answer && q.answer !== '');
     return hasTopThirteenSong && hasAnsweredQuestion;
   }
 
@@ -238,6 +248,7 @@ export class UserProfileComponent implements OnInit {
       });
       return;
     }
+
     const shareUrl = `${window.location.origin}/public-profile/${this.userProfile.username}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
       this.toastr.success('Profile link copied to clipboard!', 'Success', {
@@ -249,5 +260,4 @@ export class UserProfileComponent implements OnInit {
       });
     });
   }
-  
 }

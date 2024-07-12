@@ -15,7 +15,7 @@ export class AlbumThemeService {
 
   private getDefaultTheme(): AlbumTheme {
     return {
-      backgroundImage: 'url(https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/album-cover-not-found.png)',
+      backgroundImage: 'url(https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/song+panels/singles-panel.png)',
       overlay: 'linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1))'
     };
   }

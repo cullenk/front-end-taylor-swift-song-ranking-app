@@ -1,5 +1,7 @@
 export interface Song {
-    _id: string;  // MongoDB ObjectId
-    title: string;
-    audioSource?: string;
-  }
+  _id: string;
+  title: string;
+  audioSource: string;
+  albumImageSource: string;
+  album: string; 
+}

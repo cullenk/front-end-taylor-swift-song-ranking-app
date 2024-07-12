@@ -8,13 +8,13 @@ import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-
 import { Ranking, Rankings } from '../../../../../interfaces/Rankings';
 
 @Component({
-  selector: 'app-speak-now-ranking',
+  selector: 'app-singles-ranking',
   standalone: true,
   imports: [DragDropModule, CommonModule],
-  templateUrl: './speak-now-ranking.component.html',
-  styleUrls: ['./speak-now-ranking.component.scss']
+  templateUrl: './singles.component.html',
+  styleUrls: ['./singles.component.scss']
 })
-export class SpeakNowRankingComponent implements OnInit {
+export class SinglesComponent implements OnInit {
   rankings: Ranking[] = [];
   songs: Song[] = [];
   @ViewChildren('audioPlayer') audioPlayers!: QueryList<ElementRef>;
@@ -39,7 +39,7 @@ export class SpeakNowRankingComponent implements OnInit {
   }
 
   loadAlbumData() {
-    this.albumService.getAlbumByTitle("Speak Now (Taylor's Version)").subscribe(
+    this.albumService.getAlbumByTitle("Singles").subscribe(
       (album: Album) => {
         this.songs = album.songs.map(song => ({
           ...song,
@@ -57,8 +57,8 @@ export class SpeakNowRankingComponent implements OnInit {
   loadRankings() {
     this.rankingsService.getUserRankings().subscribe(
       (rankings: Rankings) => {
-        if (rankings && rankings.albumRankings && rankings.albumRankings['speakNow']) {
-          this.rankings = rankings.albumRankings['speakNow'].sort((a, b) => a.rank - b.rank);
+        if (rankings && rankings.albumRankings && rankings.albumRankings['standaloneSingles']) {
+          this.rankings = rankings.albumRankings['standaloneSingles'].sort((a, b) => a.rank - b.rank);
           console.log('Loaded rankings:', this.rankings);
         } else {
           this.rankings = [];
@@ -111,7 +111,7 @@ export class SpeakNowRankingComponent implements OnInit {
       rank: index + 1
     }));
   
-    this.rankingsService.updateRanking('speakNow', newRankings).subscribe(
+    this.rankingsService.updateRanking('standaloneSingles', newRankings).subscribe(
       response => console.log('Rankings updated'),
       error => console.error('Error updating rankings:', error)
     );
@@ -121,4 +121,6 @@ export class SpeakNowRankingComponent implements OnInit {
     console.error('Audio failed to load:', event);
     // You can add error handling logic here, e.g., showing a toast message
   }
+
+
 }

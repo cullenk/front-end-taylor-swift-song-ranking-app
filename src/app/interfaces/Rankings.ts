@@ -1,8 +1,10 @@
 export interface Ranking {
-  songId: string;
+  slot: number,
+  albumName: String;
+  songId: String;
+  songTitle: String;
+  albumCover: String,
   rank: number;
-  songTitle?: string;
-  albumId?: string;
 }
 
 export interface Rankings {

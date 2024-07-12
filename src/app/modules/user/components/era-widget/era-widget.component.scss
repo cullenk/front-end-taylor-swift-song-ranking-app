@@ -1,0 +1,86 @@
+.era-widget {
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: scale(1.02);
+    }
+  
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+  
+    h2 {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    .song-slots {
+      position: relative;
+      z-index: 2;
+  
+      .song-slot {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+  
+        p {
+          margin: 0;
+          flex: 1;
+        }
+  
+        .remove-button {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+          transition: color 0.3s ease;
+  
+          &:hover {
+            color: red;
+          }
+        }
+  
+        input,
+        select {
+          flex: 1;
+          padding: 8px;
+          border: none;
+          border-radius: 5px;
+          margin-right: 10px;
+          background: rgba(255, 255, 255, 0.8);
+          color: black;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          transition: background 0.3s ease, box-shadow 0.3s ease;
+  
+          &:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          }
+  
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+          }
+        }
+      }
+    }
+  }

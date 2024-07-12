@@ -1,9 +1,7 @@
-import { Album } from './Album'
-import { Song } from './Song';
-
 export interface SearchResult {
-  _id: string;  // Assuming each song has an _id
+  _id: string;
   title: string;
-  // duration: string;
   audioSource: string;
-  }
+  albumImageSource: string;
+  album: string; // This can be the album ID or name, depending on your backend structure
+}

@@ -1,0 +1,21 @@
+<div class="album-ranking-container">
+    <div class="media-column">
+      <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/singles/Singles.svg" alt="Album Cover" class="album-cover">
+    </div>
+    <div class="ranking-column">
+      <div class="content-div">
+        <p>My Rankings For:</p>
+        <h1>Taylor's Single Releases</h1>
+        <p>Released: 2006-Present</p>
+      <p class="helper-text">Click and drag a song to reorder your list!</p>
+      </div>
+      <div class="song-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+        <div class="song-item" *ngFor="let song of songs; let i = index" cdkDrag >
+          <span class="rank-number">{{ i + 1 }}.</span>
+          <span class="song-title">{{ song.title }}</span>
+          <audio controls [src]="song.audioSource" (error)="handleAudioError($event)" controlsList="nodownload"></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+  

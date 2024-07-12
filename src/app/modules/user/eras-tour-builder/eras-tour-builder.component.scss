@@ -1,0 +1,41 @@
+.eras-tour-builder {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .rules-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .era-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .era-item {
+    cursor: grab;
+  }
+}

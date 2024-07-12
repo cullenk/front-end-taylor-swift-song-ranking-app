@@ -5,7 +5,6 @@ import { AlbumService } from '../../../../services/album.service';
 import { TopThirteenService } from '../../../../services/top-thirteen.service';
 import { TopThirteenStateService } from '../../../../services/top-thirteen-state.service';
 import { SearchResult } from '../../../../interfaces/SearchResult';
-import { Album } from '../../../../interfaces/Album';
 import { Song } from '../../../../interfaces/Song';
 import { TopThirteenItem } from '../../../../interfaces/Top13Item';
 import { ToastrService } from 'ngx-toastr';
@@ -24,7 +23,6 @@ export class Top13SongSlotComponent implements OnInit {
   searchQuery: string = '';
   searchResults: SearchResult[] = [];
   selectedSong: Song | null = null;
-  selectedAlbum: Album | null = null;
   topThirteen: TopThirteenItem[] = [];
   albumTheme: AlbumTheme;
 
@@ -35,7 +33,7 @@ export class Top13SongSlotComponent implements OnInit {
     private toastr: ToastrService,
     private albumThemeService: AlbumThemeService
   ) {
-   this.albumTheme = this.albumThemeService.getTheme(undefined); 
+    this.albumTheme = this.albumThemeService.getTheme(undefined);
   }
 
   ngOnInit() {
@@ -46,22 +44,21 @@ export class Top13SongSlotComponent implements OnInit {
     this.disableAudioRightClick();
   }
 
-    // Add a method to update the theme when a song is selected
-    updateAlbumTheme() {
-      if (this.selectedAlbum) {
-        this.albumTheme = this.albumThemeService.getTheme(this.selectedAlbum.title);
-      } else {
-        this.albumTheme = this.albumThemeService.getTheme(undefined);
-      }
+  updateAlbumTheme() {
+    if (this.selectedSong) {
+      this.albumTheme = this.albumThemeService.getTheme(this.selectedSong.album);
+    } else {
+      this.albumTheme = this.albumThemeService.getTheme(undefined);
     }
+  }
 
-    disableAudioRightClick() {
-      document.addEventListener('contextmenu', (e: MouseEvent) => {
-        if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
-          e.preventDefault();
-        }
-      }, false);
-    }
+  disableAudioRightClick() {
+    document.addEventListener('contextmenu', (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
+        e.preventDefault();
+      }
+    }, false);
+  }
 
   loadTopThirteenList() {
     this.topThirteenService.getTopThirteen().subscribe(
@@ -79,14 +76,13 @@ export class Top13SongSlotComponent implements OnInit {
   loadExistingSong() {
     const existingSong = this.topThirteen.find(item => item.slot === this.slotIndex);
     if (existingSong) {
-      this.albumService.getAlbumBySong(existingSong.songTitle).subscribe(
-        (album: Album) => {
-          this.selectedAlbum = album;
-          this.selectedSong = album.songs.find(song => song.title === existingSong.songTitle) || null;
+      this.albumService.getSongById(existingSong.songId).subscribe(
+        (song: Song) => {
+          this.selectedSong = song;
           this.updateAlbumTheme();
         },
         error => {
-          console.error('Error loading album:', error);
+          console.error('Error loading song:', error);
           this.toastr.error('Error loading song details', 'Error');
         }
       );
@@ -111,7 +107,7 @@ export class Top13SongSlotComponent implements OnInit {
 
   selectSong(song: SearchResult) {
     console.log('Audio source:', song.audioSource);
-    this.fetchAlbumForSong(song.title);
+    this.fetchSongDetails(song._id);
     this.updateAlbumTheme();
   }
 
@@ -119,28 +115,20 @@ export class Top13SongSlotComponent implements OnInit {
     console.error('Audio failed to load:', event);
     this.toastr.error('Failed to load audio. Please try again later.', 'Error');
   }
-  
 
-  fetchAlbumForSong(songTitle: string) {
-    this.albumService.getAlbumBySong(songTitle).subscribe(
-      (album: Album) => {
-        console.log('Fetched album:', album); // Add this log
-        const song = album.songs.find(s => s.title === songTitle);
-        if (song) {
-          this.checkAndUpdateTopThirteen(album, song);
-        } else {
-          console.error('Song not found in the album');
-          this.toastr.error('Error selecting song', 'Error');
-        }
+  fetchSongDetails(songId: string) {
+    this.albumService.getSongById(songId).subscribe(
+      (song: Song) => {
+        this.checkAndUpdateTopThirteen(song);
       },
       error => {
-        console.error('Error fetching album:', error);
-        this.toastr.error('Error fetching album', 'Error');
+        console.error('Error fetching song:', error);
+        this.toastr.error('Error fetching song', 'Error');
       }
     );
   }
 
-  checkAndUpdateTopThirteen(album: Album, song: Song) {
+  checkAndUpdateTopThirteen(song: Song) {
     // Check if the song is already in the top 13 list
     const duplicateSong = this.topThirteen.find(item => item.songTitle === song.title && item.slot !== this.slotIndex);
     if (duplicateSong) {
@@ -148,22 +136,21 @@ export class Top13SongSlotComponent implements OnInit {
       this.resetSelection();
       return; // Prevent adding the duplicate song
     }
-  
+
     // If not a duplicate, update the selection and the top 13 list
-    this.selectedAlbum = album;
     this.selectedSong = song;
     this.updateAlbumTheme();
-    console.log('Selected album:', this.selectedAlbum); // Add this log
     this.updateTopThirteen();
   }
-  
 
   updateTopThirteen() {
-    if (this.selectedSong && this.selectedAlbum) {
+    if (this.selectedSong) {
       this.topThirteenService.updateSong(
         this.slotIndex,
-        this.selectedAlbum._id!,
-        this.selectedSong.title
+        this.selectedSong.album,
+        this.selectedSong._id!,
+        this.selectedSong.title,
+        this.selectedSong.albumImageSource
       ).subscribe(
         (updatedList) => {
           console.log('Top 13 list updated successfully', updatedList);
@@ -181,11 +168,10 @@ export class Top13SongSlotComponent implements OnInit {
 
   resetSelection() {
     this.selectedSong = null;
-    this.selectedAlbum = null;
     this.searchQuery = '';
     this.searchResults = [];
   }
-  
+
   handleImageError(event: any) {
     event.target.src = 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg'; // Set a fallback image
     console.error('Failed to load album image');

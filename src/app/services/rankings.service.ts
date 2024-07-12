@@ -5,11 +5,9 @@ import { catchError, retry } from 'rxjs/operators';
 import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
 
-
 @Injectable({
   providedIn: 'root'
 })
-
 export class RankingsService {
   private apiUrl = 'http://localhost:3000/api/rankings';
 
@@ -35,12 +33,45 @@ export class RankingsService {
       );
   }
 
+  getTopThirteen(): Observable<Ranking[]> {
+    return this.http.get<Ranking[]>(`${this.apiUrl}/user/top-thirteen`, { headers: this.getHeaders() })
+      .pipe(
+        retry(3), // Retry up to 3 times on failure
+        catchError(this.handleError)
+      );
+  }
+
+  updateTopThirteen(slot: number, albumName: string, songId: string, songTitle: string, albumCover: string): Observable<Ranking[]> {
+    return this.http.post<Ranking[]>(`${this.apiUrl}/user/top-thirteen`, { slot, albumName, songId, songTitle, albumCover }, { headers: this.getHeaders() })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  removeTopThirteen(slot: number): Observable<Ranking[]> {
+    return this.http.delete<Ranking[]>(`${this.apiUrl}/user/top-thirteen/${slot}`, { headers: this.getHeaders() })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getErasTourSetList(): Observable<EraSetList[]> {
-    return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list`, { headers: this.getHeaders() });
+    return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list`, { headers: this.getHeaders() }).pipe(
+      catchError(error => {
+        console.error('Error fetching Eras Tour set list:', error);
+        return throwError(() => new Error('Failed to fetch Eras Tour set list'));
+      })
+    );
   }
 
   updateErasTourSetList(setList: EraSetList[]): Observable<any> {
-    return this.http.put(`${this.apiUrl}/eras-tour-set-list`, { erasTourSetList: setList }, { headers: this.getHeaders() });
+    console.log('Sending setlist to server:', setList);
+    return this.http.put(`${this.apiUrl}/eras-tour-set-list`, { erasTourSetList: setList }, { headers: this.getHeaders() }).pipe(
+      catchError(error => {
+        console.error('Error updating Eras Tour set list:', error);
+        return throwError(() => new Error('Failed to update Eras Tour set list'));
+      })
+    );
   }
 
   private handleError(error: HttpErrorResponse) {

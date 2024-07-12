@@ -15,16 +15,16 @@
       </div>
     </div>
 
-    <div class="chosen-song-card" *ngIf="selectedSong && selectedAlbum" [ngStyle]="{'background-image': albumTheme.backgroundImage}">
+    <div class="chosen-song-card" *ngIf="selectedSong" [ngStyle]="{'background-image': albumTheme.backgroundImage}">
       <div class="overlay" [ngStyle]="{'background': albumTheme.overlay}"></div>
       <div class="chosen-song-card-content">
         <button class="reset-button" (click)="resetSong()" aria-label="Reset song">X</button>
-        <div class="album-cover-div" *ngIf="selectedAlbum">
-          <img class="album-cover" [src]="selectedAlbum.albumImage" [alt]="selectedAlbum.title + ' Cover'" (error)="handleImageError($event)">
+        <div class="album-cover-div">
+          <img class="album-cover" [src]="selectedSong.albumImageSource" [alt]="selectedSong.album + ' Cover'" (error)="handleImageError($event)">
         </div>
         <div class="chosen-song-details-div">
           <h3 class="song-title">{{ selectedSong.title }}</h3>
-          <p class="album-name">{{ selectedAlbum.title }}</p>
+          <p class="album-name">{{ selectedSong.album }}</p>
         </div>
         <audio controls (error)="handleAudioError($event)" controlsList="nodownload">
           <source [src]="selectedSong.audioSource" type="audio/mpeg">

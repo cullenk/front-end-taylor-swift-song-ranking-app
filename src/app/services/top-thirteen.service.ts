@@ -8,17 +8,17 @@ import { TopThirteenItem } from '../interfaces/Top13Item';
   providedIn: 'root'
 })
 export class TopThirteenService {
-  private apiUrl = 'http://localhost:3000/api/rankings/user/top-thirteen';
+  private apiUrl = 'http://localhost:3000/api/rankings';
 
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    const token = localStorage.getItem('token'); 
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getTopThirteen(): Observable<TopThirteenItem[]> {
-    return this.http.get<TopThirteenItem[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+    return this.http.get<TopThirteenItem[]>(`${this.apiUrl}/user/top-thirteen`, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error fetching top thirteen:', error);
         return of([]);
@@ -26,8 +26,8 @@ export class TopThirteenService {
     );
   }
 
-  updateSong(slot: number, albumId: string, songTitle: string): Observable<TopThirteenItem[]> {
-    return this.http.post<TopThirteenItem[]>(this.apiUrl, { slot, albumId, songTitle }, { headers: this.getHeaders() }).pipe(
+  updateSong(slot: number, albumName: string, songId: string, songTitle: string, albumCover: string): Observable<TopThirteenItem[]> {
+    return this.http.post<TopThirteenItem[]>(`${this.apiUrl}/user/top-thirteen`, { slot, albumName, songId, songTitle, albumCover }, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error updating song:', error);
         throw error; // Re-throw the error so the component can handle it
@@ -36,7 +36,7 @@ export class TopThirteenService {
   }
 
   removeSong(slot: number): Observable<TopThirteenItem[]> {
-    return this.http.delete<TopThirteenItem[]>(`${this.apiUrl}/${slot}`, { headers: this.getHeaders() }).pipe(
+    return this.http.delete<TopThirteenItem[]>(`${this.apiUrl}/user/top-thirteen/${slot}`, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error removing song:', error);
         throw error;

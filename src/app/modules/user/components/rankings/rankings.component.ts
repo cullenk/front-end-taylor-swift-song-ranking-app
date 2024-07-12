@@ -3,6 +3,7 @@ import { RankingsService } from "../../../../services/rankings.service";
 import { Router, RouterModule, RouterOutlet, NavigationStart } from "@angular/router";
 import { filter } from 'rxjs/operators';
 import { CommonModule } from "@angular/common";
+import { ToastrService } from 'ngx-toastr';
 
 interface Album {
   id: string;
@@ -33,19 +34,26 @@ export class RankingsComponent implements OnInit, OnDestroy {
     { id: 'folklore', title: 'folklore', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/folklore.jpg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/folklore-sound-clip.mp3', routerLink: './folklore' },
     { id: 'evermore', title: 'evermore', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/evermore.jpeg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/evermore-sound-clip.mp3', routerLink: './evermore' },
     { id: 'midnights', title: 'Midnights', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/midnights.jpeg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/midnights-sound-clip.mp3', routerLink: './midnights' },
-    { id: 'ttpd', title: 'The Tortured Poets Department', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd.jpg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/ttpd-sound-clip.mp3', routerLink: './tortured-poets-department' }
+    { id: 'ttpd', title: 'The Tortured Poets Department', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd.jpg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/ttpd-sound-clip.mp3', routerLink: './tortured-poets-department' },
+    { id: 'singles', title: 'Singles', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/singles/Singles.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/singles-sound-clip.mp3', routerLink: './singles' },
+
   ];
 
   private audioElements: { [key: string]: HTMLAudioElement } = {};
 
   constructor(
     private rankingsService: RankingsService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
     this.rankingsService.getUserRankings().subscribe(
-      rankings => this.rankings = rankings
+      rankings => this.rankings = rankings,
+      error => {
+        console.error('Error loading rankings:', error);
+        this.toastr.error('Failed to load rankings. Please try again.', 'Error');
+      }
     );
     this.preloadAudio();
     this.router.events.pipe(

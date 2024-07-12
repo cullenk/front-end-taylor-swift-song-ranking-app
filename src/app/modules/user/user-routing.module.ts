@@ -18,7 +18,8 @@ import { FolkloreRankingComponent } from './components/ranking-lists/folklore-ra
 import { EvermoreRankingComponent } from './components/ranking-lists/evermore-ranking/evermore-ranking.component';
 import { MidnightsRankingComponent } from './components/ranking-lists/midnights-ranking/midnights-ranking.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
-import { ErasTourBuilderComponent } from './components/eras-tour-builder/eras-tour-builder.component';
+import { ErasTourBuilderComponent } from './eras-tour-builder/eras-tour-builder.component';
+import { SinglesComponent } from './components/ranking-lists/singles/singles.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,7 @@ const routes: Routes = [
     { path: 'rankings/evermore', component: EvermoreRankingComponent },
     { path: 'rankings/midnights', component: MidnightsRankingComponent },
     { path: 'rankings/tortured-poets-department', component: TorturedPoetsDepartmentRankingComponent },
+    { path: 'rankings/singles', component: SinglesComponent },
     { path: '', redirectTo: '/user/userProfile', pathMatch: 'full'},
     {path: '**', component: DashboardNotFoundComponent},
 ]}];

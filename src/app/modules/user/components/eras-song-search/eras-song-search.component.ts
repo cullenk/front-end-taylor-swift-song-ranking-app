@@ -6,14 +6,15 @@ import { Song } from '../../../../interfaces/Song';
 
 @Component({
   selector: 'app-eras-song-search',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   template: `
     <select [(ngModel)]="selectedSong" (ngModelChange)="onSongSelected()">
       <option value="">Select a song</option>
-      <option *ngFor="let song of songs" [ngValue]="song">{{song.title}}</option>
+      <option *ngFor="let song of songs" [ngValue]="song">{{ song.title }}</option>
     </select>
   `,
-  standalone: true,
-  imports: [CommonModule, FormsModule]
+  styleUrls: ['./eras-song-search.component.scss']
 })
 export class ErasSongSearchComponent implements OnInit {
   @Input() albumName!: string;
@@ -25,13 +26,14 @@ export class ErasSongSearchComponent implements OnInit {
   constructor(private albumService: AlbumService) {}
 
   ngOnInit() {
+    // console.log('ErasSongSearchComponent initialized with albumName:', this.albumName);
     this.loadSongs();
   }
 
   loadSongs() {
     this.albumService.getSongsByAlbum(this.albumName).subscribe(
       songs => {
-        console.log('Received songs:', songs);
+        // console.log('Received songs:', songs);
         this.songs = songs;
       },
       error => {

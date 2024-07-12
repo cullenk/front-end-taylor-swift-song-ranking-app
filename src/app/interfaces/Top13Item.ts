@@ -1,5 +1,7 @@
 export interface TopThirteenItem {
-    slot: number;
-    albumId: string;  // This will be the MongoDB ObjectId as a string
-    songTitle: string;
-  }
+  slot: number;
+  albumName: string;
+  songId: string;
+  songTitle: string;
+  albumCover: string;
+}

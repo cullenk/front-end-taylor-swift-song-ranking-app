@@ -16,7 +16,6 @@ import { Ranking, Rankings } from '../../../../../interfaces/Rankings';
 })
 export class FolkloreRankingComponent implements OnInit {
   rankings: Ranking[] = [];
-  album: Album | null = null;
   songs: Song[] = [];
   @ViewChildren('audioPlayer') audioPlayers!: QueryList<ElementRef>;
   currentlyPlaying: Song | null = null;
@@ -27,7 +26,7 @@ export class FolkloreRankingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadData();
+    this.loadAlbumData();
     this.disableAudioRightClick();
   }
 
@@ -39,11 +38,13 @@ export class FolkloreRankingComponent implements OnInit {
     }, false);
   }
 
-  loadData() {
-    this.albumService.getAlbumBySong('august').subscribe(
+  loadAlbumData() {
+    this.albumService.getAlbumByTitle("folklore").subscribe(
       (album: Album) => {
-        this.album = album;
-        this.songs = [...album.songs];
+        this.songs = album.songs.map(song => ({
+          ...song,
+          album: album.title
+        }));
         console.log('Loaded album songs:', this.songs);
         this.loadRankings();
       },
@@ -65,7 +66,11 @@ export class FolkloreRankingComponent implements OnInit {
         }
         this.applyRankingsToSongs();
       },
-      error => console.error('Error fetching rankings:', error)
+      error => {
+        console.error('Error fetching rankings:', error);
+        this.rankings = [];
+        this.applyRankingsToSongs(); // Ensure songs are displayed even if no rankings are found
+      }
     );
   }
 
@@ -74,18 +79,18 @@ export class FolkloreRankingComponent implements OnInit {
       if (this.rankings.length > 0) {
         // Create a map of songId to rank
         const rankMap = new Map(this.rankings.map(r => [r.songId, r.rank]));
-        
+  
         // Sort the songs based on their rank, or keep original order if not ranked
         this.songs.sort((a, b) => {
-          const rankA = rankMap.get(a._id) || Infinity;
-          const rankB = rankMap.get(b._id) || Infinity;
-          return rankA - rankB;
+          const rankA = rankMap.get(a._id!) ?? Infinity;
+          const rankB = rankMap.get(b._id!) ?? Infinity;
+          return (rankA as number) - (rankB as number);
         });
       } else {
         console.log('No rankings found, displaying all songs in original order');
       }
     } else {
-      console.log('No songs found in the album');
+      console.log('No songs found');
     }
     console.log('Final songs array:', this.songs);
   }
@@ -98,7 +103,11 @@ export class FolkloreRankingComponent implements OnInit {
 
   updateRankings() {
     const newRankings = this.songs.map((song, index) => ({
-      songId: song._id,
+      slot: index + 1,
+      albumName: song.album, 
+      songId: song._id!,
+      songTitle: song.title,
+      albumCover: song.albumImageSource,
       rank: index + 1
     }));
   
@@ -107,41 +116,6 @@ export class FolkloreRankingComponent implements OnInit {
       error => console.error('Error updating rankings:', error)
     );
   }
-
-  //Audio Player Behavior
-  // togglePlay(song: Song, audioElement: HTMLAudioElement) {
-  //   if (this.currentlyPlaying && this.currentlyPlaying !== song) {
-  //     // Stop the currently playing song
-  //     this.stopCurrentSong();
-  //   }
-
-  //   if (this.currentlyPlaying === song) {
-  //     // Pause the current song
-  //     audioElement.pause();
-  //     this.currentlyPlaying = null;
-  //   } else {
-  //     // Play the selected song
-  //     audioElement.play();
-  //     this.currentlyPlaying = song;
-  //   }
-  // }
-
-  // stopCurrentSong() {
-  //   if (this.currentlyPlaying) {
-  //     const audioElement = this.audioPlayers.find(player => 
-  //       player.nativeElement.src === this.currentlyPlaying?.audioSource
-  //     )?.nativeElement;
-  //     if (audioElement) {
-  //       audioElement.pause();
-  //       audioElement.currentTime = 0;
-  //     }
-  //     this.currentlyPlaying = null;
-  //   }
-  // }
-
-  // isPlaying(song: Song): boolean {
-  //   return this.currentlyPlaying === song;
-  // }
 
   handleAudioError(event: any) {
     console.error('Audio failed to load:', event);
