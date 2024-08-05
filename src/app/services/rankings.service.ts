@@ -1,3 +1,4 @@
+// rankings.service.ts
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from 'rxjs';
@@ -70,6 +71,16 @@ export class RankingsService {
       catchError(error => {
         console.error('Error updating Eras Tour set list:', error);
         return throwError(() => new Error('Failed to update Eras Tour set list'));
+      })
+    );
+  }
+
+  //For generaiting shareable Eras Tour Set List link 
+  getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
+    return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list/${username}`, { headers: this.getHeaders() }).pipe(
+      catchError(error => {
+        console.error('Error fetching Eras Tour set list by username:', error);
+        return throwError(() => new Error('Failed to fetch Eras Tour set list by username'));
       })
     );
   }

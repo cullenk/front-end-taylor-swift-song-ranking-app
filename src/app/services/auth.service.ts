@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthModelLogin } from './auth-model-login';
 import { AuthModelCreate } from './auth-model-create';
-
 import { ToastService } from './toast-service.service';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -59,7 +58,7 @@ export class AuthService {
   loginUser(username: string, password: string): Observable<any> {
     const authData: AuthModelLogin = { username, password };
 
-    return this.http.post<{ token: string; expiresIn: number }>('http://localhost:3000/api/auth/login', authData)
+    return this.http.post<{ token: string; expiresIn: number, user: { username: string } }>('http://localhost:3000/api/auth/login', authData)
       .pipe(
         tap(response => {
           if (response.token) {
@@ -69,7 +68,8 @@ export class AuthService {
             this.router.navigate(['/user/userHome']);
             this.setAuthTimer(response.expiresIn);
             const expirationDate = new Date(new Date().getTime() + response.expiresIn * 1000);
-            this.storeLoginDetails(this.token, expirationDate);
+            console.log(response.user.username);
+            this.storeLoginDetails(this.token, expirationDate, response.user.username);
           }
         }),
         catchError(error => {
@@ -94,71 +94,79 @@ export class AuthService {
     );
   }
 
-    logout() {
-      this.token = '';
-      this.isAuthenticated = false;
-      this.authenticatedSub.next(false);
-      this.router.navigate(['/']);
-      this.clearAuthTimer();
-      this.clearLoginDetails();
+  logout() {
+    this.token = '';
+    this.isAuthenticated = false;
+    this.authenticatedSub.next(false);
+    this.router.navigate(['/']);
+    this.clearAuthTimer();
+    this.clearLoginDetails();
+  }
+
+  private setAuthTimer(duration: number) {
+    this.clearAuthTimer();
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, duration * 1000);
+  }
+
+  private clearAuthTimer() {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+      this.tokenExpirationTimer = null;
     }
-  
-    private setAuthTimer(duration: number) {
-      this.clearAuthTimer();
-      this.tokenExpirationTimer = setTimeout(() => {
-        this.logout();
-      }, duration * 1000);
+  }
+
+  storeLoginDetails(token: string, expirationDate: Date, username: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('expiresIn', expirationDate.toISOString());
+      localStorage.setItem('username', username);
     }
-  
-    private clearAuthTimer() {
-      if (this.tokenExpirationTimer) {
-        clearTimeout(this.tokenExpirationTimer);
-        this.tokenExpirationTimer = null;
+  }
+
+  clearLoginDetails() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiresIn');
+      localStorage.removeItem('username');
+    }
+  }
+
+  getLocalStorageData() {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      const expiresIn = localStorage.getItem('expiresIn');
+      const username = localStorage.getItem('username');
+
+      if (!token || !expiresIn || !username) {
+        return null;
       }
+      return {
+        token: token,
+        expiresIn: new Date(expiresIn),
+        username: username
+      };
     }
-  
-    storeLoginDetails(token: string, expirationDate: Date) {
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('expiresIn', expirationDate.toISOString());
-      }
-    }
-  
-    clearLoginDetails() {
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('expiresIn');
-      }
-    }
-  
-    getLocalStorageData() {
-      if (isPlatformBrowser(this.platformId)) {
-        const token = localStorage.getItem('token');
-        const expiresIn = localStorage.getItem('expiresIn');
-  
-        if (!token || !expiresIn) {
-          return null;
-        }
-        return {
-          token: token,
-          expiresIn: new Date(expiresIn)
-        };
-      }
-      return null;
-    }
-  
-    authenticateFromLocalStorage() {
-      const localStorageData = this.getLocalStorageData();
-      if (localStorageData) {
-        const now = new Date();
-        const expiresIn = localStorageData.expiresIn.getTime() - now.getTime();
-  
-        if (expiresIn > 0) {
-          this.token = localStorageData.token;
-          this.isAuthenticated = true;
-          this.authenticatedSub.next(true);
-          this.setAuthTimer(expiresIn / 1000);
-        }
+    return null;
+  }
+
+  authenticateFromLocalStorage() {
+    const localStorageData = this.getLocalStorageData();
+    if (localStorageData) {
+      const now = new Date();
+      const expiresIn = localStorageData.expiresIn.getTime() - now.getTime();
+
+      if (expiresIn > 0) {
+        this.token = localStorageData.token;
+        this.isAuthenticated = true;
+        this.authenticatedSub.next(true);
+        this.setAuthTimer(expiresIn / 1000);
       }
     }
   }
+
+  getUsername(): string | null {
+    return localStorage.getItem('username');
+  }
+}

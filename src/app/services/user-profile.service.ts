@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserProfile } from '../interfaces/userProfile';
+import { EraSetList } from '../interfaces/EraSetList';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,8 @@ export class UserProfileService {
 
   getPublicProfile(username: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/public-profile/${username}`);
+}
+getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
+  return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list/${username}`);
 }
 }

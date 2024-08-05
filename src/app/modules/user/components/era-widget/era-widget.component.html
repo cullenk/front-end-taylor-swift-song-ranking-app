@@ -1,17 +1,72 @@
-<div class="era-widget">
-    <h2>{{ era.era }}</h2>
-    <div class="song-inputs">
-      <ng-container *ngIf="isEditing; else viewMode">
-        <input *ngFor="let song of editableSongs; let i = index" 
-               [(ngModel)]="editableSongs[i]"
-               placeholder="Enter song name">
-        <button (click)="saveChanges()">Save</button>
-        <button (click)="cancelEdit()">Cancel</button>
-      </ng-container>
-      <ng-template #viewMode>
-        <p *ngFor="let song of era.songs">{{ song || 'No song selected' }}</p>
-        <button (click)="startEditing()">Edit</button>
-      </ng-template>
+<div class="era-widget" [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}">
+  <div class="overlay"></div>
+  <h2>{{ era.era }}</h2>
+  <div class="song-slots">
+    <ng-container *ngIf="era.era === 'Surprise Songs'; else normalSlots">
+      <div class="song-slot">
+        <label for="guitarSong">
+          <i class="fas fa-guitar"></i> On guitar:
+        </label>
+        <span *ngIf="guitarSong.title">{{ guitarSong.title }} <button class="remove-button" (click)="removeSurpriseSong('guitar')">x</button></span>
+        <button *ngIf="!guitarSong.title" (click)="openAddSongDialog('guitar')">Add Song</button>
+      </div>
+      <div class="song-slot">
+        <label for="pianoSong">
+          <img class="piano-icon" src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/pianoIcon.svg"> On piano:
+        </label>
+        <span *ngIf="pianoSong.title">{{ pianoSong.title }} <button class="remove-button" (click)="removeSurpriseSong('piano')">x</button></span>
+        <button *ngIf="!pianoSong.title" (click)="openAddSongDialog('piano')">Add Song</button>
+      </div>
+    </ng-container>
+    <ng-template #normalSlots>
+      <div *ngFor="let song of era.songs; let i = index" class="song-slot">
+        <p>{{ song.title }}</p>
+        <button class="remove-button" (click)="removeSong(i)">x</button>
+      </div>
+      <button 
+        (click)="openAddSongDialog()" 
+        [disabled]="era.songs.length >= 6" 
+        [title]="era.songs.length >= 6 ? 'Only 6 songs allowed in an era set!' : ''">
+        Add Song
+      </button>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Add Song Dialog -->
+<div *ngIf="showAddSongDialog" class="add-song-dialog">
+  <div class="dialog-content">
+    <h3>Add Song</h3>
+    <ng-container *ngIf="era.era === 'Surprise Songs'; else albumSongs">
+      <input [(ngModel)]="selectedSongTitle" placeholder="Enter song or mashup" />
+    </ng-container>
+    <ng-template #albumSongs>
+      <div class="mashup-option">
+        <label>
+          <input type="checkbox" [(ngModel)]="isMashup" /> Is this number a mashup?
+        </label>
+      </div>
+      <div *ngIf="isMashup" class="mashup-selection">
+        <select [(ngModel)]="firstSongId">
+          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+        </select>
+        <span>/</span>
+        <select [(ngModel)]="secondSongId">
+          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+        </select>
+      </div>
+      <div *ngIf="!isMashup" class="song-selection">
+        <select [(ngModel)]="selectedSongTitle">
+          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+        </select>
+      </div>
+    </ng-template>
+    <div class="dialog-actions">
+      <button (click)="songType ? saveSurpriseSong() : saveSong()" 
+              [disabled]="!canSaveSong()">
+        Save
+      </button>
+      <button (click)="closeAddSongDialog()">Cancel</button>
     </div>
   </div>
-  
+</div>

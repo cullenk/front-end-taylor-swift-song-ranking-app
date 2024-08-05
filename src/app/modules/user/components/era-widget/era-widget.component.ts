@@ -1,122 +1,128 @@
+// era-widget.component.ts
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EraSetList, EraSetListSong } from '../../../../interfaces/EraSetList';
 import { Song } from '../../../../interfaces/Song';
 import { AlbumService } from '../../../../services/album.service';
-import { ErasSongSearchComponent } from '../eras-song-search/eras-song-search.component';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-era-widget',
   standalone: true,
-  imports: [CommonModule, FormsModule, ErasSongSearchComponent],
-  template: `
-    <div class="era-widget" [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}">
-      <div class="overlay"></div>
-      <h2>{{ era.era }}</h2>
-      <div class="song-slots" *ngIf="era.era === 'Surprise Songs'; else normalSlots">
-        <div class="song-slot">
-          <label for="guitarSong">Guitar:</label>
-          <input id="guitarSong" [(ngModel)]="guitarSong.title" (ngModelChange)="updateSurpriseSongs()" />
-        </div>
-        <div class="song-slot">
-          <label for="pianoSong">Piano:</label>
-          <input id="pianoSong" [(ngModel)]="pianoSong.title" (ngModelChange)="updateSurpriseSongs()" />
-        </div>
-      </div>
-      <ng-template #normalSlots>
-        <div class="song-slots">
-          <div *ngFor="let song of era.songs; let i = index" class="song-slot">
-            <ng-container *ngIf="song.title; else searchSlot">
-              <p>{{ song.title }}</p>
-              <button class="remove-button" (click)="removeSong(i)">x</button>
-            </ng-container>
-            <ng-template #searchSlot>
-              <app-eras-song-search 
-                [albumName]="era.era" 
-                (songSelected)="addSong($event, i)">
-              </app-eras-song-search>
-            </ng-template>
-          </div>
-        </div>
-      </ng-template>
-    </div>
-  `,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './era-widget.component.html',
   styleUrls: ['./era-widget.component.scss']
 })
 export class EraWidgetComponent implements OnInit {
   @Input() era!: EraSetList;
+  @Input() totalSongs!: number;
+  @Input() totalMashups!: number;
   @Output() eraUpdated = new EventEmitter<EraSetList>();
+  allSongs: Song[] = [];
+  showAddSongDialog: boolean = false;
+  isMashup: boolean = false;
+  selectedSongTitle: string = '';
+  firstSongId: string = '';
+  secondSongId: string = '';
   guitarSong: EraSetListSong = { _id: '', title: '', audioSource: '' };
   pianoSong: EraSetListSong = { _id: '', title: '', audioSource: '' };
+  songType: 'guitar' | 'piano' | null = null;
 
   constructor(private albumService: AlbumService) {}
 
   ngOnInit() {
-    console.log('EraWidgetComponent initialized with era:', this.era);
-    if (this.era.era === 'Surprise Songs') {
-      this.initializeSurpriseSongs();
-    } else {
-      this.initializeSongs();
+    if (this.era.era !== 'Surprise Songs') {
       this.loadSongs();
-    }
-  }
-
-  initializeSurpriseSongs() {
-    if (this.era.songs.length >= 2) {
-      this.guitarSong = this.era.songs[0];
-      this.pianoSong = this.era.songs[1];
-    }
-  }
-
-  initializeSongs() {
-    if (this.era.songs.length < 4) {
-      this.era.songs = [...this.era.songs, ...Array(4 - this.era.songs.length).fill({ _id: '', title: '', audioSource: '' })];
+    } else {
+      this.initializeSurpriseSongs();
     }
   }
 
   loadSongs() {
-    console.log('other widgets load called');
-    const validSongs = this.era.songs.filter(song => song._id && song._id !== '');
-    if (validSongs.length === 0) {
-      console.log('No valid songs to load');
-      return;
-    }
-    const songRequests = validSongs.map(song => this.albumService.getSongById(song._id));
-    forkJoin(songRequests).subscribe(
+    this.albumService.getSongsByAlbum(this.era.era).subscribe(
       (songs: Song[]) => {
-        this.era.songs = songs.map(song => ({
-          _id: song._id,
-          title: song.title,
-          audioSource: song.audioSource
-        }));
-        this.initializeSongs(); // Ensure there are always 4 song slots
+        this.allSongs = songs;
       },
-      error => {
-        console.error('Error loading songs:', error);
-      }
+      error => console.error('Error loading songs:', error)
     );
   }
 
-  addSong(song: Song, index: number) {
-    this.era.songs[index] = {
-      _id: song._id,
-      title: song.title,
-      audioSource: song.audioSource
-    };
+  initializeSurpriseSongs() {
+    if (this.era.songs.length >= 1) {
+      this.guitarSong = this.era.songs[0] || { _id: '', title: '', audioSource: '' };
+      this.pianoSong = this.era.songs[1] || { _id: '', title: '', audioSource: '' };
+    }
+  }
+
+  openAddSongDialog(songType: 'guitar' | 'piano' | null = null) {
+    this.songType = songType;
+    this.showAddSongDialog = true;
+  }
+
+  closeAddSongDialog() {
+    this.showAddSongDialog = false;
+    this.selectedSongTitle = '';
+  }
+
+  saveSurpriseSong() {
+    if (this.songType === 'guitar') {
+      this.guitarSong.title = this.selectedSongTitle;
+    } else if (this.songType === 'piano') {
+      this.pianoSong.title = this.selectedSongTitle;
+    }
+    this.era.songs = [this.guitarSong, this.pianoSong].filter(song => song.title);
     this.eraUpdated.emit(this.era);
+    this.closeAddSongDialog();
+  }
+
+  removeSurpriseSong(songType: 'guitar' | 'piano') {
+    if (songType === 'guitar') {
+      this.guitarSong = { _id: '', title: '', audioSource: '' };
+    } else if (songType === 'piano') {
+      this.pianoSong = { _id: '', title: '', audioSource: '' };
+    }
+    this.era.songs = [this.guitarSong, this.pianoSong].filter(song => song.title);
+    this.eraUpdated.emit(this.era);
+  }
+
+  saveSong() {
+    if (this.isMashup) {
+      if (this.totalMashups >= 3 || this.totalSongs >= 45) {
+        return;
+      }
+      const firstSong = this.allSongs.find(song => song._id === this.firstSongId);
+      const secondSong = this.allSongs.find(song => song._id === this.secondSongId);
+      if (firstSong && secondSong) {
+        this.era.songs.push({
+          _id: `${firstSong._id}/${secondSong._id}`,
+          title: `${firstSong.title} / ${secondSong.title}`,
+          audioSource: '',
+          isMashup: true
+        });
+      }
+    } else {
+      if (this.totalSongs >= 45) {
+        return;
+      }
+      const selectedSong = this.allSongs.find(song => song._id === this.selectedSongTitle);
+      if (selectedSong && !this.isSongAlreadySelected(selectedSong._id)) {
+        this.era.songs.push({
+          _id: selectedSong._id,
+          title: selectedSong.title,
+          audioSource: selectedSong.audioSource,
+          isMashup: false
+        });
+      }
+    }
+    this.eraUpdated.emit(this.era);
+    this.closeAddSongDialog();
   }
 
   removeSong(index: number) {
-    this.era.songs[index] = { _id: '', title: '', audioSource: '' };
+    this.era.songs.splice(index, 1);
     this.eraUpdated.emit(this.era);
   }
 
-  updateSurpriseSongs() {
-    this.era.songs = [this.guitarSong, this.pianoSong];
-    this.eraUpdated.emit(this.era);
-  }
   getAlbumCover(era: string): string {
     const albumCovers: { [key: string]: string } = {
       'Debut': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg',
@@ -128,10 +134,24 @@ export class EraWidgetComponent implements OnInit {
       'Lover': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/lover.jpg',
       'Folklore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/folklore.jpg',
       'Evermore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/evermore.jpeg',
-      'Midnights': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/midnights.jpeg',
+      'Midnights': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/MidnightsNoText.png',
       'The Tortured Poets Department': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd.jpg',
-      'Surprise Songs': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/singles/Singles.svg'
+      'Surprise Songs': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/surpriseSongs.png'
     };
     return albumCovers[era] || '';
+  }
+
+  canSaveSong(): boolean {
+    if (this.era.era === 'Surprise Songs') {
+      return this.era.songs.length < 2;
+    }
+    if (this.isMashup) {
+      return this.totalMashups < 3 && this.totalSongs < 45;
+    }
+    return this.totalSongs < 45 && !this.isSongAlreadySelected(this.selectedSongTitle);
+  }
+
+  isSongAlreadySelected(songId: string): boolean {
+    return this.era.songs.some(song => song._id === songId);
   }
 }

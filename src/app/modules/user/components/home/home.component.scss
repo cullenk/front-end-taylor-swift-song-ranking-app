@@ -26,6 +26,20 @@ body {
   align-items: center;
   background-color: #344055;
   padding: 40px 0;
+  position: relative;
+  background: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/hero-sky-bg.png') no-repeat center center;
+  background-size: cover;
+  margin-bottom: 50px;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0), rgba(52, 64, 85, 1));
+  z-index: -1;
 }
 
 .hero-content {
@@ -41,7 +55,6 @@ body {
 
 .hero-graphic {
   flex: 1;
-  // overflow: hidden;
   position: relative;
   max-width: 800px;
   margin: 0 auto;
@@ -114,7 +127,6 @@ body {
     display: flex;
     align-items: center;
     padding: 5px;
-    // height: 100%;
   }
 
   .album-cover-div {
@@ -168,18 +180,19 @@ body {
   max-width: 500px;
   
   h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     margin-bottom: 1rem;
+    color: #266DD3;
   }
   
   p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    color: black;
   }
 }
 
 .home-container {
-  // width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
@@ -188,59 +201,43 @@ body {
 
 .main-content {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px 0;
-}
-
-.content-text {
-  flex: 1;
-  padding-right: 30px;
-  
-  h2 {
-    color: #70D6F6;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: #fff; 
-  }
-}
-
-.content-images {
-  flex: 1;
-  display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  
-  img {
-    max-width: 45%;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .left-widget, .right-widget {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 45%;
+  }
+
+  .left-widget {
+    order: 1;
+  }
+
+  .right-widget {
+    order: 2;
+
+    h2 {
+      color: #266DD3;
+    }
   }
 }
 
-@media (max-width: 1024px) {
-  .hero-content {
-    flex-direction: column-reverse;
-  }
+.photos-section {
+  .photos-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
 
-  .hero-text {
-    text-align: center;
-    margin-bottom: 0px;
-  }
-
-  .hero-graphic {
-    width: 100%;
-    
-    .song-item {
-      width: 40%;
-      max-width: none;
+    img {
+      flex: 1 1 calc(20% - 10px);
+      max-width: 20%;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
   }
 }
@@ -261,7 +258,6 @@ body {
 
   .hero-graphic {
     .song-items {
-      // position: static;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -280,6 +276,19 @@ body {
     }
   }
 
+  .main-content {
+    .left-widget, .right-widget {
+      flex: 1 1 100%;
+    }
+  }
+
+  .photos-section {
+    .photos-row {
+      img {
+        flex: 1 1 100%;
+      }
+    }
+  }
 }
 
 @media (max-width: 480px) {

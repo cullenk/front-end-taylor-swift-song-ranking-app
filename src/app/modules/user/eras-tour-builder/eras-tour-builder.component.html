@@ -1,14 +1,66 @@
+<!-- eras-tour-builder.component.html -->
 <div class="eras-tour-builder">
-    <h1>Create Your Eras Tour Setlist</h1>
-    
-    <div cdkDropList class="era-list" (cdkDropListDropped)="onDrop($event)">
-      <div *ngFor="let era of setList; let i = index" cdkDrag class="era-item">
-        <app-era-widget 
-          [era]="era" 
-          (eraUpdated)="updateEra($event)">
-        </app-era-widget>
+  <div class="background-overlay"></div>
+  <div class="header-container">
+    <img class="background-graphic" src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/bracelets.png" alt="Background Graphic">
+    <div class="header-div">
+    <h1 class="header-title">Eras Tour Setlist Builder</h1>
+    <h1 class="header-sub-title">Build Your Dream Show</h1>
+    </div>
+  </div>
+  <div class="content">
+    <div class="left-column">
+      <section class="rules-section">
+        <h2>Eras Tour Builder Rules</h2>
+        <ul>
+          <li>Drag and drop the Eras widgets to reorder them.</li>
+          <li>Select 45 songs to fill the setlist.</li>
+          <li>Select 2 songs for surprise songs.</li>
+          <li>Select 3 mashups (each counts as 1 song slot).</li>
+          <li>Each Era must be represented and have at least 1 song.</li>
+          <li>An Era can have a maximum of 6 songs.</li>
+          <li>Click the 'x' to remove a song.</li>
+          <li>Save your changes to return and finish later.</li>
+          <li>When you have met all requirements, verify and share with your friends!</li>
+          <li>Shout out to <span>&#64;kristenacarey</span> on TikTok for this ruleset!</li>
+        </ul>
+      </section>
+      <div class="counter-box">
+        <div class="counter">
+          <p>{{ totalSongs }}/45 songs chosen</p>
+          <p>{{ totalMashups }}/3 mashups used</p>
+          <p>{{ erasAccountedFor }}/11 eras accounted for</p>
+          <p>{{ totalSurpriseSongs }}/2 surprise songs chosen</p>
+        </div>
+        <button (click)="saveProgress()">Save Progress</button>
+        <button class="verify-button" [disabled]="!allChoicesMade" (click)="verifySetList()">Verify My Set List</button>
+        <button class="share-button" [disabled]="!isSetListValid" (click)="generateShareLink()">Share Set List</button>
+        <button class="reset-button" (click)="openResetDialog()">Reset All</button>
       </div>
     </div>
-    <button (click)="saveSetList()">Save Entire Setlist</button>
+    <div class="right-column">
+      <div cdkDropList class="era-list" (cdkDropListDropped)="onDrop($event)">
+        <div *ngFor="let era of setList; let i = index" cdkDrag class="era-item">
+          <app-era-widget 
+            [era]="era" 
+            [totalSongs]="totalSongs"
+            [totalMashups]="totalMashups"
+            (eraUpdated)="updateEra($event)">
+          </app-era-widget>
+        </div>
+      </div>
+    </div>
   </div>
-  
+
+  <!-- Reset Confirmation Dialog -->
+  <div *ngIf="showResetDialog" class="reset-dialog">
+    <div class="dialog-content">
+      <h3>Confirm Reset</h3>
+      <p>Are you sure you want to reset all selections?</p>
+      <div class="dialog-actions">
+        <button (click)="closeResetDialog()">Cancel</button>
+        <button class="confirm-button" (click)="confirmReset()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

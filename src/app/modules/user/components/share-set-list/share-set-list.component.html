@@ -1,0 +1,22 @@
+<div class="share-setlist">
+    <div class="background-overlay"></div>
+    <div class="content">
+      <div class="header-container">
+        <img class="background-graphic" src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/bracelets.png" alt="Background Graphic">
+        <div class="header-div">
+          <h2 class="username">{{ username }}'s</h2>
+          <h1 class="setlist-title">Dream Eras Tour Setlist</h1>
+        </div>
+      </div>
+      <div class="era-list">
+        <div *ngFor="let era of setList" class="era-item" [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}">
+          <div class="overlay"></div>
+          <h3 class="era-title">{{ era.era }}</h3>
+          <ol>
+            <li *ngFor="let song of era.songs">{{ song.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  
