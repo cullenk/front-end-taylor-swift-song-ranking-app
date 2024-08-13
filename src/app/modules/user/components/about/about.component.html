@@ -1,0 +1,34 @@
+<div class="about-container">
+    <div class="about-me">
+      <h2>It's me, hi.</h2>
+      <p>I’m Cullen, I’m enchanted to have you here! I’m a software engineer and web developer by day, but most importantly a Swiftie every other waking moment of my time.</p>
+      <p>I always wanted a clear way to rank my top songs or sort the tracks in each album but I never found the right tool to do so. So I built one myself!</p>
+      <p>Here you can rank your top 13 songs, sort the songs by album, and more! And the best part is it will all save and be here for you to come back to and obsess over (especially if Taylor releases new music).</p>
+      <p>This was a passion project and labor of love and I’m happy to share it with you all and hope it brings you some joy! It is completely free but if you feel inclined to buy me a coffee as a thank you it’d be much appreciated.</p>
+      <div class="coffee-section">
+        <img src="https://example.com/coffee-icon.png" alt="Buy Me a Coffee" class="coffee-icon">
+        <a href="https://www.buymeacoffee.com/yourusername" target="_blank" class="coffee-link">Buy me a coffee!</a>
+      </div>
+    </div>
+    <div class="photos">
+      <div class="photos-row">
+        <img *ngFor="let image of images; let i = index" [src]="image.src" [alt]="image.caption" (click)="openLightbox(i)" class="photo-item">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Buy Me a Coffee Section -->
+  <div class="coffee-section">
+    <img src="https://example.com/coffee-icon.png" alt="Buy Me a Coffee" class="coffee-icon">
+    <a href="https://www.buymeacoffee.com/yourusername" target="_blank" class="coffee-link">Buy me a coffee!</a>
+  </div>
+  
+  <!-- Lightbox Modal -->
+  <div *ngIf="lightboxVisible" id="lightbox" class="lightbox" (click)="closeLightbox($event)">
+    <span class="close" (click)="closeLightbox($event)">&times;</span>
+    <img class="lightbox-content" [src]="lightboxImage" (click)="$event.stopPropagation()">
+    <div id="caption" class="caption">{{ lightboxCaption }}</div>
+    <a class="prev" (click)="navigate(-1)">&lt;</a>
+    <a class="next" (click)="navigate(1)">&gt;</a>
+  </div>
+  

@@ -20,6 +20,7 @@ import { MidnightsRankingComponent } from './components/ranking-lists/midnights-
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { ErasTourBuilderComponent } from './eras-tour-builder/eras-tour-builder.component';
 import { SinglesComponent } from './components/ranking-lists/singles/singles.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     component: UserDashboardComponent, 
     children: [
     { path: 'userHome', component: HomeComponent},
+    { path: 'about', component: AboutComponent},
     { path: 'userProfile', component: UserProfileComponent},
     { path: 'top13list', component: Top13SongSlotListComponent},
     { path: 'erasTourBuilder', component: ErasTourBuilderComponent},
