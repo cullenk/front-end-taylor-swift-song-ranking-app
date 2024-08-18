@@ -1,27 +1,42 @@
 <div class="about-container">
-    <div class="about-me">
+  <div class="widgets">
+    <div class="about-widget">
       <h2>It's me, hi.</h2>
-      <p>I’m Cullen, I’m enchanted to have you here! I’m a software engineer and web developer by day, but most importantly a Swiftie every other waking moment of my time.</p>
-      <p>I always wanted a clear way to rank my top songs or sort the tracks in each album but I never found the right tool to do so. So I built one myself!</p>
-      <p>Here you can rank your top 13 songs, sort the songs by album, and more! And the best part is it will all save and be here for you to come back to and obsess over (especially if Taylor releases new music).</p>
-      <p>This was a passion project and labor of love and I’m happy to share it with you all and hope it brings you some joy! It is completely free but if you feel inclined to buy me a coffee as a thank you it’d be much appreciated.</p>
+      <p>I’m Cullen, and I’m enchanted to have you here! By day, I’m a software engineer and web developer, but when I’m not coding, I’m a dedicated Swiftie.</p>
+      <p>For a long time, I searched for a way to easily rank my favorite songs and organize tracks by album, but nothing quite fit the bill. So, I decided to create my own solution.</p>
+      <p>Here, you can rank your top 13 songs, categorize tracks by album, and much more! The best part? Everything you do will be saved, so you can return and indulge in your rankings (especially when Taylor drops new music).</p> 
+      <p>One of my favorite things about being a Swiftie is the supportive community that surrounds us. To celebrate this, I’ve added the option to share your top 13 songs list and dream eras tour with friends, helping us connect and share our love for Taylor even more.</p>
+    </div>
+    <div class="info-widget">
       <div class="coffee-section">
-        <img src="https://example.com/coffee-icon.png" alt="Buy Me a Coffee" class="coffee-icon">
-        <a href="https://www.buymeacoffee.com/yourusername" target="_blank" class="coffee-link">Buy me a coffee!</a>
+        <p>This project is a true labor of love, and I’m excited to share it with you. It’s completely free, but if you’d like to buy me a coffee as a token of appreciation, I’d be incredibly grateful!</p>
+        <div class="pay-div">
+          <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/coffee.svg" alt="Buy Me a Coffee" class="coffee-icon">
+          <div class="pay-category">
+            <p class="title">Venmo</p>
+            <p class="creds">cullenk13</p>
+          </div>
+          <div class="pay-category">
+            <p class="title">CashApp</p>
+            <p class="creds">cullenk13 (1313)</p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="photos">
-      <div class="photos-row">
-        <img *ngFor="let image of images; let i = index" [src]="image.src" [alt]="image.caption" (click)="openLightbox(i)" class="photo-item">
+      <div class="my-profile-section">
+        <p>In case you're curious, check out some of my top songs and Switie questionnaire responses. Can't wait to see what all of you come up with too!</p>
+        <div class="btn-div">
+          <a href="#">My Profile</a>
+          <a href="#">My Dream Eras Tour</a>
+        </div>
       </div>
     </div>
   </div>
-  
-  <!-- Buy Me a Coffee Section -->
-  <div class="coffee-section">
-    <img src="https://example.com/coffee-icon.png" alt="Buy Me a Coffee" class="coffee-icon">
-    <a href="https://www.buymeacoffee.com/yourusername" target="_blank" class="coffee-link">Buy me a coffee!</a>
+  <div class="photos">
+    <div class="photos-row">
+      <img *ngFor="let image of images; let i = index" [src]="image.src" [alt]="image.caption" (click)="openLightbox(i)" class="photo-item">
+    </div>
   </div>
+</div>
   
   <!-- Lightbox Modal -->
   <div *ngIf="lightboxVisible" id="lightbox" class="lightbox" (click)="closeLightbox($event)">

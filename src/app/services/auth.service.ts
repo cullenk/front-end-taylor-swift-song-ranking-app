@@ -68,7 +68,6 @@ export class AuthService {
             this.router.navigate(['/user/userHome']);
             this.setAuthTimer(response.expiresIn);
             const expirationDate = new Date(new Date().getTime() + response.expiresIn * 1000);
-            console.log(response.user.username);
             this.storeLoginDetails(this.token, expirationDate, response.user.username);
           }
         }),
@@ -151,7 +150,8 @@ export class AuthService {
     return null;
   }
 
-  authenticateFromLocalStorage() {
+  authenticateFromLocalStorage(): Promise<void>{
+    return new Promise((resolve) => {
     const localStorageData = this.getLocalStorageData();
     if (localStorageData) {
       const now = new Date();
@@ -164,7 +164,8 @@ export class AuthService {
         this.setAuthTimer(expiresIn / 1000);
       }
     }
-  }
+  })
+}
 
   getUsername(): string | null {
     return localStorage.getItem('username');

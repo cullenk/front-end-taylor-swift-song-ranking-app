@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Album } from '../interfaces/Album';
 import { Song } from '../interfaces/Song';
 import { SearchResult } from '../interfaces/SearchResult';
+import { AlbumRanking } from '../interfaces/AlbumRanking';
 
 @Injectable({
   providedIn: 'root'
@@ -136,6 +137,7 @@ export class AlbumService {
       })
     );
   }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';

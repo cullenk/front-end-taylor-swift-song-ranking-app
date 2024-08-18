@@ -36,7 +36,7 @@ export class RankingsComponent implements OnInit, OnDestroy {
     { id: 'midnights', title: 'Midnights', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/midnights.jpeg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/midnights-sound-clip.mp3', routerLink: './midnights' },
     { id: 'ttpd', title: 'The Tortured Poets Department', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd.jpg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/ttpd-sound-clip.mp3', routerLink: './tortured-poets-department' },
     { id: 'singles', title: 'Singles', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/singles/Singles.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/singles-sound-clip.mp3', routerLink: './singles' },
-
+    { id: 'allAlbums', title: 'All Albums', coverImage: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/All-Albums.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/allAlbumsClip.mp3', routerLink: './allAlbums' },
   ];
 
   private audioElements: { [key: string]: HTMLAudioElement } = {};

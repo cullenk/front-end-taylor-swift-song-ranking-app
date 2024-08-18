@@ -70,25 +70,49 @@
     </div>
     <div class="hero-text">
       <h1>Welcome to the Swiftie Ranking Hub!</h1>
-      <p>Your personal hub to discover and rank your favorite Taylor Swift songs across all her albums.</p>
+      <p>Your personal hub to discover and rank your favorite Taylor Swift songs and more.</p>
     </div>
   </div>
 </div>
 
+<div class="cards-container">
+  <div class="card" (click)="navigateTo('user/about')">
+    <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About-Icon.svg" alt="About Icon" class="card-icon">
+    <h3>About</h3>
+    <p>Learn more about the Swiftie Ranking Hub.</p>
+  </div>
+  <div class="card" (click)="navigateTo('user/rankings')">
+    <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/Album-Ranking-Icon.svg" alt="Album Rankings Icon" class="card-icon">
+    <h3>Album Rankings</h3>
+    <p>Rank the songs in each of your favorite albums and see how they stack up.</p>
+  </div>
+  <div class="card" (click)="navigateTo('user/top13list')">
+    <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/List.svg" alt="Top 13 List Icon" class="card-icon">
+    <h3>Top 13 List</h3>
+    <p>Curate your top 13 favorite songs by Taylor Swift.</p>
+  </div>
+  <div class="card" (click)="navigateTo('user/erasTourBuilder')">
+    <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/Tour-Builder-Icon.svg" alt="Eras Tour Builder Icon" class="card-icon">
+    <h3>Eras Tour Builder</h3>
+    <p>Create your dream setlist for the Eras Tour and share with your friends.</p>
+  </div>
+  <div class="card" (click)="navigateTo('user/userProfile')">
+    <img src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/Profile-Icon.svg" alt="Profile Icon" class="card-icon">
+    <h3>Profile</h3>
+    <p>View and edit your personal profile theme, Swiftie questionnaire and share with friends!</p>
+  </div>
+</div>
 
 <div class="home-container">
   <section class="main-content">
-    <div class="widget top-users">
-      <h2>Top Users</h2>
-      <p>Coming soon...</p>
-    </div>
     <div class="widget popular-songs">
       <h2>Popular Songs</h2>
-      <p>Coming soon...</p>
+    <p>Data is pulled from the top 13 lists and Eras Tour builder song selections of all users.</p>
+      <app-top-songs></app-top-songs>
     </div>
-    <div class="widget least-used-songs">
-      <h2>Least Used Songs</h2>
-      <p>Coming soon...</p>
+    <div class="widget top-users">
+      <h2>Top Users</h2>
+      <app-top-users></app-top-users>
     </div>
   </section>
 </div>

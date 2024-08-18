@@ -1,5 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { TopUsersComponent } from '../top-users/top-users.component';
+import { TopSongsComponent } from '../top-songs/top-songs.component';
 
 interface Song {
   title: string;
@@ -11,12 +14,12 @@ interface Song {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TopUsersComponent, TopSongsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
+  constructor(private router: Router) {}
   allSongs: Song[] = [
     {
       title: "Red",
@@ -260,5 +263,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       randomSongs.push(availableSongs.splice(randomIndex, 1)[0]);
     }
     return randomSongs;
+  }
+
+  navigateTo(page: string): void {
+    this.router.navigate([`${page}`]);
   }
 }

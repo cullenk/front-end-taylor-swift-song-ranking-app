@@ -16,35 +16,35 @@ export class AboutComponent {
 
   images = [
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/eras-arlington.jpeg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/arlington.webp',
       caption: 'Arlington, TX - March 31st, 2023'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/eras-kansas.jpg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/kansas-city.webp',
       caption: 'Kansas City, KS - July 8th, 2023'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/eras-museum.jpeg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/eras-museum.webp',
       caption: 'Eras Tour Collection Museum - Arlington, TX'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/shirt-signing.png',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/shirt-signing.webp',
       caption: 'Gelsenkirchen, Germany - July 19th, 2024'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/swiftkirchen.jpeg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/swiftkirchen.webp',
       caption: 'Official city renaming to Swiftkirchen!'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/poster.jpeg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/poster.webp',
       caption: 'Swiftkirchen Block Party - July 19th, 2024'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/gelsenkirchen.jpeg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/gelsenkirchen.webp',
       caption: 'Veltins Arena in Gelsenkirchen'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/funko.jpg',
+      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/funko.webp',
       caption: 'I created a custom Taylor Funko Pop and display case :)'
     }
   ];

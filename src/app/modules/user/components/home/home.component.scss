@@ -214,7 +214,51 @@ html, body {
 
 .hero-text p {
   font-size: 1.5rem;
+  line-height: 1.5;
   color: #e7e7e7;
+}
+/* Teaser Cards */
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.card {
+  flex: 1 1 calc(20% - 1.5rem); /* Adjusts to fit 5 cards in a row */
+  max-width: 12rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+  width: 50px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #344055;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #666;
 }
 
 /* Home Container */
@@ -230,6 +274,7 @@ html, body {
   flex-wrap: wrap;
   gap: 1.25rem;
   margin-bottom: 1.25rem;
+  justify-content: space-between;
 }
 
 .widget {
@@ -237,7 +282,35 @@ html, body {
   border-radius: 0.625rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   padding: 1.25rem;
-  flex: 1 1 calc(33.333% - 1.25rem);
+  flex: 1 1 45%;
+  box-sizing: border-box;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Align content to the bottom */
+  height: 630px; /* Set a fixed height for consistency */
+}
+
+.top-users-widget, .top-songs-widget {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+h2 {
+  margin: 10px 0px;
+}
+
+p {
+  margin-top: 0px
 }
 
 /* Media Queries */
@@ -271,6 +344,12 @@ html, body {
 
   .hero-graphic .song-item {
     margin: 0.625rem auto;
+  }
+
+  .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 0px 20px;
   }
 }
 

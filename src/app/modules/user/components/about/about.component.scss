@@ -1,175 +1,233 @@
 .about-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    max-width: 90rem;
-    margin: 0 auto;
-    padding: 2rem;
-    background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/hero-sky-bg.png');
-    background-position: center;
-    background-size: cover;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .about-me {
-    flex: 1 1 60%;
-    color: #344055;
-    padding: 2rem;
-    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-    backdrop-filter: blur(40px); /* Apply blur effect */
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .about-me h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--secondary-color);
-  }
-  
-  .about-me p {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .photos {
-    flex: 1 1 35%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  .photos-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-  
-  .photo-item {
-    width: auto;
-    height: 300px;
-    border-radius: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-  }
-  
-  .photo-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .coffee-section {
-    display: flex;
-    align-items: center;
-    margin-top: 2rem; /* Space above the section */
-  }
-  
-  .coffee-icon {
-    width: 40px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Space between icon and text */
-  }
-  
-  .coffee-link {
-    font-size: 1.2rem; /* Font size for the link */
-    color: #344055; /* Link color */
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s; /* Transition for hover effect */
-  }
-  
-  .coffee-link:hover {
-    color: #ffcc00; /* Change color on hover */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
 
-  /* Lightbox Styles */
-  .lightbox {
-    display: flex;
+.widgets {
+  display: flex;
+  gap: 2rem;
+}
+
+.about-widget, .info-widget {
+  flex: 1;
+  padding: 2rem;
+  color: white;
+}
+
+.info-widget {
+  position: relative; /* Establish a positioning context for the pseudo-element */
+  color: black;
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+  backdrop-filter: blur(40px); /* Apply blur effect */
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/sky-bg.png');
+  background-position: center;
+  background-size: cover;
+  overflow: hidden; /* Ensure the overlay doesn't extend beyond the border-radius */
+}
+
+.info-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(222, 222, 222, 0.2); /* Overlay color and opacity */
+  pointer-events: none; /* Allow clicks to pass through to the content */
+  border-radius: 1rem; /* Match the border-radius of the parent */
+  z-index: 1; /* Ensure the overlay is above the background but below the content */
+}
+
+.info-widget > * {
+  position: relative;
+  z-index: 2; /* Ensure content is above the overlay */
+}
+
+.about-widget h2 {
+  font-size: 2.5rem;
+  margin-top: 0px;
+  margin-bottom: 1rem;
+  color: rgb(92, 179, 255);
+}
+
+.about-widget p, .info-widget p {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.coffee-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  gap: 1rem; /* Space between items */
+}
+
+.pay-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Space between payment options */
+}
+.coffee-icon {
+  margin-right: 15px;
+  width: 50px;
+}
+
+.pay-category {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    font-weight: 600;
+    margin: 0px;
+  }
+
+  .cred {
+    color: #344055;
+    margin: 0px;
+  }
+}
+
+.my-profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem; /* Space between items */
+}
+
+.my-profile-section a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0px 5px;
+  background-color:var(--secondary-color);
+  color: #fff; /* Button text color */
+  text-decoration: none; /* Remove underline */
+  border-radius: 0.5rem; /* Rounded corners */
+  transition: background-color 0.3s; /* Transition effects */
+  font-size: 1rem; /* Font size for buttons */
+}
+
+.my-profile-section a:hover {
+  background-color: rgb(42, 74, 156); /* Change color on hover */
+}
+
+.photos {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.photos-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.photo-item {
+  width: auto;
+  height: 300px;
+  border-radius: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.photo-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Lightbox Styles */
+.lightbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox-content {
+  margin: 0;
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.caption {
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: auto;
+  margin-top: 0.5rem;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.3s;
+  user-select: none;
+}
+
+.next {
+  right: 35px;
+}
+
+.prev {
+  left: 35px;
+}
+
+.prev:hover, .next:hover {
+  color: #bbb;
+}
+
+@media (max-width: 768px) {
+  .widgets {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
   }
-  
-  .lightbox-content {
-    margin: 0;
-    display: block;
-    max-width: 80%;
-    max-height: 80%;
+
+  .about-widget, .info-widget {
+    flex: 1 1 100%;
   }
-  
-  .caption {
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: auto;
-    margin-top: 0.5rem;
-  }
-  
-  .close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.3s;
-    user-select: none;
-  }
-  
-  .next {
-    right: 35px;
-  }
-  
-  .prev {
-    left: 35px;
-  }
-  
-  .prev:hover, .next:hover {
-    color: #bbb;
-  }
-  
-  @media (max-width: 768px) {
-    .about-container {
-      flex-direction: column;
-    }
-  
-    .about-me, .photos {
-      flex: 1 1 100%;
-    }
-  
-    .photos-row img {
-      max-width: 100%;
-    }
-  }
-  
+}

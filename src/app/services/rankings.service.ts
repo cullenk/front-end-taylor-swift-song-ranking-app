@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
+import { AlbumRanking } from "../interfaces/AlbumRanking";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,13 @@ export class RankingsService {
     return this.http.get<Rankings>(`${this.apiUrl}/rankings`, { headers: this.getHeaders() })
       .pipe(
         retry(3), // Retry up to 3 times on failure
+        catchError(this.handleError)
+      );
+  }
+
+  updateAlbumRanking(rankings: AlbumRanking[]): Observable<AlbumRanking[]> {
+    return this.http.put<AlbumRanking[]>(`${this.apiUrl}/allAlbumsRanking/allAlbumsRanking`, { rankings }, { headers: this.getHeaders() })
+      .pipe(
         catchError(this.handleError)
       );
   }
