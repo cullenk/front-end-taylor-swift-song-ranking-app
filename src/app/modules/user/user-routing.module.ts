@@ -22,6 +22,7 @@ import { ErasTourBuilderComponent } from './eras-tour-builder/eras-tour-builder.
 import { SinglesComponent } from './components/ranking-lists/singles/singles.component';
 import { AboutComponent } from './components/about/about.component';
 import { AllAlbumsRankingComponent } from './components/ranking-lists/all-albums-ranking/all-albums-ranking.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
     { path: 'rankings/tortured-poets-department', component: TorturedPoetsDepartmentRankingComponent },
     { path: 'rankings/singles', component: SinglesComponent },
     { path: 'rankings/allAlbums', component: AllAlbumsRankingComponent},
+    { path: 'contact', component: ContactComponent},
     { path: '', redirectTo: '/user/userProfile', pathMatch: 'full'},
     {path: '**', component: DashboardNotFoundComponent},
 ]}];

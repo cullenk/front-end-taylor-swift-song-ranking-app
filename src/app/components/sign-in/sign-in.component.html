@@ -1,5 +1,3 @@
-  <!-- Album graphics on the left side -->
-
 <div class="login-container">
   <div class="album-covers-container">
     <div #randomSquares class="random-squares"></div>
@@ -17,38 +15,40 @@
   <div class="login-form-container">
     <h1>Welcome to the Swiftie Ranking Hub!</h1>
     
-    <ng-container *ngIf="isLoginMode; else signupTemplate">
-      <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
-        <input type="text" formControlName="username" placeholder="Username or Email" name="username" required>
-        <input type="password" formControlName="password" placeholder="Password" name="password" required>
-        <button type="submit">Sign In</button>
-      </form>
-      <div class="sub-links">
-        <a (click)="toggleMode()">Create Account</a>
-        <!-- <a (click)="isForgotPasswordMode = true">Forgot Password</a> -->
-      </div>
+    <ng-container *ngIf="!isForgotPasswordMode; else forgotPasswordTemplate">
+      <ng-container *ngIf="isLoginMode; else signupTemplate">
+        <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+          <input type="text" formControlName="username" placeholder="Username or Email" name="username" required>
+          <input type="password" formControlName="password" placeholder="Password" name="password" required>
+          <button type="submit">Sign In</button>
+        </form>
+        <div class="sub-links">
+          <a (click)="toggleMode()">Create Account</a>
+          <a (click)="toggleForgotPasswordMode()">Forgot Password</a>
+        </div>
+      </ng-container>
+
+      <ng-template #signupTemplate>
+        <form [formGroup]="signupForm" class="login-form" (ngSubmit)="onSubmit()">
+          <input type="text" formControlName="username" placeholder="Username" name="username" required>
+          <input type="email" formControlName="email" placeholder="Email" name="email" required>
+          <input type="password" formControlName="password" placeholder="Password" name="password" required>
+          <button type="submit">Create Account</button>
+        </form>
+        <div class="sub-links">
+          <a (click)="toggleMode()">Back to Login</a>
+        </div>
+      </ng-template>
     </ng-container>
 
-    <ng-template #signupTemplate>
-      <form [formGroup]="signupForm" class="login-form" (ngSubmit)="onSubmit()">
-        <input type="text" formControlName="username" placeholder="Username" name="username" required>
-        <input type="email" formControlName="email" placeholder="Email" name="email" required>
-        <input type="password" formControlName="password" placeholder="Password" name="password" required>
-        <button type="submit">Create Account</button>
+    <ng-template #forgotPasswordTemplate>
+      <form [formGroup]="forgotPasswordForm" class="forgot-password-form" (ngSubmit)="onForgotPassword()">
+        <input type="email" formControlName="email" placeholder="Enter your email" required>
+        <button type="submit" [disabled]="!forgotPasswordForm.valid">Reset Password</button>
       </form>
       <div class="sub-links">
-        <a (click)="toggleMode()">Back to Login</a>
+        <a (click)="toggleForgotPasswordMode()">Back to Login</a>
       </div>
     </ng-template>
-
-    <!-- <ng-container *ngIf="isForgotPasswordMode">
-      <form (ngSubmit)="onForgotPassword()" class="forgot-password-form">
-        <input type="email" [(ngModel)]="forgotPasswordEmail" name="email" placeholder="Enter your email" required>
-        <button type="submit">Reset Password</button>
-      </form>
-      <div class="sub-links">
-        <a (click)="isForgotPasswordMode = false">Back to Login</a>
-      </div>
-    </ng-container> -->
   </div>
 </div>

@@ -37,15 +37,17 @@ export class AuthService {
   }
 
   createNewUser(username: string, email: string, password: string): Observable<any> {
-    const authData: AuthModelCreate = { username, email, password };
+    const authData = { username, email, password };
     return this.http.post('http://localhost:3000/api/auth/signup', authData).pipe(
-      tap(() => {
+      tap((response: any) => {
         console.log('Account created successfully!');
-        const successMessage = 'Account created. Please return to login';
+        const successMessage = response.emailSent 
+          ? 'Account created. Please check your email for a welcome message.' 
+          : 'Account created. Please return to login.';
         this.toastService.showSuccess(successMessage);
       }),
       catchError(error => {
-        let errorMessage = 'Username already exists';
+        let errorMessage = 'An error occurred during signup';
         if (error.error && error.error.message) {
           errorMessage = error.error.message;
         }
@@ -80,17 +82,11 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post('http://localhost:3000/api/passwords/forgot-password', { email }).pipe(
-      tap(() => {
-        console.log('Password reset email sent successfully');
-        this.toastService.showSuccess('Password reset email sent. Please check your inbox.');
-      }),
-      catchError(error => {
-        console.error('Error sending password reset email:', error);
-        this.toastService.showError('Failed to send password reset email. Please try again.');
-        return throwError(error);
-      })
-    );
+    return this.http.post('http://localhost:3000/api/auth/forgot-password', { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post('http://localhost:3000/api/auth/reset-password', { token, newPassword });
   }
 
   logout() {

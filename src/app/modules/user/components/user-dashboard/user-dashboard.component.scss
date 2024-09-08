@@ -1,4 +1,19 @@
 .router-outlet-container {
   min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1 0 auto;
+}
+
+app-footer {
+  flex-shrink: 0;
+}

@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { MailService } from '../../services/mail.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,9 +17,9 @@ import { ToastrService } from 'ngx-toastr';
 export class SignInComponent implements OnInit, AfterViewInit {
   loginForm: FormGroup;
   signupForm: FormGroup;
+  forgotPasswordForm: FormGroup;
   isLoginMode = true;
-  // isForgotPasswordMode = false;
-  // forgotPasswordEmail: string = '';
+  isForgotPasswordMode = false;
   albumCovers: string[] = [
     'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/1989.jpeg',
     'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/evermore.jpeg',
@@ -41,6 +42,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
 
   constructor(
     private AuthService: AuthService,
+    private MailService: MailService,
     private renderer: Renderer2,
     private toastr: ToastrService
   ) {
@@ -53,6 +55,10 @@ export class SignInComponent implements OnInit, AfterViewInit {
       'username': new FormControl('', [Validators.required]),
       'email': new FormControl('', [Validators.required]),
       'password': new FormControl('', [Validators.required])
+    });
+
+    this.forgotPasswordForm = new FormGroup({
+      'email': new FormControl('', [Validators.required, Validators.email])
     });
   }
 
@@ -120,6 +126,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     });
   }
 
+  //On create account submit from frontend
   onSubmit() {
     if (this.isLoginMode) {
       this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
@@ -136,7 +143,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
       this.AuthService.createNewUser(this.signupForm.value.username, this.signupForm.value.email, this.signupForm.value.password)
         .subscribe(
           (response) => {
-            this.toastr.success('Account created successfully!', 'Success');
+            this.toastr.success('Account created successfully! Check your email for a welcome message.', 'Success');
             this.isLoginMode = true; // Switch back to login mode
           },
           (error) => {
@@ -145,7 +152,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
         );
     }
   }
-
+  
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     // Reset forms when toggling
@@ -156,21 +163,23 @@ export class SignInComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // onForgotPassword() {
-  //   if (!this.forgotPasswordEmail) {
-  //     this.toastr.error('Please enter your email address', 'Error');
-  //     return;
-  //   }
+  onForgotPassword() {
+    if (this.forgotPasswordForm.valid) {
+      this.AuthService.forgotPassword(this.forgotPasswordForm.value.email).subscribe(
+        () => {
+          this.toastr.success('Password reset email sent. Please check your inbox.', 'Success');
+          this.isForgotPasswordMode = false;
+        },
+        (error) => {
+          this.toastr.error('Failed to send password reset email. Please try again.', 'Error');
+        }
+      );
+    }
+  }
 
-  //   this.AuthService.forgotPassword(this.forgotPasswordEmail).subscribe(
-  //     () => {
-  //       this.toastr.success('Password reset email sent. Please check your inbox.', 'Success');
-  //       this.forgotPasswordEmail = ''; // Clear the email input
-  //     },
-  //     (error) => {
-  //       this.toastr.error('Failed to send password reset email. Please try again.', 'Error');
-  //     }
-  //   );
-  // }
+  toggleForgotPasswordMode() {
+    this.isForgotPasswordMode = !this.isForgotPasswordMode;
+    this.forgotPasswordForm.reset();
+  }
 }
 
