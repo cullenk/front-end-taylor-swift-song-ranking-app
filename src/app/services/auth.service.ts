@@ -8,6 +8,7 @@ import { AuthModelCreate } from './auth-model-create';
 import { ToastService } from './toast-service.service';
 import { isPlatformBrowser } from '@angular/common';
 import { MailService } from './mail.service';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class AuthService {
   private authenticatedSub = new Subject<boolean>();
   private isAuthenticated = false;
   private tokenExpirationTimer: any;
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -40,7 +42,7 @@ export class AuthService {
 
   createNewUser(username: string, email: string, password: string): Observable<any> {
     const authData = { username, email, password };
-    return this.http.post('http://localhost:3000/api/auth/signup', authData).pipe(
+    return this.http.post(`${this.apiUrl}/auth/signup`, authData).pipe(
       tap((response: any) => {
         console.log('Account created successfully!');
         this.toastService.showSuccess('Account created successfully. Please check your email for a welcome message.');
@@ -58,7 +60,7 @@ export class AuthService {
   loginUser(username: string, password: string): Observable<any> {
     const authData: AuthModelLogin = { username, password };
 
-    return this.http.post<{ token: string; expiresIn: number, user: { username: string } }>('http://localhost:3000/api/auth/login', authData)
+    return this.http.post<{ token: string; expiresIn: number, user: { username: string } }>(`${this.apiUrl}/auth/login`, authData)
       .pipe(
         tap(response => {
           if (response.token) {
@@ -80,11 +82,11 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post('http://localhost:3000/api/auth/forgot-password', { email });
+    return this.http.post(`${this.apiUrl}/auth/forgot-password`, { email });
   }
 
   resetPassword(token: string, newPassword: string): Observable<any> {
-    return this.http.post('http://localhost:3000/api/auth/reset-password', { token, newPassword });
+    return this.http.post(`${this.apiUrl}/auth/reset-password`, { token, newPassword });
   }
 
   logout() {

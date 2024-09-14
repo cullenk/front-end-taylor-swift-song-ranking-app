@@ -6,12 +6,14 @@ import { catchError, retry } from 'rxjs/operators';
 import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
 import { AlbumRanking } from "../interfaces/AlbumRanking";
+import { environment } from "../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RankingsService {
-  private apiUrl = 'http://localhost:3000/api/rankings';
+  // private apiUrl = 'http://localhost:3000/api/rankings';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +23,7 @@ export class RankingsService {
   }
 
   getUserRankings(): Observable<Rankings> {
-    return this.http.get<Rankings>(`${this.apiUrl}/rankings`, { headers: this.getHeaders() })
+    return this.http.get<Rankings>(`${this.apiUrl}/rankings/rankings`, { headers: this.getHeaders() })
       .pipe(
         retry(3), // Retry up to 3 times on failure
         catchError(this.handleError)
@@ -29,21 +31,21 @@ export class RankingsService {
   }
 
   updateAlbumRanking(rankings: AlbumRanking[]): Observable<AlbumRanking[]> {
-    return this.http.put<AlbumRanking[]>(`${this.apiUrl}/allAlbumsRanking/allAlbumsRanking`, { rankings }, { headers: this.getHeaders() })
+    return this.http.put<AlbumRanking[]>(`${this.apiUrl}/rankings/allAlbumsRanking/allAlbumsRanking`, { rankings }, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   updateRanking(listName: string, rankings: Ranking[]): Observable<Rankings> {
-    return this.http.put<Rankings>(`${this.apiUrl}/rankings/${listName}`, { rankings }, { headers: this.getHeaders() })
+    return this.http.put<Rankings>(`${this.apiUrl}/rankings/rankings/${listName}`, { rankings }, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getTopThirteen(): Observable<Ranking[]> {
-    return this.http.get<Ranking[]>(`${this.apiUrl}/user/top-thirteen`, { headers: this.getHeaders() })
+    return this.http.get<Ranking[]>(`${this.apiUrl}/rankings/user/top-thirteen`, { headers: this.getHeaders() })
       .pipe(
         retry(3), // Retry up to 3 times on failure
         catchError(this.handleError)
@@ -51,21 +53,21 @@ export class RankingsService {
   }
 
   updateTopThirteen(slot: number, albumName: string, songId: string, songTitle: string, albumCover: string): Observable<Ranking[]> {
-    return this.http.post<Ranking[]>(`${this.apiUrl}/user/top-thirteen`, { slot, albumName, songId, songTitle, albumCover }, { headers: this.getHeaders() })
+    return this.http.post<Ranking[]>(`${this.apiUrl}/rankings/user/top-thirteen`, { slot, albumName, songId, songTitle, albumCover }, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   removeTopThirteen(slot: number): Observable<Ranking[]> {
-    return this.http.delete<Ranking[]>(`${this.apiUrl}/user/top-thirteen/${slot}`, { headers: this.getHeaders() })
+    return this.http.delete<Ranking[]>(`${this.apiUrl}/rankings/user/top-thirteen/${slot}`, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getErasTourSetList(): Observable<EraSetList[]> {
-    return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list`, { headers: this.getHeaders() }).pipe(
+    return this.http.get<EraSetList[]>(`${this.apiUrl}/rankings/eras-tour-set-list`, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error fetching Eras Tour set list:', error);
         return throwError(() => new Error('Failed to fetch Eras Tour set list'));
@@ -75,7 +77,7 @@ export class RankingsService {
 
   updateErasTourSetList(setList: EraSetList[]): Observable<any> {
     console.log('Sending setlist to server:', setList);
-    return this.http.put(`${this.apiUrl}/eras-tour-set-list`, { erasTourSetList: setList }, { headers: this.getHeaders() }).pipe(
+    return this.http.put(`${this.apiUrl}/rankings/eras-tour-set-list`, { erasTourSetList: setList }, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error updating Eras Tour set list:', error);
         return throwError(() => new Error('Failed to update Eras Tour set list'));
@@ -85,7 +87,7 @@ export class RankingsService {
 
   //For generaiting shareable Eras Tour Set List link 
   getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
-    return this.http.get<EraSetList[]>(`${this.apiUrl}/eras-tour-set-list/${username}`, { headers: this.getHeaders() }).pipe(
+    return this.http.get<EraSetList[]>(`${this.apiUrl}/rankings/eras-tour-set-list/${username}`, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error fetching Eras Tour set list by username:', error);
         return throwError(() => new Error('Failed to fetch Eras Tour set list by username'));

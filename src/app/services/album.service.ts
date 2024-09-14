@@ -6,6 +6,7 @@ import { Album } from '../interfaces/Album';
 import { Song } from '../interfaces/Song';
 import { SearchResult } from '../interfaces/SearchResult';
 import { AlbumRanking } from '../interfaces/AlbumRanking';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AlbumService {
     'Singles': 'Singles'
   };
 
-  private apiUrl = 'http://localhost:3000/api/albums';
+  private apiUrl = `${environment.apiUrl}/albums`;
 
   constructor(private http: HttpClient) {}
 

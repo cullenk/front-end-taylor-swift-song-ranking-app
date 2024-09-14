@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 interface User {
   username: string;
@@ -12,12 +13,12 @@ interface Song {
   count: number;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users';
+  // private apiUrl = 'http://localhost:3000/api/users';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -27,11 +28,11 @@ export class UserService {
   }
 
   getUserLogins(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/logins`, { headers: this.getHeaders() });
+    return this.http.get<User[]>(`${this.apiUrl}/users/logins`, { headers: this.getHeaders() });
   }
 
   getTopSongs(): Observable<Song[]> {
-    return this.http.get<Song[]>(`${this.apiUrl}/top-songs`, { headers: this.getHeaders() });
+    return this.http.get<Song[]>(`${this.apiUrl}/users/top-songs`, { headers: this.getHeaders() });
   }
 
 }
