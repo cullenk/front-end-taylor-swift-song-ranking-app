@@ -1,4 +1,3 @@
-// mail.service.ts
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -7,15 +6,12 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class MailService {
-  private apiUrl = 'http://localhost:3000/api/sendMail'; 
+  private apiUrl = 'http://localhost:3000/api/sendMail/sendMail'; 
 
   constructor(private http: HttpClient) {}
 
-  sendWelcomeEmail(email: string, username: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/send-welcome-email`, { email, username });
-  }
-
-  sendContactForm(formData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/send-contact-form`, formData);
+  sendContactFormEmail(formData: any): Observable<any> {
+    console.log('Sending contact form email');
+    return this.http.post(`${this.apiUrl}`, { ...formData, type: 'contact' });
   }
 }

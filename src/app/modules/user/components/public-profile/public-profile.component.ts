@@ -35,17 +35,17 @@ export class PublicProfileComponent implements OnInit {
   error: string | null = null;
 
   themeBackgrounds: { [key: string]: string } = {
-    'Debut': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/debut-profile-bg.jpeg',
-    'Fearless': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/fearless-profile-bg.jpeg',
-    'Speak Now': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/speak-now-profile-bg.jpeg',
-    'Red': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/red-profile-bg.jpeg',
-    '1989': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/1989-profile-bg.jpeg',
-    'Reputation': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/reputation-profile-bg.jpeg',
-    'Lover': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/lover-profile-bg.jpeg',
-    'Folklore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/folklore-profile-bg.jpeg',
-    'Evermore': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/evermore-profile-bg.jpeg',
-    'Midnights': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/midnights-profile-bg.jpeg',
-    'The Tortured Poets Department': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/profile+backgrounds/ttpd-profile-bg.jpeg'
+    'Debut': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.jpeg',
+    'Fearless': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.jpeg',
+    'Speak Now': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.jpeg',
+    'Red': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/red-profile-bg.jpeg',
+    '1989': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.jpeg',
+    'Reputation': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.jpeg',
+    'Lover': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.jpeg',
+    'Folklore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.jpeg',
+    'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.jpeg',
+    'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.jpeg',
+    'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.jpeg'
   };
 
   themeClassMap: { [key: string]: string } = {

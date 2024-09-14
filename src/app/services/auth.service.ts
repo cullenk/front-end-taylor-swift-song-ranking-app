@@ -7,6 +7,7 @@ import { AuthModelLogin } from './auth-model-login';
 import { AuthModelCreate } from './auth-model-create';
 import { ToastService } from './toast-service.service';
 import { isPlatformBrowser } from '@angular/common';
+import { MailService } from './mail.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private toastService: ToastService,
+    private mailService: MailService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -41,10 +43,7 @@ export class AuthService {
     return this.http.post('http://localhost:3000/api/auth/signup', authData).pipe(
       tap((response: any) => {
         console.log('Account created successfully!');
-        const successMessage = response.emailSent 
-          ? 'Account created. Please check your email for a welcome message.' 
-          : 'Account created. Please return to login.';
-        this.toastService.showSuccess(successMessage);
+        this.toastService.showSuccess('Account created successfully. Please check your email for a welcome message.');
       }),
       catchError(error => {
         let errorMessage = 'An error occurred during signup';
@@ -52,11 +51,10 @@ export class AuthService {
           errorMessage = error.error.message;
         }
         this.toastService.showError(errorMessage);
-        return throwError(error);
+        return throwError(() => new Error(errorMessage));
       })
     );
   }
-
   loginUser(username: string, password: string): Observable<any> {
     const authData: AuthModelLogin = { username, password };
 

@@ -14,7 +14,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/photo-grids/speak-now-grid.png');
+      background-image: url('https://d3e29z0m37b0un.cloudfront.net/photo-grids/speak-now-grid.png');
       background-size: cover;
       background-position: center;
       filter: blur(5px); // Optional: adds a slight blur to the background
@@ -152,6 +152,8 @@
       align-items: center;
     }
   
-   
+    .song-item {
+      width: 90%;
+    }
   }
   

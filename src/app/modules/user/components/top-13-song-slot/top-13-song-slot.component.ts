@@ -173,7 +173,7 @@ export class Top13SongSlotComponent implements OnInit {
   }
 
   handleImageError(event: any) {
-    event.target.src = 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg'; // Set a fallback image
+    event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg'; // Set a fallback image
     console.error('Failed to load album image');
   }
 

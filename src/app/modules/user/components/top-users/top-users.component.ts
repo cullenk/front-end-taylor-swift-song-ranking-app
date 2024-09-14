@@ -43,7 +43,8 @@ export class TopUsersComponent implements OnInit {
           text: 'User',
           font: {
             weight: 'bold'
-          }
+          },
+          padding: 40
         },
         ticks: {
           autoSkip: false, // Ensure all labels are shown

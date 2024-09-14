@@ -1,0 +1,7 @@
+<div class="popular-albums">
+    <div *ngFor="let album of popularAlbums; let i = index" class="album-item">
+      <div class="rank-bubble">{{ i + 1 }}</div>
+      <img [src]="album.coverUrl" [alt]="album.name" class="album-cover">
+      <p class="album-name">{{ album.name }}</p>
+    </div>
+  </div>

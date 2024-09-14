@@ -12,7 +12,7 @@
       </div>
       <div class="song-slot">
         <label for="pianoSong">
-          <img class="piano-icon" src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/pianoIcon.svg"> On piano:
+          <img class="piano-icon" src="https://d3e29z0m37b0un.cloudfront.net/graphics/pianoIcon.svg"> On piano:
         </label>
         <span *ngIf="pianoSong.title">{{ pianoSong.title }} <button class="remove-button" (click)="removeSurpriseSong('piano')">x</button></span>
         <button *ngIf="!pianoSong.title" (click)="openAddSongDialog('piano')">Add Song</button>

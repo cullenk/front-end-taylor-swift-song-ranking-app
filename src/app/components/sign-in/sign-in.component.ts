@@ -21,18 +21,18 @@ export class SignInComponent implements OnInit, AfterViewInit {
   isLoginMode = true;
   isForgotPasswordMode = false;
   albumCovers: string[] = [
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/1989.jpeg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/evermore.jpeg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/fearless_taylors_version_album.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/folklore.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/lover.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/midnights.jpeg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd1.png',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/red-tv.jpeg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/reputation.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/speak-now-tv.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Taylor+Swift.jpg',
-    'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/ttpd.jpg'
+    'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/fearless_taylors_version_album.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/midnights.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/ttpd1.png',
+    'https://d3e29z0m37b0un.cloudfront.net/red-tv.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg'
   ];
   
   shuffledColumns: string[][] = [];

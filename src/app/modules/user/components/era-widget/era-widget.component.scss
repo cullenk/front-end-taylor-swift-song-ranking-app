@@ -33,7 +33,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.4);
       padding: 10px;
       border-radius: 5px;
 
@@ -50,6 +50,10 @@
         justify-content: center;
       }
       
+      p {
+        font-weight: bold;
+    // color: rgb(205, 205, 205);
+      }
 
       i, .piano-icon {
         margin-right: 10px;
@@ -57,17 +61,24 @@
     }
 
     button {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 123, 41, .8);
       border: none;
       padding: 10px;
       border-radius: 5px;
       cursor: pointer;
       color: white;
+      transition: all .2s ease;
+
+     
 
       &:disabled {
         cursor: not-allowed;
         opacity: 0.5;
       }
+    }
+
+    button:hover {
+      background: rgb(6, 103, 38,1);
     }
   }
 }

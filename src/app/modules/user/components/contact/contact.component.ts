@@ -26,7 +26,7 @@ export class ContactComponent {
   onSubmit() {
     if (this.contactForm.valid) {
       this.submitStatus = 'sending';
-      this.mailService.sendContactForm(this.contactForm.value).subscribe(
+      this.mailService.sendContactFormEmail(this.contactForm.value).subscribe(
         response => {
           console.log('Contact form sent successfully', response);
           this.submitStatus = 'success';

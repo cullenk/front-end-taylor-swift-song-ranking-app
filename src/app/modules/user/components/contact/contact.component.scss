@@ -73,7 +73,7 @@
   
   .form-input,
   .form-textarea {
-    width: 100%;
+    width: 98%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -89,7 +89,7 @@
   
   .form-textarea {
     height: 100px;
-    resize: none; // Prevent resizing
+    // resize: none; // Prevent resizing
   }
   
   .error-message {

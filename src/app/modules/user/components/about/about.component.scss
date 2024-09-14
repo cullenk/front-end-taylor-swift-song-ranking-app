@@ -25,7 +25,7 @@
   backdrop-filter: blur(40px); /* Apply blur effect */
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-image: url('https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/sky-bg.png');
+  background-image: url('https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/sky-bg.png');
   background-position: center;
   background-size: cover;
   overflow: hidden; /* Ensure the overlay doesn't extend beyond the border-radius */
@@ -105,7 +105,7 @@
 .my-profile-section a {
   display: inline-block;
   padding: 0.5rem 1rem;
-  margin: 0px 5px;
+  margin: 10px;
   background-color:var(--secondary-color);
   color: #fff; /* Button text color */
   text-decoration: none; /* Remove underline */

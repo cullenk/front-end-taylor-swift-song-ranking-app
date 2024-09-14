@@ -16,35 +16,35 @@ export class AboutComponent {
 
   images = [
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/arlington.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/arlington.webp',
       caption: 'Arlington, TX - March 31st, 2023'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/kansas-city.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/kansas-city.webp',
       caption: 'Kansas City, KS - July 8th, 2023'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/eras-museum.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/eras-museum.webp',
       caption: 'Eras Tour Collection Museum - Arlington, TX'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/shirt-signing.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/shirt-signing.webp',
       caption: 'Gelsenkirchen, Germany - July 19th, 2024'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/swiftkirchen.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/swiftkirchen.webp',
       caption: 'Official city renaming to Swiftkirchen!'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/poster.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/poster.webp',
       caption: 'Swiftkirchen Block Party - July 19th, 2024'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/gelsenkirchen.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/gelsenkirchen.webp',
       caption: 'Veltins Arena in Gelsenkirchen'
     },
     {
-      src: 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/graphics/About+Photos/funko.webp',
+      src: 'https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/funko.webp',
       caption: 'I created a custom Taylor Funko Pop and display case :)'
     }
   ];
