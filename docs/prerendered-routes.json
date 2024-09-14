@@ -1,0 +1,26 @@
+{
+  "routes": [
+    "/login",
+    "/user",
+    "/user/about",
+    "/user/contact",
+    "/user/erasTourBuilder",
+    "/user/rankings",
+    "/user/rankings/allAlbums",
+    "/user/rankings/debut",
+    "/user/rankings/evermore",
+    "/user/rankings/fearless",
+    "/user/rankings/folklore",
+    "/user/rankings/lover",
+    "/user/rankings/midnights",
+    "/user/rankings/nineteen-eighty-nine",
+    "/user/rankings/red",
+    "/user/rankings/reputation",
+    "/user/rankings/singles",
+    "/user/rankings/speak-now",
+    "/user/rankings/tortured-poets-department",
+    "/user/top13list",
+    "/user/userHome",
+    "/user/userProfile"
+  ]
+}
