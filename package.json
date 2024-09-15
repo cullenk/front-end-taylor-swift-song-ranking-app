@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration=production --output-path docs --base-href /front-end-taylor-swift-song-ranking-app/",
+    "build": "ng build --configuration=production --base-href=/front-end-taylor-swift-song-ranking-app/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:taylor-swift-song-ranking-app": "node dist/taylor-swift-song-ranking-app/server/server.mjs"
