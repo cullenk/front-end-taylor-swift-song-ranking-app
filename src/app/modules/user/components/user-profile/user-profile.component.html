@@ -1,6 +1,6 @@
 <div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
     <header>
-      <div>
+      <div class="welcome-div">
         <h1>Welcome, {{ userProfile.username || 'New Swiftie' }}!</h1>
         <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
       </div>
@@ -23,13 +23,15 @@
                 <li *ngFor="let song of userProfile.rankings.topThirteen">
                   <div class="song-item">
                     <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
-                    <div class="song-details">
-                      <h3>{{ song.songTitle }}</h3>
+                    <div class="title-audio">
+                      <div class="song-details">
+                        <h3>{{ song.songTitle }}</h3>
+                      </div>
+                      <audio controls *ngIf="song.audioSource" controlsList="nodownload">
+                        <source [src]="song.audioSource" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                      </audio>
                     </div>
-                    <audio controls *ngIf="song.audioSource" controlsList="nodownload">
-                      <source [src]="song.audioSource" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                    </audio>
                   </div>
                 </li>
               </ol>

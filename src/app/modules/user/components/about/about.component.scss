@@ -112,6 +112,7 @@
   border-radius: 0.5rem; /* Rounded corners */
   transition: background-color 0.3s; /* Transition effects */
   font-size: 1rem; /* Font size for buttons */
+  text-align: center;
 }
 
 .my-profile-section a:hover {
@@ -226,6 +227,21 @@
   .widgets {
     flex-direction: column;
   }
+
+  .pay-div {
+    align-items: flex-start;
+  }
+
+  .btn-div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+.about-widget {
+  padding: 1rem;
+}
 
   .about-widget, .info-widget {
     flex: 1 1 100%;

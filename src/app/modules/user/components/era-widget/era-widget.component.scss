@@ -51,7 +51,7 @@
       }
       
       p {
-        font-weight: bold;
+        // font-weight: bold;
     // color: rgb(205, 205, 205);
       }
 
@@ -61,7 +61,7 @@
     }
 
     button {
-      background: rgba(0, 123, 41, .8);
+      background: rgba(100, 100, 100, 0.8);
       border: none;
       padding: 10px;
       border-radius: 5px;
@@ -78,7 +78,7 @@
     }
 
     button:hover {
-      background: rgb(6, 103, 38,1);
+      background: rgb(100, 100, 100, 1);
     }
   }
 }
@@ -108,7 +108,7 @@
     }
 
     input, select {
-      width: 100%;
+      width: 96%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;

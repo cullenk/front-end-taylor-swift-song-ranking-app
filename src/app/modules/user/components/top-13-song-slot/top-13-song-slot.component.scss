@@ -24,7 +24,7 @@
   border: 2px solid rgba(0, 0, 0, 0.3);
   border-right: none;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-  z-index: 2;
+  z-index: 3;
 }
 
 .song-content {
@@ -55,6 +55,11 @@
   background-position: center;
   color: white;
   position: relative;
+}
+
+.title-audio-div {
+  display: flex;
+  width: 100%;
 }
 
 audio {
@@ -207,23 +212,41 @@ audio {
   .song-slot {
     flex-direction: column;
     height: auto;
-  }
-
-  .ranking-box {
-    width: 100%;
-    height: 40px;
-    border-right: 2px solid rgba(0, 0, 0, 0.3);
-    border-bottom: none;
-  }
-
-  .song-content {
-    width: 100%;
+    border-radius: 10px !important;
   }
 
   .song-search-card,
   .chosen-song-card {
-    border-radius: 0 0 10px 10px;
+    border-radius: 10px !important;
   }
+
+  .ranking-box {
+    position: absolute;
+    top: -13px;
+    left: -4px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .title-audio-div {
+    flex-direction: column;
+  }
+
+.song-title {
+  font-size: 3vw;
+}
+
+  .song-content {
+    width: 100%;
+    border-radius: 10px !important;
+  }
+
+.song-search-card {
+  border-radius: 10px !important;
+
+}
 
   .search-dropdown {
     position: relative;

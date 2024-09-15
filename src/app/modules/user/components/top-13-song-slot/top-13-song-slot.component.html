@@ -22,14 +22,16 @@
         <div class="album-cover-div">
           <img class="album-cover" [src]="selectedSong.albumImageSource" [alt]="selectedSong.album + ' Cover'" (error)="handleImageError($event)">
         </div>
-        <div class="chosen-song-details-div">
-          <h3 class="song-title">{{ selectedSong.title }}</h3>
-          <p class="album-name">{{ selectedSong.album }}</p>
+        <div class="title-audio-div">
+          <div class="chosen-song-details-div">
+            <h3 class="song-title">{{ selectedSong.title }}</h3>
+            <p class="album-name">{{ selectedSong.album }}</p>
+          </div>
+          <audio controls (error)="handleAudioError($event)" controlsList="nodownload">
+            <source [src]="selectedSong.audioSource" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
         </div>
-        <audio controls (error)="handleAudioError($event)" controlsList="nodownload">
-          <source [src]="selectedSong.audioSource" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
       </div>
     </div>
   </div>

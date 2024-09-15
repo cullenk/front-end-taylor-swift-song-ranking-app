@@ -77,10 +77,6 @@
   .profile-content {
     display: flex;
     gap: 30px;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-    }
   }
 
   .top-13-list, .questionnaire {
@@ -329,4 +325,35 @@ audio {
   color: #202020;
   .questionnaire .question { color: #686868; }
 }
+}
+
+@media (max-width: 768px) {
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.share-btn {
+ max-width: 60%;
+ margin: 10px auto;
+}
+
+.welcome-div {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.top-13-list {
+  width: auto;
+}
+
+  .profile-content {
+    flex-direction: column;
+  }
 }
