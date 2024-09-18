@@ -105,7 +105,7 @@ export class PublicProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
-    console.log('Entering loadTopThirteenDetails');
+    // console.log('Entering loadTopThirteenDetails');
     if (this.publicProfile?.rankings?.topThirteen) {
       const songRequests = this.publicProfile.rankings.topThirteen.map(song =>
         this.albumService.getSongById(song.songId)

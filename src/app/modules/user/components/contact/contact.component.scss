@@ -123,3 +123,18 @@
     padding: 20px 0px;
   }
 
+  @media (max-width: 768px) {
+    .header-title {
+      font-size: 2.8rem;
+    }
+    
+    .header-sub-title {
+      font-size: 3.2rem;
+    }
+
+    .background-graphic {
+      width: 80%;
+      opacity: 50%;
+    }
+    }
+  

@@ -41,7 +41,7 @@ export class AlbumService {
       headers: this.getHeaders()
     }).pipe(
       map(response => {
-        console.log('Album response:', response);
+        // console.log('Album response:', response);
         return response;
       }),
       catchError(this.handleError)
@@ -66,7 +66,7 @@ export class AlbumService {
       params: { songTitle: encodeURIComponent(songTitle) }
     }).pipe(
       map(response => {
-        console.log('Album response:', response);
+        // console.log('Album response:', response);
         return {
           ...response,
           albumImage: response.albumCover || 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/singles.png'

@@ -43,23 +43,30 @@
     <ng-template #albumSongs>
       <div class="mashup-option">
         <label>
-          <input type="checkbox" [(ngModel)]="isMashup" /> Is this number a mashup?
+          <input type="checkbox" [(ngModel)]="isMashup" (change)="onMashupToggle()"/> Is this number a mashup?
         </label>
       </div>
-      <div *ngIf="isMashup" class="mashup-selection">
-        <select [(ngModel)]="firstSongId">
-          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-        </select>
-        <span>/</span>
-        <select [(ngModel)]="secondSongId">
-          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-        </select>
-      </div>
-      <div *ngIf="!isMashup" class="song-selection">
-        <select [(ngModel)]="selectedSongTitle">
-          <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-        </select>
-      </div>
+      <ng-container *ngIf="!isMashup">
+        <div class="song-selection">
+          <select [(ngModel)]="selectedSongTitle">
+            <option value="">Select a song</option>
+            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+          </select>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isMashup">
+        <div class="mashup-selection">
+          <select [(ngModel)]="firstSongId">
+            <option value="">Select first song</option>
+            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+          </select>
+          <span>/</span>
+          <select [(ngModel)]="secondSongId">
+            <option value="">Select second song</option>
+            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
+          </select>
+        </div>
+      </ng-container>
     </ng-template>
     <div class="dialog-actions">
       <button (click)="songType ? saveSurpriseSong() : saveSong()" 

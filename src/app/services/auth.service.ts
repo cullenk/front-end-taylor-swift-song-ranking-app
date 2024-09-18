@@ -75,7 +75,7 @@ export class AuthService {
         }),
         catchError(error => {
           console.error('Login failed:', error);
-          this.toastService.showError('Login failed. Please check your credentials.');
+          // this.toastService.showError('Login failed. Please check your credentials.');
           return throwError(error);
         })
       );

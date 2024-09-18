@@ -32,7 +32,7 @@ export class AllAlbumsRankingComponent implements OnInit {
       (albums: Album[]) => {
         this.albums = albums.filter(album => album.title !== 'Singles');
         this.albums.sort((a, b) => a.releaseYear - b.releaseYear);
-        console.log('Fetched albums:', albums);
+        // console.log('Fetched albums:', albums);
         this.loadAlbumRankings();
       },
       error => {
@@ -44,7 +44,7 @@ export class AllAlbumsRankingComponent implements OnInit {
   loadAlbumRankings() {
     this.rankingsService.getUserRankings().subscribe(
       (rankings) => {
-        console.log('Fetched rankings:', rankings);
+        // console.log('Fetched rankings:', rankings);
         if (
           rankings &&
           rankings.albumRankings &&
@@ -56,10 +56,10 @@ export class AllAlbumsRankingComponent implements OnInit {
             albumName: ranking.albumName.toString(),
             albumCover: ranking.albumCover.toString(),
           }));
-          console.log('Processed album rankings:', this.albumRankings);
+          // console.log('Processed album rankings:', this.albumRankings);
           this.applyRankingsToAlbums();
         } else {
-          console.log('No album rankings found, using default order');
+          // console.log('No album rankings found, using default order');
           this.cd.detectChanges();
         }
       },
@@ -79,7 +79,7 @@ export class AllAlbumsRankingComponent implements OnInit {
         return rankA - rankB;
       });
     }
-    console.log('Albums after applying rankings:', this.albums);
+    // console.log('Albums after applying rankings:', this.albums);
     this.cd.detectChanges();
   }
 
@@ -95,14 +95,14 @@ export class AllAlbumsRankingComponent implements OnInit {
       albumCover: album.albumCover,
     }));
   
-    console.log('Updating album rankings:', newRankings);
+    // console.log('Updating album rankings:', newRankings);
   
     this.rankingsService.updateAlbumRanking(newRankings).subscribe(
       response => {
-        console.log('Album rankings updated:', response); // Log the response
+        // console.log('Album rankings updated:', response); // Log the response
         this.albumRankings = response; // Update local rankings with response
         // Verify that the response is correctly assigned
-        console.log('Updated albumRankings:', this.albumRankings);
+        // console.log('Updated albumRankings:', this.albumRankings);
       },
       error => console.error('Error updating album rankings:', error)
     );

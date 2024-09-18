@@ -143,7 +143,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
       this.AuthService.createNewUser(this.signupForm.value.username, this.signupForm.value.email, this.signupForm.value.password)
         .subscribe(
           (response) => {
-            this.toastr.success('Account created successfully! Check your email for a welcome message.', 'Success');
+            // this.toastr.success('Account created successfully! Check your email for a welcome message.', 'Success');
             this.isLoginMode = true; // Switch back to login mode
           },
           (error) => {

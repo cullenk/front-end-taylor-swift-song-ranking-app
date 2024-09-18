@@ -87,7 +87,7 @@ export class Top13SongSlotComponent implements OnInit {
         }
       );
     } else {
-      console.log(`No song selected for slot ${this.slotIndex}`);
+      // console.log(`No song selected for slot ${this.slotIndex}`);
       this.updateAlbumTheme();
     }
   }

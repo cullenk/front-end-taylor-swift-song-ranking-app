@@ -4,6 +4,12 @@ import { UserProfileService } from '../../../../services/user-profile.service';
 import { EraSetList } from '../../../../interfaces/EraSetList';
 import { CommonModule } from '@angular/common';
 
+interface EraSetListSong {
+  _id: string;
+  title: string;
+  audioSource: string;
+}
+
 @Component({
   selector: 'app-share-setlist',
   standalone: true,
@@ -54,5 +60,12 @@ export class ShareSetlistComponent implements OnInit {
       'Surprise Songs': 'https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/surpriseSongs.png'
     };
     return albumCovers[era] || '';
+  }
+
+  getSurpriseSongs(songs: EraSetListSong[]): { guitar: EraSetListSong, piano: EraSetListSong } {
+    return {
+      guitar: songs[0] || { _id: '', title: '', audioSource: '' },
+      piano: songs[1] || { _id: '', title: '', audioSource: '' }
+    };
   }
 }

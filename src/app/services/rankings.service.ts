@@ -76,7 +76,7 @@ export class RankingsService {
   }
 
   updateErasTourSetList(setList: EraSetList[]): Observable<any> {
-    console.log('Sending setlist to server:', setList);
+    // console.log('Sending setlist to server:', setList);
     return this.http.put(`${this.apiUrl}/rankings/eras-tour-set-list`, { erasTourSetList: setList }, { headers: this.getHeaders() }).pipe(
       catchError(error => {
         console.error('Error updating Eras Tour set list:', error);

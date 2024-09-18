@@ -76,7 +76,6 @@
           background-position: center;
           border-radius: 10px;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          color: white;
           width: 340px;
           height: 400px;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -126,9 +125,12 @@
               margin-bottom: 5px;
               font-size: 1.2rem;
               opacity: 0;
+              color: rgb(208, 208, 208);
               animation: fadeIn 0.5s forwards;
             }
           }
+
+          
         }
       }
     }
@@ -142,10 +144,59 @@
       opacity: 1;
     }
   }
+
+  .surprise-songs {
+    .song-slot {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+  
+      span {
+        color: rgb(208, 208, 208);
+        font-size: 1.2rem;
+        z-index: 5;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+  
+      .fa-guitar {
+        color: white;
+        margin-right: 5px;
+        z-index: 5;
+      }
+  
+      .piano-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        z-index: 5;
+      }
+    }
+  }
   
   @media (max-width: 819px) {
     .share-setlist {
       .content {
+
+        .header-container {
+          .username {
+            font-size: 2.2rem;
+          }
+      
+          .setlist-title {
+            font-size: 2.6rem;
+          }
+
+          .background-graphic {
+            width: 80%;
+            opacity: 50%;
+          }
+        }
         .era-list {
           .era-item {
             width: 100%; /* Full width on smaller devices */
@@ -153,5 +204,7 @@
         }
       }
     }
+
+  
   }
   

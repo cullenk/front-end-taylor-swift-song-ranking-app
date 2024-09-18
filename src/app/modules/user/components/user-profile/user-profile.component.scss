@@ -33,9 +33,16 @@
     align-items: center;
     margin-bottom: 30px;
 
+    .welcome-div {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      border: .5px solid white;
+    }
+
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin: 10px 0px;
     }
 
     .theme-selector {
@@ -53,6 +60,8 @@
       }
     }
 
+   
+    
     .share-btn {
       padding: calc(var(--padding-base) * 0.5) var(--padding-base);
       background-color: var(--secondary-color);
@@ -124,6 +133,15 @@ audio {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      background-color: rgba(255, 255, 255, 0.304);
+      border: .5px solid white;
+      border-radius: 10px;
+      padding: 15px;
+      transition: .2s ease-in;
+
+      &:hover {
+        background-color: rgba(186, 186, 186, 0.407);
+      }
 
       .album-cover {
         width: 60px;
@@ -149,6 +167,8 @@ audio {
         width: 200px;
       }
     }
+
+    
   }
 
   .questionnaire {
@@ -277,14 +297,16 @@ audio {
 &.SpeakNow {
   color: #202020;
   .questionnaire .question { color: #5e039f; }
-  h1, label { color: white;}
+  // h1 { color: white;}
+  label { color: white;}
 
 }
 
 &.Red {
   color:  #280909;
   .questionnaire .question { color: #b31800; }
-  h1, label { color: white;}
+  // h1 { color: white;}
+  label { color: white;}
 
 }
 
@@ -296,7 +318,8 @@ audio {
 &.Reputation {
   color: #202020;
   .questionnaire .question { color: #325e34; }
-  h1, label { color: white;}
+  // h1 { color: white;}
+  label { color: white;}
   }
 
 &.Lover {
@@ -317,8 +340,8 @@ audio {
 &.Midnights {
   color: #202020;
   .questionnaire .question { color: #3f4ffd; }
-  h1, label { color: white;}
-
+  // h1 { color: white;}
+  label { color: white;}
 }
 
 &.TorturedPoets {
@@ -344,13 +367,13 @@ header {
   text-align: center;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 90%;
   justify-content: center;
   margin-bottom: 25px;
 }
 
 .top-13-list {
-  width: auto;
+  width: 91.5%;
 }
 
   .profile-content {

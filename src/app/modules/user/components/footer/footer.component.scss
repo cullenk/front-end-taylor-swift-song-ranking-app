@@ -25,6 +25,10 @@
   .logo {
     max-width: 300px;
     height: auto;
+
+    &:hover {
+      opacity: .8;
+    }
   }
   
   .footer-links {
@@ -49,15 +53,15 @@
     margin-bottom: 10px;
   }
   
-  .footer-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-  }
+    a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
   
-  .footer-links a:hover {
-    text-decoration: underline;
-  }
+      &:hover {
+        color: #a6cafc;
+      }
+    }
   
   .footer-copyright {
     margin-top: 20px;
@@ -66,9 +70,9 @@
   }
   
   .footer-copyright p {
-    margin: 0;
+    margin-bottom: 5px;
   }
-  
+
   @media (max-width: 768px) {
     .footer-content {
       flex-direction: column;

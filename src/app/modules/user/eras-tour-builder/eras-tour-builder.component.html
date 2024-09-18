@@ -31,6 +31,7 @@
           <p>{{ totalMashups }}/3 mashups used</p>
           <p>{{ erasAccountedFor }}/11 eras accounted for</p>
           <p>{{ totalSurpriseSongs }}/2 surprise songs chosen</p>
+          <p class="helper-p">You must complete all requirements before verifying and sharing your set list.</p>
         </div>
         <button (click)="saveProgress()">Save Progress</button>
         <button class="verify-button" [disabled]="!allChoicesMade" (click)="verifySetList()">Verify My Set List</button>

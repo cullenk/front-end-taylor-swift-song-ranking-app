@@ -164,7 +164,15 @@
             background: #c82333;
           }
         }
+        .helper-p {
+          color: #707070;
+          font-weight: normal;
+          font-style: italic;
+        }
+
       }
+
+      
     }
 
     .rules-section {
@@ -285,6 +293,10 @@
     font-size: 2.6rem;
   }
 
+  .background-graphic {
+    width: 80%;
+    opacity: 50%;
+  }
 
 } 
 }

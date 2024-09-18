@@ -111,9 +111,9 @@ export class UserProfileComponent implements OnInit {
     this.loadingError = null;
     this.userProfileService.getUserProfile().subscribe(
       profile => {
-        console.log('Received profile:', profile);
+        // console.log('Received profile:', profile);
         this.userProfile = this.setDefaultsIfNeeded(profile);
-        console.log('Profile after setDefaultsIfNeeded:', this.userProfile);
+        // console.log('Profile after setDefaultsIfNeeded:', this.userProfile);
         this.loadTopThirteenDetails();
       },
       error => {
@@ -149,7 +149,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
-    console.log('Entering loadTopThirteenDetails');
+    // console.log('Entering loadTopThirteenDetails');
     if (this.userProfile.rankings && this.userProfile.rankings.topThirteen && this.userProfile.rankings.topThirteen.length > 0) {
       const songRequests = this.userProfile.rankings.topThirteen.map(song =>
         this.albumService.getSongById(song.songId)

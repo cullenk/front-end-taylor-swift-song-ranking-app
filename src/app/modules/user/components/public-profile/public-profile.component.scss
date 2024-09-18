@@ -31,10 +31,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    border: .5px solid white;
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin: 10px 0px;
     }
 
     .theme-selector {
@@ -64,11 +68,6 @@
     
       &:hover {
         background-color: var(--hover-color);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
       }
     }
   }
@@ -127,6 +126,15 @@ audio {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      background-color: rgba(255, 255, 255, 0.304);
+      border: .5px solid white;
+      border-radius: 10px;
+      padding: 15px;
+      transition: .2s ease-in;
+
+      &:hover {
+        background-color: rgba(186, 186, 186, 0.407);
+      }
 
       .album-cover {
         width: 60px;
@@ -280,15 +288,15 @@ audio {
 &.SpeakNow {
   color: #202020;
   .questionnaire .question { color: #5e039f; }
-  h1, label { color: white;}
-
+   // h1 { color: white;}
+   label { color: white;}
 }
 
 &.Red {
   color:  #280909;
   .questionnaire .question { color: #b31800; }
-  h1, label { color: white;}
-
+   // h1 { color: white;}
+   label { color: white;}
 }
 
 &._1989 {
@@ -299,7 +307,8 @@ audio {
 &.Reputation {
   color: #202020;
   .questionnaire .question { color: #325e34; }
-  h1, label { color: white;}
+   // h1 { color: white;}
+   label { color: white;}
   }
 
 &.Lover {
@@ -320,8 +329,8 @@ audio {
 &.Midnights {
   color: #202020;
   .questionnaire .question { color: #3f4ffd; }
-  h1, label { color: white;}
-
+   // h1 { color: white;}
+   label { color: white;}
 }
 
 &.TorturedPoets {
@@ -329,3 +338,24 @@ audio {
   .questionnaire .question { color: #686868; }
 }
 }
+
+@media (max-width: 768px) {
+
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  
+  .welcome-div {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  
+
+  }

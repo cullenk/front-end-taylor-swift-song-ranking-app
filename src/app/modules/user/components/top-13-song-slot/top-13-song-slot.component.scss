@@ -43,7 +43,7 @@
 }
 
 .song-search-card {
-  background-color: rgb(186, 243, 243);
+  background-color: #d5e4ff;
   padding: 15px;
   border: 2px solid rgba(0, 0, 0, 0.3);
   border-left: none;
@@ -203,7 +203,7 @@ audio {
   cursor: pointer;
 
   &:hover {
-    background-color: cadetblue;
+    background-color: var(--hover-color);
     color: white;
   }
 }

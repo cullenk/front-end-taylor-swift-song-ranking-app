@@ -45,7 +45,7 @@ export class RedRankingComponent implements OnInit {
           ...song,
           album: album.title
         }));
-        console.log('Loaded album songs:', this.songs);
+        // console.log('Loaded album songs:', this.songs);
         this.loadRankings();
       },
       error => {
@@ -59,7 +59,7 @@ export class RedRankingComponent implements OnInit {
       (rankings: Rankings) => {
         if (rankings && rankings.albumRankings && rankings.albumRankings['red']) {
           this.rankings = rankings.albumRankings['red'].sort((a, b) => a.rank - b.rank);
-          console.log('Loaded rankings:', this.rankings);
+          // console.log('Loaded rankings:', this.rankings);
         } else {
           this.rankings = [];
           console.log('No rankings found');
@@ -92,7 +92,7 @@ export class RedRankingComponent implements OnInit {
     } else {
       console.log('No songs found');
     }
-    console.log('Final songs array:', this.songs);
+    // console.log('Final songs array:', this.songs);
   }
   
 

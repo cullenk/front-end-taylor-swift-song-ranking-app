@@ -39,12 +39,14 @@ export class EraWidgetComponent implements OnInit {
   }
 
   loadSongs() {
-    this.albumService.getSongsByAlbum(this.era.era).subscribe(
-      (songs: Song[]) => {
-        this.allSongs = songs;
-      },
-      error => console.error('Error loading songs:', error)
-    );
+    if (this.allSongs.length === 0) {
+      this.albumService.getSongsByAlbum(this.era.era).subscribe(
+        (songs: Song[]) => {
+          this.allSongs = songs;
+        },
+        error => console.error('Error loading songs:', error)
+      );
+    }
   }
 
   initializeSurpriseSongs() {
@@ -57,11 +59,27 @@ export class EraWidgetComponent implements OnInit {
   openAddSongDialog(songType: 'guitar' | 'piano' | null = null) {
     this.songType = songType;
     this.showAddSongDialog = true;
+    this.isMashup = false;
+    this.selectedSongTitle = '';
+    this.firstSongId = '';
+    this.secondSongId = '';
+    // Ensure allSongs is populated
+    if (this.allSongs.length === 0) {
+      this.loadSongs();
+    }
+  }
+
+  onMashupToggle() {
+    this.selectedSongTitle = '';
+    this.firstSongId = '';
+    this.secondSongId = '';
+    console.log('Mashup toggled, isMashup:', this.isMashup);
   }
 
   closeAddSongDialog() {
     this.showAddSongDialog = false;
     this.selectedSongTitle = '';
+    this.isMashup = false;
   }
 
   saveSurpriseSong() {
@@ -86,10 +104,11 @@ export class EraWidgetComponent implements OnInit {
   }
 
   saveSong() {
+    if (!this.canSaveSong()) {
+      return;
+    }
+  
     if (this.isMashup) {
-      if (this.totalMashups >= 3 || this.totalSongs >= 45) {
-        return;
-      }
       const firstSong = this.allSongs.find(song => song._id === this.firstSongId);
       const secondSong = this.allSongs.find(song => song._id === this.secondSongId);
       if (firstSong && secondSong) {
@@ -101,11 +120,8 @@ export class EraWidgetComponent implements OnInit {
         });
       }
     } else {
-      if (this.totalSongs >= 45) {
-        return;
-      }
       const selectedSong = this.allSongs.find(song => song._id === this.selectedSongTitle);
-      if (selectedSong && !this.isSongAlreadySelected(selectedSong._id)) {
+      if (selectedSong) {
         this.era.songs.push({
           _id: selectedSong._id,
           title: selectedSong.title,
@@ -146,12 +162,26 @@ export class EraWidgetComponent implements OnInit {
       return this.era.songs.length < 2;
     }
     if (this.isMashup) {
-      return this.totalMashups < 3 && this.totalSongs < 45;
+      return this.totalMashups < 3 && this.totalSongs < 45 && 
+             !this.isSongAlreadySelected(this.firstSongId) && 
+             !this.isSongAlreadySelected(this.secondSongId);
     }
     return this.totalSongs < 45 && !this.isSongAlreadySelected(this.selectedSongTitle);
   }
 
   isSongAlreadySelected(songId: string): boolean {
-    return this.era.songs.some(song => song._id === songId);
+    return this.era.songs.some(song => {
+      if (song.isMashup) {
+        // For mashups, check if the songId is part of the mashup
+        if (typeof song._id === 'string' && song._id.includes('/')) {
+          const [firstId, secondId] = song._id.split('/');
+          return songId === firstId || songId === secondId;
+        }
+        // If the _id is not in the expected format, log an error and return false
+        console.error('Unexpected mashup _id format:', song._id);
+        return false;
+      }
+      return song._id === songId;
+    });
   }
 }
