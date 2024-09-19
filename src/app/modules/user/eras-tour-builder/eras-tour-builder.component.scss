@@ -1,7 +1,6 @@
 /* eras-tour-builder.component.scss */
 .eras-tour-builder {
   position: relative;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 
@@ -67,6 +66,7 @@
   }
 
   .content {
+    max-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

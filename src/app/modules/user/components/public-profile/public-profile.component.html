@@ -1,30 +1,40 @@
 <div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
-    <header>
+  <div class="profile-content">
+    <!-- Welcome column -->
+    <div class="column welcome-column">
+      <div class="profile-image-container">
+        <img [src]="publicProfile?.profileImage || defaultProfileImage" alt="Profile Image" class="profile-image">
+      </div>
       <h1>{{ publicProfile?.username }}'s Profile</h1>
       <a href="https://www.swiftierankinghub.com" target="_blank">
         <button class="share-btn">Create Your Own!</button>
-    </a>
-    </header>
-  
-    <div class="profile-content">
+      </a>
+    </div>
+
+    <!-- Top 13 column -->
+    <div class="column top-13-column">
       <section class="top-13-list">
         <h2>Top 13 Songs</h2>
-        <ol>
-          <li *ngFor="let song of publicProfile?.rankings?.topThirteen">
-            <div class="song-item">
-              <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
+        <div class="song-list">
+          <div *ngFor="let song of publicProfile?.rankings?.topThirteen" class="song-item">
+            <div class="ranking-bubble">{{ song.slot }}</div>
+            <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
+            <div class="title-audio">
               <div class="song-details">
                 <h3>{{ song.songTitle }}</h3>
               </div>
-              <audio controls *ngIf="song.audioSource">
+              <audio controls *ngIf="song.audioSource" controlsList="nodownload">
                 <source [src]="song.audioSource" type="audio/mpeg">
                 Your browser does not support the audio element.
               </audio>
             </div>
-          </li>
-        </ol>
+          </div>
+        </div>
       </section>
-  
+    </div>
+
+    <!-- Questionnaire column -->
+    <div class="column questionnaire-column">
       <section class="questionnaire">
         <h2>Swiftie Questionnaire</h2>
         <div class="question-list">
@@ -36,6 +46,7 @@
       </section>
     </div>
   </div>
-  
-  <div *ngIf="isLoading" class="loading">Loading...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+</div>
+
+<div *ngIf="isLoading" class="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>

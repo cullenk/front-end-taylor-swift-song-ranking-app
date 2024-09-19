@@ -20,6 +20,7 @@ interface UserProfileSong {
 interface UserProfile {
   username: string;
   theme: string;
+  profileImage: string;
   rankings: {
     topThirteen: UserProfileSong[];
   };
@@ -39,17 +40,25 @@ interface UserProfile {
 export class UserProfileComponent implements OnInit {
   userProfile: UserProfile = {
     theme: '',
+    profileImage: '',
     username: '',
     rankings: { topThirteen: [] },
     profileQuestions: []
   };
   defaultTheme = 'Fearless';
+  defaultImage =  'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg';
   defaultQuestions = [
     { question: 'What is your cry in the car song?', answer: 'Not answered yet' },
     { question: 'What are your dream surprise songs?', answer: 'Not answered yet' },
     { question: 'What album made you a Swiftie?', answer: 'Not answered yet' },
   ];
   themes = ['Debut', 'Fearless', 'Speak Now', 'Red', '1989', 'Reputation', 'Lover', 'Folklore', 'Evermore', 'Midnights', 'The Tortured Poets Department'];
+  profileImages: string[] = [
+    'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
+  ];
   themeClassMap: { [key: string]: string } = {
     'Debut': 'Debut',
     'Fearless': 'Fearless',
@@ -94,6 +103,7 @@ export class UserProfileComponent implements OnInit {
   isLoading: boolean = false;
   loadingError: string | null = null;
   isEditing: boolean = false;
+  showProfileImageDialog: boolean = false;
 
   constructor(
     private userProfileService: UserProfileService,
@@ -129,6 +139,7 @@ export class UserProfileComponent implements OnInit {
       return {
         username: 'New Swiftie',
         theme: this.defaultTheme,
+        profileImage: this.defaultImage,
         rankings: { topThirteen: [] },
         profileQuestions: this.questions.map(question => ({
           question,
@@ -140,6 +151,7 @@ export class UserProfileComponent implements OnInit {
     return {
       ...profile,
       theme: profile.theme || this.defaultTheme,
+      return: profile.image || this.defaultImage,
       rankings: profile.rankings || { topThirteen: [] },
       profileQuestions: this.questions.map(question => {
         const existingAnswer = profile.profileQuestions?.find((pq: { question: string; answer: string }) => pq.question === question);
@@ -186,6 +198,28 @@ export class UserProfileComponent implements OnInit {
         e.preventDefault();
       }
     }, false);
+  }
+
+  openProfileImageDialog() {
+    this.showProfileImageDialog = true;
+  }
+
+  closeProfileImageDialog() {
+    this.showProfileImageDialog = false;
+  }
+
+  selectProfileImage(image: string) {
+    this.userProfile.profileImage = image;
+    this.userProfileService.updateProfileImage(image).subscribe(
+      () => {
+        this.closeProfileImageDialog();
+        this.toastr.success('Profile image updated successfully!', 'Success');
+      },
+      error => {
+        console.error('Error updating profile image', error);
+        this.toastr.error('Failed to update profile image. Please try again.', 'Error');
+      }
+    );
   }
 
   getThemeClass(): string {

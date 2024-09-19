@@ -23,6 +23,10 @@ export class UserProfileService {
     return this.http.get<UserProfile>(`${this.apiUrl}/profile/user-profile`, { headers: this.getHeaders() });
   }
 
+  updateProfileImage(image: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/profile/image`, { image }, { headers: this.getHeaders() });
+  }
+
   updateTheme(theme: string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/profile/theme`, { theme }, { headers: this.getHeaders() });
   }

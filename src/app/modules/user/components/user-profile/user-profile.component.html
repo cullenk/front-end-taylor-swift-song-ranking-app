@@ -1,8 +1,18 @@
 <div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
-    <header>
+  <div class="profile-content">
+    <!-- Left column: Welcome div -->
+    <div class="column welcome-column">
       <div class="welcome-div">
-        <h1>Welcome, {{ userProfile.username || 'New Swiftie' }}!</h1>
-        <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+        <div class="profile-image-container">
+          <img [src]="userProfile.profileImage || this.defaultImage" alt="Profile Image" class="profile-image">
+          <button class="edit-image-btn" (click)="openProfileImageDialog()">
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
+        <div class="welcome-text">
+          <h2>Welcome</h2>
+          <h1>{{ userProfile.username || 'New Swiftie' }}!</h1>
+        </div>
       </div>
       <div class="theme-selector">
         <label for="theme">Choose your profile theme:</label>
@@ -10,55 +20,69 @@
           <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>
         </select>
       </div>
-    </header>
-  
-    <div *ngIf="isLoading" class="loading">Loading...</div>
-    <div *ngIf="loadingError" class="error">{{ loadingError }}</div>
-  
-    <div *ngIf="!isLoading && !loadingError" class="profile-content">
+      <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+    </div>
+
+    <!-- Middle column: Top 13 list -->
+    <div class="column top-13-column">
       <section class="top-13-list">
         <h2>My Top 13 Songs</h2>
-        <ng-container *ngIf="userProfile.rankings.topThirteen.length > 0; else noTopThirteen">
-            <ol>
-                <li *ngFor="let song of userProfile.rankings.topThirteen">
-                  <div class="song-item">
-                    <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
-                    <div class="title-audio">
-                      <div class="song-details">
-                        <h3>{{ song.songTitle }}</h3>
-                      </div>
-                      <audio controls *ngIf="song.audioSource" controlsList="nodownload">
-                        <source [src]="song.audioSource" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                      </audio>
-                    </div>
-                  </div>
-                </li>
-              </ol>
-        </ng-container>
+        <div class="song-list">
+          <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
+            <div class="ranking-bubble">{{ song.slot }}</div>
+            <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
+            <div class="title-audio">
+              <div class="song-details">
+                <h3>{{ song.songTitle }}</h3>
+              </div>
+              <audio controls *ngIf="song.audioSource" controlsList="nodownload">
+                <source [src]="song.audioSource" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
+        </div>
         <ng-template #noTopThirteen>
           <p>You haven't chosen your Top 13 songs yet! Visit the Top 13 page to create your list.</p>
         </ng-template>
       </section>
-  
-  <section class="questionnaire">
-    <div class="btn-container">
-        <h2>Swiftie Questionnaire</h2>
-        <div>
+    </div>
+
+    <!-- Right column: Questionnaire -->
+    <div class="column questionnaire-column">
+      <section class="questionnaire">
+        <div class="btn-container">
+          <h2>Swiftie Questionnaire</h2>
+          <div>
             <button *ngIf="!isEditing" (click)="startEditing()" class="edit-button">Edit Answers</button>
             <button *ngIf="isEditing" (click)="saveAnswers()" class="save-button">Save Answers</button>
+          </div>
         </div>
+        <div class="question-list">
+          <div *ngFor="let questionObj of userProfile.profileQuestions; let i = index" class="question-item">
+            <p class="question">{{ questionObj.question }}</p>
+            <div class="answer" 
+                 [contentEditable]="isEditing" 
+                 (blur)="updateQuestionAnswer(i, $event)"
+                 [innerHTML]="questionObj.answer">
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="question-list">
-      <div *ngFor="let questionObj of userProfile.profileQuestions; let i = index" class="question-item">
-        <p class="question">{{ questionObj.question }}</p>
-        <div class="answer" 
-             [contentEditable]="isEditing" 
-             (blur)="updateQuestionAnswer(i, $event)"
-             [innerHTML]="questionObj.answer">
-        </div>
+  </div>
+
+  <!-- Profile Image Selection Dialog -->
+  <div *ngIf="showProfileImageDialog" class="profile-image-dialog-overlay">
+    <div class="profile-image-dialog">
+      <h2>Choose a Profile Image</h2>
+      <div class="image-grid">
+        <img *ngFor="let image of profileImages" 
+             [src]="image" 
+             (click)="selectProfileImage(image)" 
+             class="image-option">
       </div>
+      <button (click)="closeProfileImageDialog()" class="close-button">Cancel</button>
     </div>
-  </section>
+  </div>
 </div>
-  

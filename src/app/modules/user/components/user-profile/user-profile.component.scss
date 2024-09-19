@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 @import 'ngx-toastr/toastr';
+
 .user-profile {
-  max-width: 1400px;
+  max-width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 20px;
   font-family: inherit, sans-serif;
@@ -18,7 +20,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    opacity: 0.8; // Adjust this value to control the overlay intensity
+    opacity: 0.8;
     z-index: 0;
   }
 
@@ -27,71 +29,97 @@
     z-index: 1;
   }
 
-  header {
+  // Layout
+  .profile-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+  }
 
-    .welcome-div {
-      background-color: rgba(255, 255, 255, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      border: .5px solid white;
+  .column {
+    // flex: 1;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    border: 0.5px solid white;
+  }
+
+  .welcome-column {
+    flex-basis: 20%;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .top-13-column {
+    flex-basis: 30%;
+    flex-grow: 1;
+  }
+
+  .questionnaire-column {
+    flex-basis: 35%;
+    flex-grow: 1;
+  }
+
+  // Welcome Section
+  .welcome-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h2 {
+      color: #575757;
+      margin: 5px 0;
     }
 
     h1 {
       font-size: 2.5rem;
-      margin: 10px 0px;
-    }
-
-    .theme-selector {
-      display: flex;
-      flex-direction: column;
-
-      label {
-        margin-bottom: 10px;
-      }
-
-      select {
-        border-radius: 10px;
-        padding: 5px;
-        font-size: 1rem;
-      }
-    }
-
-   
-    
-    .share-btn {
-      padding: calc(var(--padding-base) * 0.5) var(--padding-base);
-      background-color: var(--secondary-color);
-      color: var(--text-color);
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-      font-size: 1rem;
-    
-      &:hover {
-        background-color: var(--hover-color);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+      margin: 5px 0;
     }
   }
 
-  .profile-content {
+  .theme-selector {
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    margin-top: 20px;
+
+    label {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    select {
+      border-radius: 10px;
+      padding: 5px;
+      font-size: 1rem;
+    }
   }
 
-  .top-13-list, .questionnaire {
-    flex: 1;
+  .share-btn {
+    padding: calc(var(--padding-base) * 0.5) var(--padding-base);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size: 1rem;
+    margin-top: 15px;
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
+  // Top 13 List
   .top-13-list {
     background-color: rgba(255, 255, 255, 0.6);
     padding: 25px;
@@ -102,42 +130,80 @@
       margin-top: 0;
     }
 
-    ol {
-      padding-left: 10px;
+    .song-list {
+      padding-left: 0;
+      list-style-type: none;
+    }
+    
+    .song-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      background-color: rgba(255, 255, 255, 0.304);
+      border: 0.5px solid white;
+      border-radius: 10px;
+      padding: 15px;
+      padding-left: 50px; // Make room for the ranking bubble
+      transition: 0.2s ease-in;
+    
+      &:hover {
+        background-color: rgba(186, 186, 186, 0.407);
+      }
+    }
+    
+    .ranking-bubble {
+      position: absolute;
+      top: 5%;
+      left: -20px;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #000;
+      font-size: 1.2em;
     }
 
-audio {
-  width: 200px;
-  height: 30px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  outline: 1px solid white;
 
-  &::-webkit-media-controls-panel {
-    background-color: none;
-  }
 
-  &::-webkit-media-controls-play-button {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-  }
+    audio {
+      width: 100%;
+      max-width: 300px;
+      height: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      outline: 1px solid white;
 
-  &::-webkit-media-controls-current-time-display,
-  &::-webkit-media-controls-time-remaining-display {
-    color: black;
-  }
-}
+      &::-webkit-media-controls-panel {
+        background-color: transparent;
+      }
 
+      &::-webkit-media-controls-play-button {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+      }
+
+      &::-webkit-media-controls-current-time-display,
+      &::-webkit-media-controls-time-remaining-display {
+        color: black;
+      }
+    }
 
     .song-item {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
       background-color: rgba(255, 255, 255, 0.304);
-      border: .5px solid white;
+      border: 0.5px solid white;
       border-radius: 10px;
       padding: 15px;
-      transition: .2s ease-in;
+      transition: 0.2s ease-in;
 
       &:hover {
         background-color: rgba(186, 186, 186, 0.407);
@@ -150,27 +216,22 @@ audio {
         margin-right: 15px;
       }
 
-      .song-details {
-        flex: 1;
+    .title-audio {
+  flex: 1;
+}
 
-        h3 {
-          margin: 0 0 5px 0;
-        }
+.song-details h3 {
+  margin: 0 0 5px 0;
+}
 
-        p {
-          margin: 0;
-          font-style: italic;
-        }
-      }
-
-      audio {
-        width: 200px;
-      }
+audio {
+  width: 100%;
+  max-width: 300px;
+}
     }
-
-    
   }
 
+  // Questionnaire
   .questionnaire {
     font-family: 'Caveat', cursive;
     background-color: rgba(255, 255, 255, 0.6);
@@ -185,8 +246,8 @@ audio {
 
     h2 {
       font-size: 3em;
-      margin-top: 0px;
-      margin-bottom: 0px;
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
     .question-list {
@@ -216,10 +277,7 @@ audio {
             outline: none;
           }
         }
-       
       }
-
-     
     }
 
     .edit-button, .save-button {
@@ -232,151 +290,218 @@ audio {
       cursor: pointer;
       transition: all 0.3s;
       border-radius: 5px;
+      
       &:hover {
         background-color: rgba(255, 255, 255, 0.4);
       }
     }
   }
 
- // Theme-specific styles
- &.Debut::before {
-  background-color: rgba(82, 253, 164, 0.7);
-}
-
-&.Fearless::before {
-  background-color: rgba(255, 249, 196, 0.7);
-}
-
-&.SpeakNow::before {
-  background-color: rgba(190, 53, 214, 0.7);
-}
-
-&.Red::before {
-  background-color: rgba(150, 12, 12, 0.7);
-}
-
-&._1989::before {
-  background-color: rgba(179, 229, 252, 0.7);
-}
-
-&.Reputation::before {
-  background-color: rgba(42, 42, 42, 0.7);
-}
-
-&.Lover::before {
-  background-color: rgba(255, 186, 249, 0.7);
-}
-
-&.Folklore::before {
-  background-color: rgba(245, 245, 245, 0.7);
-}
-
-&.Evermore::before {
-  background-color: rgba(219, 134, 30, 0.7);
-}
-
-&.Midnights::before {
-  background-color: rgba(25, 25, 112, 0.7);
-}
-
-&.TorturedPoets::before {
-  background-color: #E3E0C8;
-}
-
-// Theme text colors
-&.Debut {
-  color: #161c19;
-  .questionnaire .question { color: #2474a5; }
-}
-
-&.Fearless {
-  color: #232323;
-  .questionnaire .question { color: #cbb50e; }
-}
-
-&.SpeakNow {
-  color: #202020;
-  .questionnaire .question { color: #5e039f; }
-  // h1 { color: white;}
-  label { color: white;}
-
-}
-
-&.Red {
-  color:  #280909;
-  .questionnaire .question { color: #b31800; }
-  // h1 { color: white;}
-  label { color: white;}
-
-}
-
-&._1989 {
-  color: #202020;
-  .questionnaire .question { color: #00CED1; }
-}
-
-&.Reputation {
-  color: #202020;
-  .questionnaire .question { color: #325e34; }
-  // h1 { color: white;}
-  label { color: white;}
+  // Profile Image
+  .profile-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
   }
 
-&.Lover {
-  color: #202020;
-  .questionnaire .question { color: #FF69B4; }
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .edit-image-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    i {
+      font-size: 16px;
+      color: #333;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  // Profile Image Dialog
+  .profile-image-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .profile-image-dialog {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .image-option {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .close-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  // Theme-specific styles
+  &.Debut::before { background-color: rgba(82, 253, 164, 0.7); }
+  &.Fearless::before { background-color: rgba(255, 249, 196, 0.7); }
+  &.SpeakNow::before { background-color: rgba(190, 53, 214, 0.7); }
+  &.Red::before { background-color: rgba(150, 12, 12, 0.7); }
+  &._1989::before { background-color: rgba(179, 229, 252, 0.7); }
+  &.Reputation::before { background-color: rgba(42, 42, 42, 0.7); }
+  &.Lover::before { background-color: rgba(255, 186, 249, 0.7); }
+  &.Folklore::before { background-color: rgba(245, 245, 245, 0.7); }
+  &.Evermore::before { background-color: rgba(219, 134, 30, 0.7); }
+  &.Midnights::before { background-color: rgba(25, 25, 112, 0.7); }
+  &.TorturedPoets::before { background-color: #E3E0C8; }
+
+  // Theme text colors
+  &.Debut { 
+    color: #161c19; 
+    .questionnaire .question { color: #2474a5; }
+  }
+  &.Fearless { 
+    color: #232323; 
+    .questionnaire .question { color: #cbb50e; }
+  }
+  &.SpeakNow { 
+    color: #202020; 
+    .questionnaire .question { color: #5e039f; }
+    label { color: white; }
+  }
+  &.Red { 
+    color: #280909; 
+    .questionnaire .question { color: #b31800; }
+    label { color: white; }
+  }
+  &._1989 { 
+    color: #202020; 
+    .questionnaire .question { color: #00CED1; }
+  }
+  &.Reputation { 
+    color: #202020; 
+    .questionnaire .question { color: #325e34; }
+    label { color: white; }
+  }
+  &.Lover { 
+    color: #202020; 
+    .questionnaire .question { color: #FF69B4; }
+  }
+  &.Folklore { 
+    color: #202020; 
+    .questionnaire .question { color: #708090; }
+  }
+  &.Evermore { 
+    color: #272727; 
+    .questionnaire .question { color: #8B4513; }
+  }
+  &.Midnights { 
+    color: #202020; 
+    .questionnaire .question { color: #3f4ffd; }
+    label { color: white; }
+  }
+  &.TorturedPoets { 
+    color: #202020; 
+    .questionnaire .question { color: #686868; }
+  }
 }
 
-&.Folklore {
-  color: #202020;
-  .questionnaire .question { color: #708090; }
-}
-
-&.Evermore {
-  color: #272727;
-  .questionnaire .question { color: #8B4513; }
-}
-
-&.Midnights {
-  color: #202020;
-  .questionnaire .question { color: #3f4ffd; }
-  // h1 { color: white;}
-  label { color: white;}
-}
-
-&.TorturedPoets {
-  color: #202020;
-  .questionnaire .question { color: #686868; }
-}
+// Media Queries
+@media (max-width: 1200px) {
+  .user-profile {
+    .column {
+      flex-basis: 100%;
+    }
+  }
 }
 
 @media (max-width: 768px) {
+  .user-profile {
+    padding: 10px; // Reduce padding on smaller screens
 
-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    .profile-content {
+      flex-direction: column;
+    }
 
-.share-btn {
- max-width: 60%;
- margin: 10px auto;
-}
+    .column {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-sizing: border-box; // Ensure padding is included in width calculation
+    }
 
-.welcome-div {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  justify-content: center;
-  margin-bottom: 25px;
-}
+    .welcome-column,
+    .top-13-column,
+    .questionnaire-column {
+      flex-basis: 100%;
+    }
 
-.top-13-list {
-  width: 91.5%;
-}
+    audio {
+      max-width: 100%; // Ensure audio elements don't overflow
+    }
 
-  .profile-content {
-    flex-direction: column;
+    // Adjust any fixed widths to be responsive
+    .song-item {
+      flex-wrap: wrap; // Allow items to wrap on smaller screens
+    }
+
+    .album-cover {
+      width: 40px; // Reduce size on smaller screens
+      height: 40px;
+    }
   }
 }

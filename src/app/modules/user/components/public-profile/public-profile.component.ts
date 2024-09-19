@@ -15,6 +15,16 @@ interface TopThirteenSong {
   songId: string;
 }
 
+interface PublicProfile {
+  username: string;
+  theme: string;
+  profileImage: string;
+  rankings: {
+    topThirteen: TopThirteenSong[];
+  };
+  profileQuestions: { question: string; answer: string }[];
+}
+
 @Component({
   selector: 'app-public-profile',
   standalone: true,
@@ -23,14 +33,7 @@ interface TopThirteenSong {
   styleUrls: ['./public-profile.component.scss']
 })
 export class PublicProfileComponent implements OnInit {
-  publicProfile: {
-    username: string;
-    theme: string;
-    rankings: {
-      topThirteen: TopThirteenSong[];
-    };
-    profileQuestions: { question: string; answer: string }[];
-  } | null = null;
+  publicProfile: PublicProfile | null = null;
   isLoading = true;
   error: string | null = null;
 
@@ -47,6 +50,14 @@ export class PublicProfileComponent implements OnInit {
     'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.jpeg',
     'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.jpeg'
   };
+
+  profileImages: string[] = [
+    'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
+    'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
+  ];
+  defaultProfileImage = 'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg';
 
   themeClassMap: { [key: string]: string } = {
     'Debut': 'Debut',
@@ -95,11 +106,14 @@ export class PublicProfileComponent implements OnInit {
           this.loadTopThirteenDetails();
         },
         error => {
-          console.error('Error fetching public profile', error);
+          console.error(`Error fetching public profile for ${username}`, error);
           this.error = 'Failed to load profile. Please try again.';
           this.isLoading = false;
         }
       );
+    } else {
+      this.error = 'No username provided';
+      this.isLoading = false;
     }
     this.disableAudioRightClick();
   }
@@ -137,7 +151,11 @@ export class PublicProfileComponent implements OnInit {
   }
 
   getThemeClass(): string {
-    return this.publicProfile?.theme ? this.themeClassMap[this.publicProfile.theme] : '';
+    return this.publicProfile?.theme ? (this.themeClassMap[this.publicProfile.theme] || '') : '';
+  }
+
+  getProfileImage(): string {
+    return this.publicProfile?.profileImage || this.defaultProfileImage;
   }
 
   private sortProfileQuestions() {
