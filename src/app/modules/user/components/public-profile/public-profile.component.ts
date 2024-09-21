@@ -142,14 +142,14 @@ export class PublicProfileComponent implements OnInit {
   updateMetaTags(username: string) {
     const title = `${username}'s Profile - Swiftie Ranking Hub`;
     const description = `Check out ${username}'s Taylor Swift rankings and profile on Swiftie Ranking Hub!`;
-    const imageUrl = this.userProfile.profileImage || 'https://d3e29z0m37b0un.cloudfront.net/graphics/noto_heart-hands.png';
+    const imageUrl = this.userProfile.profileImage || 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png';
 
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: title });
     this.meta.updateTag({ property: 'og:description', content: description });
     this.meta.updateTag({ property: 'og:image', content: imageUrl });
-    this.meta.updateTag({ property: 'og:url', content: `https://www.swiftierankinghub.com/public-profile/${username}` });
+    this.meta.updateTag({ property: 'og:url', content: `https://swiftierankinghub.com/public-profile/${username}` });
     this.meta.updateTag({ name: 'twitter:title', content: title });
     this.meta.updateTag({ name: 'twitter:description', content: description });
     this.meta.updateTag({ name: 'twitter:image', content: imageUrl });

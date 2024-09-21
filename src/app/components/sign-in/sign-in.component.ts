@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms'
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { MailService } from '../../services/mail.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-sign-in',
@@ -44,7 +45,9 @@ export class SignInComponent implements OnInit, AfterViewInit {
     private AuthService: AuthService,
     private MailService: MailService,
     private renderer: Renderer2,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private meta: Meta,
+    private title: Title
   ) {
     this.loginForm = new FormGroup({
       'username': new FormControl('', [Validators.required]),
@@ -64,10 +67,30 @@ export class SignInComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.shuffleAlbumCovers();
+    this.updateMetaTags();
   }
 
   ngAfterViewInit() {
     this.generateRandomSquares();
+  }
+
+  updateMetaTags() {
+    this.title.setTitle('Sign In - Swiftie Ranking Hub');
+    
+    this.meta.updateTag({ name: 'description', content: 'Sign in or create an account to join Swiftie Ranking Hub. Rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    
+    // Open Graph
+    this.meta.updateTag({ property: 'og:title', content: 'Sign In - Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/noto_heart-hands.png' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/login' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    
+    // Twitter Card
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: 'Sign In - Swiftie Ranking Hub' });
+    this.meta.updateTag({ name: 'twitter:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/noto_heart-hands.png' });
   }
 
   shuffleAlbumCovers() {

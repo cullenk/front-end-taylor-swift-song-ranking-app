@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TopUsersComponent } from '../top-users/top-users.component';
 import { TopSongsComponent } from '../top-songs/top-songs.component';
 import { PopularAlbumsComponent } from '../popular-albums/popular-albums.component';
+import { Meta, Title } from '@angular/platform-browser';
 
 interface Song {
   title: string;
@@ -20,7 +21,11 @@ interface Song {
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private meta: Meta,
+    private title: Title
+    ) {}
   allSongs: Song[] = [
     {
       title: "Red",
@@ -228,10 +233,30 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeSongs();
     this.startRotation();
+    this.updateMetaTags();
   }
 
   ngOnDestroy() {
     this.stopRotation();
+  }
+
+  updateMetaTags() {
+    this.title.setTitle('Sign In - Swiftie Ranking Hub');
+    
+    this.meta.updateTag({ name: 'description', content: 'Sign in or create an account to join Swiftie Ranking Hub. Rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    
+    // Open Graph
+    this.meta.updateTag({ property: 'og:title', content: 'Sign In - Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/userHome' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    
+    // Twitter Card
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: 'Sign In - Swiftie Ranking Hub' });
+    this.meta.updateTag({ name: 'twitter:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
   }
 
   private initializeSongs() {
