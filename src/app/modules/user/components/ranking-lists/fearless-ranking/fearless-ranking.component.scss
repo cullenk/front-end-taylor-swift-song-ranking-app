@@ -1,159 +1,207 @@
 .album-ranking-container {
-    display: flex;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    overflow: hidden; // Ensures the background doesn't spill out
-  
-    // Background image
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: url('https://d3e29z0m37b0un.cloudfront.net/photo-grids/fearless-grid.png');
-      background-size: cover;
-      background-position: center;
-      filter: blur(5px); // Optional: adds a slight blur to the background
-      z-index: -2;
-    }
-  
-    // Overlay
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.1);
-      z-index: -1;
-    }
-  }
-  
-  .media-column, .ranking-column {
-    position: relative; // Ensures content stays above the background/overlay
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.5); 
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  .media-column {
-    align-self: flex-start; // This will make the column only as tall as its content
-    padding: 10px; // Reduced padding
-    margin-right: 20px; // Add some space between columns
-  }
-  .album-cover {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .ranking-column {
-    flex: 1;
-    max-width: 1200px;
-    background-color: #fff; // White background for the ranking area
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .content-div {
-    margin-bottom: 20px;
-    color: #333;
-  
-    h1 {
-      font-size: 2rem;
-      margin: 10px 0;
-    }
-  
-    p {
-      font-size: 1rem;
-      color: #666;
-    }
+  display: flex;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  overflow: hidden; 
+
+  // Background image
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://d3e29z0m37b0un.cloudfront.net/photo-grids/fearless-grid.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    z-index: -2;
   }
 
-  .helper-text {
-    color: #EDA600 !important;
-    font-style: italic;
+  // Overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
   }
-  
-  .song-item {
-    display: flex;
-    align-items: center;
+}
+
+.media-column, .ranking-column {
+  position: relative; 
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.media-column {
+  align-self: flex-start; 
+  padding: 10px; 
+  margin-right: 20px; 
+}
+
+.album-cover {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.ranking-column {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  background-color: #fff; 
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.content-div {
+  margin-bottom: 20px;
+  color: #333;
+
+  h1 {
+    font-size: 2rem;
+    margin: 10px 0;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #666;
+  }
+}
+
+.helper-text {
+  color: #EDA600 !important;
+  font-style: italic;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #344055;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: grab;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #EDA600;
+    color: white;
+  }
+}
+
+.title-audio-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rank-number {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.song-title {
+  flex-grow: 1;
+  padding-left: 10px;
+  color: #333;
+}
+
+audio {
+  width: 200px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  outline: 1px solid white;
+
+  &::-webkit-media-controls-panel {
+    background-color: none;
+  }
+
+  &::-webkit-media-controls-play-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+  }
+
+  &::-webkit-media-controls-current-time-display,
+  &::-webkit-media-controls-time-remaining-display {
+    color: black;
+  }
+}
+
+@media (max-width: 768px) {
+  .album-ranking-container {
+    flex-direction: column;
     padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #344055;
-    border-radius: 5px;
-    background-color: #fff;
-    cursor: grab;
-    transition: background-color 0.3s ease;
-  
-    &:hover {
-      background-color: #EDA600; // Light blue on hover
-    }
   }
-  
-  .rank-number {
-    width: 30px;
+
+  .content-div {
     text-align: center;
-    font-weight: bold;
-    color: #333;
+  }
+
+  .ranking-column {
+    width: auto;
+  }
+
+  .media-column, .ranking-column {
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .media-column {
+    align-self: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .song-item {
+    align-items: flex-start;
   }
   
   .song-title {
-    flex-grow: 1;
-    padding-left: 10px;
-    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
   }
-  
+
+  .title-audio-div {
+    max-width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
   audio {
-    width: 200px;
-    height: 30px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    outline: 1px solid white;
-  
-    &::-webkit-media-controls-panel {
-      background-color: none;
-    }
-  
-    &::-webkit-media-controls-play-button {
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-    }
-  
-    &::-webkit-media-controls-current-time-display,
-    &::-webkit-media-controls-time-remaining-display {
-      color: black;
-    }
+    width: 300px; 
   }
-  
-  @media (max-width: 768px) {
-    .album-ranking-container {
-      flex-direction: column;
-    }
-  
-    .media-column, .ranking-column {
-      width: 100%;
-      margin: 10px 0; // Adjust margin for mobile view
-    }
-  
-    .media-column {
-      align-self: center; // Center the album cover on mobile
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  
-    .song-item {
-      width: 90%;
-    }
+}
+
+@media (max-width: 480px) {
+  .song-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
+
+  audio {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

@@ -12,8 +12,10 @@
       <div class="album-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
         <div class="album-item" *ngFor="let album of albums; let i = index" cdkDrag>
           <span class="rank-number">{{ i + 1 }}.</span>
-          <img [src]="album.albumCover" alt="{{ album.title }} Cover" class="album-cover-small">
-          <span class="album-title">{{ album.title }}</span>
+          <div class="cover-title-div">
+            <img [src]="album.albumCover" alt="{{ album.title }} Cover" class="album-cover-small">
+            <span class="album-title">{{ album.title }}</span>
+          </div>
         </div>
       </div>
     </div>

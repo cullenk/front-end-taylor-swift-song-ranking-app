@@ -2,13 +2,41 @@
   <div class="profile-content">
     <!-- Welcome column -->
     <div class="column welcome-column">
-      <div class="profile-image-container">
-        <img [src]="publicProfile?.profileImage || defaultProfileImage" alt="Profile Image" class="profile-image">
+      <div class="welcome-div">
+        <div class="profile-image-container">
+          <img [src]="getProfileImage()" alt="Profile Image" class="profile-image">
+        </div>
+          <h1>{{ userProfile.username }}</h1>
+            <!-- Top 5 Albums -->
+            <div class="top-albums-section">
+              <h2>Top 5 Albums</h2>
+              <div class="top-5-album-list">
+                <div *ngFor="let album of topFiveAlbums; let i = index" class="album-item">
+                  <img [src]="album.albumCover" [alt]="album.albumName + ' cover'" class="top-5-album-cover">
+                </div>
+              </div>
+            </div>
+            <!-- Eras Tour Link -->
+            <div class="eras-tour-section">
+              <h2>Dream Eras Tour</h2>
+              <ng-container *ngIf="hasErasTourSetlist; else noSetlist">
+                <a 
+                [routerLink]="['/share-setlist', userProfile.username]" 
+                [attr.href]="'/share-setlist/' + userProfile.username"
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="eras-tour-link">
+                View {{ userProfile.username }}'s Dream Eras Tour
+                </a>
+              </ng-container>
+              <ng-template #noSetlist>
+                <p class="no-tour-text">{{ userProfile.username }} hasn't created their dream Eras Tour yet.</p>
+              </ng-template>
+            </div>
+        <a href="https://www.swiftierankinghub.com" target="_blank">
+          <button class="share-btn">Create Your Own Profile!</button>
+        </a>
       </div>
-      <h1>{{ publicProfile?.username }}'s Profile</h1>
-      <a href="https://www.swiftierankinghub.com" target="_blank">
-        <button class="share-btn">Create Your Own!</button>
-      </a>
     </div>
 
     <!-- Top 13 column -->
@@ -16,7 +44,7 @@
       <section class="top-13-list">
         <h2>Top 13 Songs</h2>
         <div class="song-list">
-          <div *ngFor="let song of publicProfile?.rankings?.topThirteen" class="song-item">
+          <div *ngFor="let song of userProfile?.rankings?.topThirteen" class="song-item">
             <div class="ranking-bubble">{{ song.slot }}</div>
             <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
             <div class="title-audio">
@@ -38,7 +66,7 @@
       <section class="questionnaire">
         <h2>Swiftie Questionnaire</h2>
         <div class="question-list">
-          <div *ngFor="let questionObj of publicProfile?.profileQuestions" class="question-item">
+          <div *ngFor="let questionObj of userProfile?.profileQuestions" class="question-item">
             <p class="question">{{ questionObj.question }}</p>
             <div class="answer">{{ questionObj.answer }}</div>
           </div>

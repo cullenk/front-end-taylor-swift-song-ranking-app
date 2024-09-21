@@ -19,35 +19,18 @@
 }
 
 .info-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative; /* Establish a positioning context for the pseudo-element */
   color: black;
-  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-  backdrop-filter: blur(40px); /* Apply blur effect */
   border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-image: url('https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/sky-bg.png');
+  background-image: url('https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/about-sky-graphic.svg');
   background-position: center;
-  background-size: cover;
-  overflow: hidden; /* Ensure the overlay doesn't extend beyond the border-radius */
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-.info-widget::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(222, 222, 222, 0.2); /* Overlay color and opacity */
-  pointer-events: none; /* Allow clicks to pass through to the content */
-  border-radius: 1rem; /* Match the border-radius of the parent */
-  z-index: 1; /* Ensure the overlay is above the background but below the content */
-}
-
-.info-widget > * {
-  position: relative;
-  z-index: 2; /* Ensure content is above the overlay */
-}
 
 .about-widget h2 {
   font-size: 2.5rem;
@@ -69,6 +52,13 @@
   gap: 1rem; /* Space between items */
 }
 
+.message-text {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  font-style: italic;
+  line-height: 24px;
+}
+
 .pay-div {
   display: flex;
   align-items: center;
@@ -77,6 +67,12 @@
 .coffee-icon {
   margin-right: 15px;
   width: 50px;
+  transition: .2 ease-in-out;
+}
+
+.coffee-icon:hover {
+  transform: scale(1.02);
+  rotate: 6deg;
 }
 
 .pay-category {
@@ -88,7 +84,7 @@
     margin: 0px;
   }
 
-  .cred {
+  .creds {
     color: #344055;
     margin: 0px;
   }
@@ -98,7 +94,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
   gap: 1rem; /* Space between items */
 }
 
@@ -223,11 +218,21 @@
   color: #bbb;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .widgets {
     flex-direction: column;
   }
 
+.info-widget {
+  min-height: 500px;
+  width: 100%;
+  padding: 10px;
+}
+
+.message-text {
+  max-width: 350px;
+  text-align: center;
+}
   .pay-div {
     align-items: flex-start;
   }
@@ -243,7 +248,4 @@
   padding: 1rem;
 }
 
-  .about-widget, .info-widget {
-    flex: 1 1 100%;
-  }
 }

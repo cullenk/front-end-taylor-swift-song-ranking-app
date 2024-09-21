@@ -44,28 +44,70 @@
   }
 
   .welcome-column {
-    flex: 1;
-    min-width: 200px;
-    text-align: center;
+    flex-basis: 20%;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .welcome-div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    } 
 
     .profile-image-container {
+      position: relative;
       width: 200px;
       height: 200px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      overflow: hidden;
+      margin-bottom: 20px;
     }
 
     .profile-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid white;
+      transition: .2s ease-in-out;
+    }
+  
+    .profile-image:hover {
+      transform: scale(1.05);
+      rotate: 5deg;
     }
 
     h1 {
       font-size: 2.5rem;
       margin: 10px 0;
     }
+
+  //Top 5 Albums Column
+  .top-albums-section {
+    // width: 30%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .album-item {
+    margin: 15px;
+  }
+  
+  .top-5-album-cover {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    transition: .2s ease-in-out;
+  }
+
+  .top-5-album-cover:hover {
+    transform: scale(1.05);
+    rotate: 5deg;
+  }
 
     .share-btn {
       padding: 10px 20px;
@@ -82,6 +124,26 @@
         background-color: var(--hover-color, #0056b3);
       }
     }
+
+.eras-tour-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.eras-tour-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #57a1ef;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
   }
 
   .top-13-column {
@@ -152,6 +214,7 @@
 
     .song-details h3 {
       margin: 0 0 5px 0;
+      color: #4d4d4d;
     }
 
     audio {
@@ -199,7 +262,8 @@
         }
 
         .answer {
-          font-size: 1.8em;
+          font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+          font-size: 1.4em;
           min-height: 30px;
           border-bottom: 1px dashed #ccc;
           padding: 5px;
@@ -222,55 +286,67 @@
   &.Midnights::before { background-color: rgba(25, 25, 112, 0.7); }
   &.TorturedPoets::before { background-color: #E3E0C8; }
 
-  // Theme text colors
-  &.Debut { 
-    color: #161c19; 
-    .questionnaire .question { color: #2474a5; }
-  }
-  &.Fearless { 
-    color: #232323; 
-    .questionnaire .question { color: #cbb50e; }
-  }
-  &.SpeakNow { 
-    color: #202020; 
-    .questionnaire .question { color: #5e039f; }
-    label { color: white; }
-  }
-  &.Red { 
-    color: #280909; 
-    .questionnaire .question { color: #b31800; }
-    label { color: white; }
-  }
-  &._1989 { 
-    color: #202020; 
-    .questionnaire .question { color: #00CED1; }
-  }
-  &.Reputation { 
-    color: #202020; 
-    .questionnaire .question { color: #325e34; }
-    label { color: white; }
-  }
-  &.Lover { 
-    color: #202020; 
-    .questionnaire .question { color: #FF69B4; }
-  }
-  &.Folklore { 
-    color: #202020; 
-    .questionnaire .question { color: #708090; }
-  }
-  &.Evermore { 
-    color: #272727; 
-    .questionnaire .question { color: #8B4513; }
-  }
-  &.Midnights { 
-    color: #202020; 
-    .questionnaire .question { color: #3f4ffd; }
-    label { color: white; }
-  }
-  &.TorturedPoets { 
-    color: #202020; 
-    .questionnaire .question { color: #686868; }
-  }
+// Theme text colors
+&.Debut { 
+  color: #161c19; 
+  .questionnaire .question { color: #2474a5; }
+  .welcome-column {background-color: rgba(36, 116, 165, 0.3);}
+
+}
+&.Fearless { 
+  color: #232323; 
+  .questionnaire .question { color: #cbb50e; }
+  .welcome-column {background-color: rgba(203, 181, 14, 0.3)}
+}
+&.SpeakNow { 
+  color: #202020; 
+  .questionnaire .question { color: #5e039f; }
+  .welcome-column {background-color: rgba(94, 3, 159, 0.5)}
+  h1, label, .welcome-text, .welcome-text h2, .top-albums-section h2, .eras-tour-section h2, .no-tour-text  { color: white; }
+}
+&.Red { 
+  color: #280909; 
+  .questionnaire .question { color: #b31800; }
+  .welcome-column {background-color: rgba(106, 29, 8, 0.428)}
+  h1, label, .welcome-text, .welcome-text h2, .top-albums-section h2, .eras-tour-section h2, .no-tour-text { color: white; }
+}
+&._1989 { 
+  color: #202020; 
+  .questionnaire .question{ color: #00CED1; }
+  .welcome-column {background-color: rgba(0, 206, 209, 0.3)}
+}
+&.Reputation { 
+  color: #202020; 
+  .questionnaire .question{ color: #325e34; }
+  .welcome-column {background-color: rgba(50, 94, 52, 0.3)}
+  h1, label, .welcome-text, .welcome-text h2, .top-albums-section h2, .eras-tour-section h2, .no-tour-text { color: white; }
+}
+&.Lover { 
+  color: #202020; 
+  .questionnaire .question{ color: #FF69B4; }
+  .welcome-column {background-color: rgba(255, 105, 180, 0.3)}
+}
+&.Folklore { 
+  color: #202020; 
+  .questionnaire .question { color: #708090; }
+  .welcome-column {background-color: rgba(112, 128, 144, 0.3);}
+}
+&.Evermore { 
+  color: #272727; 
+  .questionnaire .question{ color: #8B4513; }
+  .welcome-column {background-color: rgba(226, 171, 21, 0.432);}
+}
+&.Midnights { 
+  color: #202020; 
+  .questionnaire .question { color: #3f4ffd; }
+  .welcome-column {background-color: rgba(63, 79, 253, 0.3);}
+  h1, label, .welcome-text, .welcome-text h2, .top-albums-section h2, .eras-tour-section h2, .no-tour-text { color: white; }
+}
+&.TorturedPoets { 
+  color: #202020; 
+  .questionnaire .question { color: #686868; }
+  .welcome-column {background-color: rgba(104, 104, 104, 0.3);}
+}
 }
 
 @media (max-width: 1200px) {
@@ -283,5 +359,28 @@
       width: 100%;
       margin-bottom: 20px;
     }
+
+    .top-13-list h2,
+    .questionnaire h2 {
+      text-align: center;
+    }
+
+      //Top 5 Albums Column
+      .top-5-album-list {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .top-5-album-cover {
+        width: 200px;
+        height: 200px;
+      }
+
+     
   }
+}
+
+@media (max-width: 768px) {
+
 }

@@ -71,7 +71,7 @@
     text-align: center;
 
     h2 {
-      color: #575757;
+      color: #333;
       margin: 5px 0;
     }
 
@@ -222,6 +222,7 @@
 
 .song-details h3 {
   margin: 0 0 5px 0;
+  color: #4d4d4d;
 }
 
 audio {
@@ -262,7 +263,8 @@ audio {
         }
 
         .answer {
-          font-size: 1.8em;
+          font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+          font-size: 1.4em;
           min-height: 30px;
           border-bottom: 1px dashed #ccc;
           padding: 5px;
@@ -310,6 +312,13 @@ audio {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+    border: 5px solid white;
+    transition: .2s ease-in-out;
+  }
+
+  .profile-image:hover {
+    transform: scale(1.05);
+    rotate: 5deg;
   }
 
   .edit-image-btn {
@@ -330,6 +339,88 @@ audio {
 
     &:hover {
       background-color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  //Top 5 Albums Column
+  .top-albums-section {
+    // width: 30%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .album-list {
+    margin: auto;
+    gap: 10px;
+  }
+
+  .album-item {
+    margin: 15px;
+  }
+  
+  .top-5-album-cover {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    transition: .2s ease-in-out;
+  }
+
+  .top-5-album-cover:hover {
+    transform: scale(1.05);
+    rotate: 5deg;
+  }
+
+  .empty-albums-text {
+    color: #333;
+    font-style: italic;
+  }
+  
+  .empty-albums {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .empty-album-placeholder {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #e0e0e045, #bebdbd);
+    margin-bottom: 10px;
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(51, 216, 253, 0.432) 0%,
+        rgba(15, 209, 243, 0.726) 50%,
+        rgba(36, 57, 247, 0.565) 100%
+      );
+      transform: rotate(45deg);
+      transition: all 0.3s ease;
+    }
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  
+      &::before {
+        top: -100%;
+        left: -100%;
+      }
     }
   }
 
@@ -413,50 +504,62 @@ audio {
   &.Debut { 
     color: #161c19; 
     .questionnaire .question { color: #2474a5; }
+    .welcome-column {background-color: rgba(36, 116, 165, 0.3);}
+
   }
   &.Fearless { 
     color: #232323; 
     .questionnaire .question { color: #cbb50e; }
+    .welcome-column {background-color: rgba(203, 181, 14, 0.3)}
   }
   &.SpeakNow { 
     color: #202020; 
     .questionnaire .question { color: #5e039f; }
-    label { color: white; }
+    .welcome-column {background-color: rgba(94, 3, 159, 0.5)}
+    label, .welcome-text, .welcome-text h2, .top-albums-section h2, .empty-albums-text { color: white; }
   }
   &.Red { 
     color: #280909; 
     .questionnaire .question { color: #b31800; }
-    label { color: white; }
+    .welcome-column {background-color: rgba(106, 29, 8, 0.428)}
+    label, .welcome-text, .welcome-text h2, .top-albums-section h2, .empty-albums-text { color: white; }
   }
   &._1989 { 
     color: #202020; 
-    .questionnaire .question { color: #00CED1; }
+    .questionnaire .question{ color: #00CED1; }
+    .welcome-column {background-color: rgba(0, 206, 209, 0.3)}
   }
   &.Reputation { 
     color: #202020; 
-    .questionnaire .question { color: #325e34; }
-    label { color: white; }
+    .questionnaire .question{ color: #325e34; }
+    .welcome-column {background-color: rgba(50, 94, 52, 0.3)}
+    label, .welcome-text, .welcome-text h2, .top-albums-section h2, .empty-albums-text { color: white; }
   }
   &.Lover { 
     color: #202020; 
-    .questionnaire .question { color: #FF69B4; }
+    .questionnaire .question{ color: #FF69B4; }
+    .welcome-column {background-color: rgba(255, 105, 180, 0.3)}
   }
   &.Folklore { 
     color: #202020; 
     .questionnaire .question { color: #708090; }
+    .welcome-column {background-color: rgba(112, 128, 144, 0.3);}
   }
   &.Evermore { 
     color: #272727; 
-    .questionnaire .question { color: #8B4513; }
+    .questionnaire .question{ color: #8B4513; }
+    .welcome-column {background-color: rgba(226, 171, 21, 0.432);}
   }
   &.Midnights { 
     color: #202020; 
     .questionnaire .question { color: #3f4ffd; }
-    label { color: white; }
+    .welcome-column {background-color: rgba(63, 79, 253, 0.3);}
+    label, .welcome-text, .welcome-text h2, .top-albums-section h2, .empty-albums-text { color: white; }
   }
   &.TorturedPoets { 
     color: #202020; 
     .questionnaire .question { color: #686868; }
+    .welcome-column {background-color: rgba(104, 104, 104, 0.3);}
   }
 }
 
@@ -466,7 +569,53 @@ audio {
     .column {
       flex-basis: 100%;
     }
+
+    .welcome-div {
+    text-align: center;
+    }
+
+    .welcome-column .theme-selector,
+    .welcome-column button {
+      margin: 15px auto;
+      max-width: 50%;
+    }
+
+    .btn-container {
+      flex-direction: column;
+    }
+
+    .btn-container h2 {
+      margin-bottom: 15px;
+    }
+
+    .top-13-list h2{
+      text-align: center;
+    }
   }
+
+    //Top 5 Albums Column
+    
+    .album-list {
+      display: flex;
+    }
+    
+    .top-5-album-cover {
+      width: 200px;
+      height: 200px;
+    }
+  
+    .empty-albums {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .empty-album-placeholder {
+      width: 60px;
+      height: 60px;
+      background-color: #ccc;
+      margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -482,6 +631,10 @@ audio {
       padding: 15px;
       margin-bottom: 15px;
       box-sizing: border-box; // Ensure padding is included in width calculation
+    }
+    .welcome-column .theme-selector,
+    .welcome-column button {
+      max-width: 100%;
     }
 
     .welcome-column,
@@ -502,6 +655,17 @@ audio {
     .album-cover {
       width: 40px; // Reduce size on smaller screens
       height: 40px;
+    }
+  
+    .profile-image-dialog {
+      width: 80%;
+      max-width: 800px;
+      max-height: 80vh;
+    }
+  
+    .album-list {
+      justify-content: center;
+      flex-wrap: wrap;
     }
   }
 }

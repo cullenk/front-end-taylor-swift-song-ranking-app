@@ -1,12 +1,12 @@
 .album-ranking-container {
-    display: flex;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .album-ranking-container::before {
+  display: flex;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  overflow: hidden; 
+
+  // Background image
+  &::before {
     content: '';
     position: absolute;
     top: 0;
@@ -19,8 +19,9 @@
     filter: blur(5px);
     z-index: -2;
   }
-  
-  .album-ranking-container::after {
+
+  // Overlay
+  &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -30,106 +31,136 @@
     background-color: rgba(0, 0, 0, 0.1);
     z-index: -1;
   }
-  
-  .media-column, .ranking-column {
-    position: relative;
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  .media-column {
-    align-self: flex-start;
-    padding: 10px;
-    margin-right: 20px;
-  }
-  
-  .album-cover-small {
-    width: 80px; /* Smaller size for album cover */
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-right: 10px;
-  }
-  
-  .ranking-column {
-    flex: 1;
-    max-width: 1200px;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .content-div {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .content-div h1 {
+}
+
+.media-column, .ranking-column {
+  position: relative; 
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.media-column {
+  align-self: flex-start; 
+  padding: 10px; 
+  margin-right: 20px; 
+}
+
+.album-cover-small {
+  width: 80px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-right: 10px;
+}
+
+.ranking-column {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  background-color: #fff; 
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.content-div {
+  margin-bottom: 20px;
+  color: #333;
+
+  h1 {
     font-size: 2rem;
     margin: 10px 0;
   }
-  
-  .content-div p {
+
+  p {
     font-size: 1rem;
     color: #666;
   }
-  
-  .helper-text {
-    color: #955693 !important;
-    font-style: italic;
-  }
-  
-  .album-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #344055;
-    border-radius: 5px;
-    background-color: #fff;
-    cursor: grab;
-    transition: background-color 0.3s ease;
-  }
-  
-  .album-item:hover {
+}
+
+.helper-text {
+  color: #955693 !important;
+  font-style: italic;
+}
+
+.cover-title-div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.album-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #344055;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: grab;
+  transition: background-color 0.3s ease;
+
+  &:hover {
     background: linear-gradient(#e66465, #e591cf);
+    color: white;
   }
-  
-  .rank-number {
-    width: 30px;
+}
+
+.title-audio-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rank-number {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.album-title {
+  flex-grow: 1;
+  padding-left: 10px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .album-ranking-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .content-div {
     text-align: center;
-    font-weight: bold;
-    color: #333;
   }
+
+  .ranking-column {
+    width: auto;
+  }
+
+  .media-column, .ranking-column {
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .media-column {
+    align-self: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   
   .album-title {
-    flex-grow: 1;
-    padding-left: 10px;
-    color: #333;
+    font-weight: bold;
   }
-  
-  @media (max-width: 768px) {
-    .album-ranking-container {
-      flex-direction: column;
-    }
-  
-    .media-column, .ranking-column {
-      width: 100%;
-      margin: 10px 0;
-    }
-  
-    .media-column {
-      align-self: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
 
-    .song-item {
-      width: 90%;
-    }
-  }
+
+}
+

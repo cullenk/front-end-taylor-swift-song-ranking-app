@@ -1,16 +1,23 @@
+// user-profile.interface.ts
 export interface UserProfileSong {
-    slot: number;
-    albumId: string;
-    songTitle: string;
-    albumImage?: string;
-    audioSource?: string;
-  }
-  
-  export interface UserProfile {
-    username: string;
-    theme: string;
-    rankings: {
-      topThirteen: UserProfileSong[];
-    };
-    profileQuestions: Array<{ question: string; answer: string }>;
-  }
+  slot: number;
+  albumName: string;
+  songTitle: string;
+  albumImage?: string;
+  audioSource?: string;
+  songId: string;
+  albumCover?: string; 
+  rank?: number; 
+}
+export interface UserProfile {
+  username: string;
+  theme: string;
+  profileImage: string;
+  rankings: {
+    topThirteen: UserProfileSong[];
+  };
+  profileQuestions: {
+    question: string;
+    answer: string;
+  }[];
+}

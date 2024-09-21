@@ -4,7 +4,7 @@
     <div class="column welcome-column">
       <div class="welcome-div">
         <div class="profile-image-container">
-          <img [src]="userProfile.profileImage || this.defaultImage" alt="Profile Image" class="profile-image">
+          <img [src]="userProfile.profileImage || defaultImage" alt="Profile Image" class="profile-image">
           <button class="edit-image-btn" (click)="openProfileImageDialog()">
             <i class="fas fa-camera"></i>
           </button>
@@ -21,13 +21,31 @@
         </select>
       </div>
       <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+         
+      <!-- Top 5 Albums -->
+          <div class="top-albums-section">
+            <h2>Top 5 Albums</h2>
+            <div class="album-list" *ngIf="topFiveAlbums.length > 0; else noTopAlbums">
+              <div *ngFor="let album of topFiveAlbums; let i = index" class="album-item">
+                <img [src]="album.albumCover" [alt]="album.albumName + ' cover'" class="top-5-album-cover">
+              </div>
+            </div>
+            <ng-template #noTopAlbums>
+              <p class="empty-albums-text">Rank your albums on the Rankings page to see your top 5 here!</p>
+              <div class="empty-albums">
+                <div *ngFor="let i of [1,2,3,4,5]" class="empty-album-placeholder"></div>
+              </div>
+            </ng-template>
+          </div>
     </div>
+
+
 
     <!-- Middle column: Top 13 list -->
     <div class="column top-13-column">
       <section class="top-13-list">
         <h2>My Top 13 Songs</h2>
-        <div class="song-list">
+        <div *ngIf="userProfile.rankings.topThirteen.length > 0; else noTopThirteen" class="song-list">
           <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
             <div class="ranking-bubble">{{ song.slot }}</div>
             <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">

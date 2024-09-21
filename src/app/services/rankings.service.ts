@@ -95,6 +95,16 @@ export class RankingsService {
     );
   }
 
+  getTopFiveAlbums(username?: string): Observable<AlbumRanking[]> {
+    const url = username 
+      ? `${this.apiUrl}/rankings/user/${username}/top-five-albums`
+      : `${this.apiUrl}/rankings/user/top-five-albums`;
+    return this.http.get<AlbumRanking[]>(url, { headers: this.getHeaders() })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {

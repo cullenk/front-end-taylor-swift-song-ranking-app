@@ -3,32 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { AlbumService } from '../../../../services/album.service';
+import { RankingsService } from '../../../../services/rankings.service';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { Album } from '../../../../interfaces/Album';
 import { Song } from '../../../../interfaces/Song';
-
-interface UserProfileSong {
-  slot: number;
-  albumName: string;
-  songTitle: string; // This replaces 'title' from Song
-  albumImage?: string;
-  audioSource?: string;
-  songId: string;
-}
-
-interface UserProfile {
-  username: string;
-  theme: string;
-  profileImage: string;
-  rankings: {
-    topThirteen: UserProfileSong[];
-  };
-  profileQuestions: {
-    question: string;
-    answer: string;
-  }[];
-}
+import { UserProfile } from '../../../../interfaces/userProfile';
+import { UserProfileSong } from '../../../../interfaces/userProfile';
+import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
 
 @Component({
   selector: 'app-user-profile',
@@ -46,7 +28,7 @@ export class UserProfileComponent implements OnInit {
     profileQuestions: []
   };
   defaultTheme = 'Fearless';
-  defaultImage =  'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg';
+  defaultImage = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.png';
   defaultQuestions = [
     { question: 'What is your cry in the car song?', answer: 'Not answered yet' },
     { question: 'What are your dream surprise songs?', answer: 'Not answered yet' },
@@ -54,10 +36,31 @@ export class UserProfileComponent implements OnInit {
   ];
   themes = ['Debut', 'Fearless', 'Speak Now', 'Red', '1989', 'Reputation', 'Lover', 'Folklore', 'Evermore', 'Midnights', 'The Tortured Poets Department'];
   profileImages: string[] = [
-    'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
-    'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989-2.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/benjaminButton.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/cats.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/chiefs.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.png',    
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/evermore.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fearless.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/folklore.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fortnite.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/london.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/lover.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/meredithGrey.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights2.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/oliviaBenson.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red2.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/reputation.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/silly.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/speakNow.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/travis.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/ttpd.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/youBelong.png',
   ];
   themeClassMap: { [key: string]: string } = {
     'Debut': 'Debut',
@@ -104,9 +107,11 @@ export class UserProfileComponent implements OnInit {
   loadingError: string | null = null;
   isEditing: boolean = false;
   showProfileImageDialog: boolean = false;
+  topFiveAlbums: AlbumRanking[] = [];
 
   constructor(
     private userProfileService: UserProfileService,
+    private RankingsService: RankingsService,
     private albumService: AlbumService,
     private toastr: ToastrService
   ) { }
@@ -114,16 +119,16 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.loadUserProfile();
     this.disableAudioRightClick();
+    this.loadTopFiveAlbums();
   }
-
+  
   loadUserProfile() {
     this.isLoading = true;
     this.loadingError = null;
     this.userProfileService.getUserProfile().subscribe(
       profile => {
-        // console.log('Received profile:', profile);
         this.userProfile = this.setDefaultsIfNeeded(profile);
-        // console.log('Profile after setDefaultsIfNeeded:', this.userProfile);
+        console.log('Loaded user profile:', this.userProfile); // Add this log
         this.loadTopThirteenDetails();
       },
       error => {
@@ -134,6 +139,17 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  loadTopFiveAlbums() {
+    this.RankingsService.getTopFiveAlbums().subscribe(
+      (albums) => {
+        this.topFiveAlbums = albums;
+      },
+      (error) => {
+        console.error('Error loading top 5 albums:', error);
+      }
+    );
+  }
+  
   setDefaultsIfNeeded(profile: any): UserProfile {
     if (!profile) {
       return {
@@ -147,11 +163,11 @@ export class UserProfileComponent implements OnInit {
         }))
       };
     }
-
+  
     return {
       ...profile,
       theme: profile.theme || this.defaultTheme,
-      return: profile.image || this.defaultImage,
+      profileImage: profile.profileImage || this.defaultImage, 
       rankings: profile.rankings || { topThirteen: [] },
       profileQuestions: this.questions.map(question => {
         const existingAnswer = profile.profileQuestions?.find((pq: { question: string; answer: string }) => pq.question === question);
@@ -161,7 +177,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
-    // console.log('Entering loadTopThirteenDetails');
     if (this.userProfile.rankings && this.userProfile.rankings.topThirteen && this.userProfile.rankings.topThirteen.length > 0) {
       const songRequests = this.userProfile.rankings.topThirteen.map(song =>
         this.albumService.getSongById(song.songId)
@@ -173,10 +188,10 @@ export class UserProfileComponent implements OnInit {
             return {
               ...song,
               albumImage: songDetails.albumImageSource,
-              audioSource: songDetails.audioSource
+              audioSource: songDetails.audioSource,
+              albumCover: song.albumCover || songDetails.albumImageSource, // Add this line
             };
           });
-          // Ensure the list is sorted by slot
           this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
           this.isLoading = false;
         },
@@ -188,6 +203,8 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       console.log('No top thirteen songs, setting isLoading to false');
+      this.userProfile.rankings = this.userProfile.rankings || {};
+      this.userProfile.rankings.topThirteen = [];
       this.isLoading = false;
     }
   }
@@ -209,9 +226,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   selectProfileImage(image: string) {
-    this.userProfile.profileImage = image;
     this.userProfileService.updateProfileImage(image).subscribe(
-      () => {
+      (updatedProfile: UserProfile) => {
+        this.userProfile = {
+          ...this.userProfile,
+          profileImage: updatedProfile.profileImage || this.defaultImage
+        };
         this.closeProfileImageDialog();
         this.toastr.success('Profile image updated successfully!', 'Success');
       },
@@ -270,11 +290,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   isProfileShareable(): boolean {
-    const hasTopThirteenSong = this.userProfile.rankings.topThirteen.length > 0;
-    const hasAnsweredQuestion = this.userProfile.profileQuestions.some(q => q.answer && q.answer !== '');
-    return hasTopThirteenSong && hasAnsweredQuestion;
+    const hasTopThirteenSong = this.userProfile?.rankings?.topThirteen?.length > 0;
+    const hasAnsweredQuestion = this.userProfile?.profileQuestions?.some(q => q.answer && q.answer !== '');
+    const hasTopFiveAlbums = this.topFiveAlbums.length === 5;
+    return !!hasTopThirteenSong && !!hasAnsweredQuestion && hasTopFiveAlbums;
   }
-
+  
   shareProfile() {
     if (!this.isProfileShareable()) {
       this.toastr.warning('Please add at least one song to your Top 13 and answer at least one question before sharing your profile.', 'Cannot Share Yet', {
