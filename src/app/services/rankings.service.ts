@@ -2,11 +2,13 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
 import { AlbumRanking } from "../interfaces/AlbumRanking";
-import { environment } from "../../environments/environment.prod";
+import { SurpriseSong } from "../interfaces/SurpriseSong";
+import { environment } from "../../environments/environment";
+import { HomePageAlbumRanking } from "../interfaces/HomePageAlbumRanking";
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +87,7 @@ export class RankingsService {
     );
   }
 
-  //For generaiting shareable Eras Tour Set List link 
+  //For generating shareable Eras Tour Set List link 
   getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
     return this.http.get<EraSetList[]>(`${this.apiUrl}/rankings/eras-tour-set-list/${username}`, { headers: this.getHeaders() }).pipe(
       catchError(error => {
@@ -105,6 +107,27 @@ export class RankingsService {
         catchError(this.handleError)
       );
   }
+
+  // Get Album Popularity for all users for home page
+getAlbumPopularity(): Observable<HomePageAlbumRanking[]> {
+  return this.http.get<HomePageAlbumRanking[]>(`${this.apiUrl}/rankings/album-popularity`, { headers: this.getHeaders() })
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+}
+
+//Get Surprise Songs of all users for home page
+getSurpriseSongs(): Observable<SurpriseSong[]> {
+  console.log('Fetching surprise songs from API');
+  return this.http.get<SurpriseSong[]>(`${this.apiUrl}/rankings/surprise-songs`, { headers: this.getHeaders() }).pipe(
+    tap(songs => console.log('Received surprise songs from API:', songs)),
+    catchError(error => {
+      console.error('Error fetching surprise songs:', error);
+      return throwError(() => new Error('Failed to fetch surprise songs'));
+    })
+  );
+}
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {

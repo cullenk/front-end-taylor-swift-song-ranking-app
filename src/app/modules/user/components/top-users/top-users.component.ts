@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { UserService } from '../../../../services/user.service';
@@ -16,6 +16,11 @@ interface User {
   styleUrls: ['./top-users.component.scss']
 })
 export class TopUsersComponent implements OnInit {
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.ngOnInit(); 
+  }
+
   public chartData: ChartData<'bar'> = {
     labels: [],
     datasets: [
@@ -44,11 +49,11 @@ export class TopUsersComponent implements OnInit {
           font: {
             weight: 'bold'
           },
-          padding: 40
+          padding: { top: 10, bottom: 0 }
         },
         ticks: {
-          autoSkip: false, // Ensure all labels are shown
-          maxRotation: 45, // Rotate labels if necessary
+          autoSkip: false,
+          maxRotation: 45,
           minRotation: 0,
           align: 'center'
         }
@@ -63,12 +68,13 @@ export class TopUsersComponent implements OnInit {
         },
         ticks: {
           stepSize: 1
-        }
+        },
+        suggestedMax: 10 // Ensure y-axis always goes up to at least 10
       }
     },
     layout: {
       padding: {
-        bottom: 50 // Add padding to ensure labels are visible
+        bottom: this.isMobileScreen() ? 20 : 50
       }
     }
   };
@@ -77,10 +83,16 @@ export class TopUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserLogins().subscribe((users: User[]) => {
-      const sortedUsers = users.sort((a, b) => b.loginCount - a.loginCount).slice(0, 10);
+      const maxUsers = this.isMobileScreen() ? 5 : 10;
+      const sortedUsers = users.sort((a, b) => b.loginCount - a.loginCount).slice(0, maxUsers);
 
-      const usernames = sortedUsers.map((user: User) => user.username);
-      const loginCounts = sortedUsers.map((user: User) => user.loginCount);
+      // Pad the data to always have the correct number of entries
+    while (sortedUsers.length < maxUsers) {
+      sortedUsers.push({ username: '', loginCount: 0 });
+    }
+
+    const usernames = sortedUsers.map((user: User) => user.username);
+    const loginCounts = sortedUsers.map((user: User) => user.loginCount);
 
       const colors = [
         'rgba(255, 99, 132, 0.2)',
@@ -93,7 +105,7 @@ export class TopUsersComponent implements OnInit {
         'rgba(83, 102, 255, 0.2)',
         'rgba(255, 99, 64, 0.2)',
         'rgba(255, 205, 86, 0.2)'
-      ];
+      ].slice(0, maxUsers);
 
       this.chartData = {
         labels: usernames,
@@ -107,5 +119,10 @@ export class TopUsersComponent implements OnInit {
         ]
       };
     });
+  }
+  
+
+  isMobileScreen(): boolean {
+    return window.innerWidth < 768; // You can adjust this breakpoint as needed
   }
 }

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TopUsersComponent } from '../top-users/top-users.component';
 import { TopSongsComponent } from '../top-songs/top-songs.component';
-import { PopularAlbumsComponent } from '../popular-albums/popular-albums.component';
+import { AlbumPopularityComponent } from '../album-popularity/album-popularity.component';
+import { SurpriseSongsSliderComponent } from '../surprise-songs-slider/surprise-songs-slider.component';
 import { Meta, Title } from '@angular/platform-browser';
 
 interface Song {
@@ -16,7 +17,7 @@ interface Song {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TopUsersComponent, TopSongsComponent, PopularAlbumsComponent],
+  imports: [CommonModule, TopUsersComponent, TopSongsComponent, AlbumPopularityComponent, SurpriseSongsSliderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

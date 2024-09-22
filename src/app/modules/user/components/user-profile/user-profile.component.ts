@@ -11,6 +11,7 @@ import { Song } from '../../../../interfaces/Song';
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { UserProfileSong } from '../../../../interfaces/userProfile';
 import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -108,18 +109,21 @@ export class UserProfileComponent implements OnInit {
   isEditing: boolean = false;
   showProfileImageDialog: boolean = false;
   topFiveAlbums: AlbumRanking[] = [];
+  hasErasTour: boolean = false;
 
   constructor(
     private userProfileService: UserProfileService,
     private RankingsService: RankingsService,
     private albumService: AlbumService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.loadUserProfile();
     this.disableAudioRightClick();
-    this.loadTopFiveAlbums();
+    this.loadTopFiveAlbums();   
+    this.checkErasTour();
   }
   
   loadUserProfile() {
@@ -128,8 +132,9 @@ export class UserProfileComponent implements OnInit {
     this.userProfileService.getUserProfile().subscribe(
       profile => {
         this.userProfile = this.setDefaultsIfNeeded(profile);
-        console.log('Loaded user profile:', this.userProfile); // Add this log
         this.loadTopThirteenDetails();
+        this.checkErasTour(); // Add this line
+        this.isLoading = false;
       },
       error => {
         console.error('Error loading user profile', error);
@@ -174,6 +179,29 @@ export class UserProfileComponent implements OnInit {
         return existingAnswer || { question, answer: '' };
       })
     };
+  }
+
+  checkErasTour() {
+    // Ensure the userProfile is loaded before checking
+    if (this.userProfile && this.userProfile.username) {
+      this.userProfileService.hasCompletedErasTourSetlist(this.userProfile.username).subscribe(
+        (hasErasTour: boolean) => {
+          this.hasErasTour = hasErasTour;
+        },
+        (error) => {
+          console.error('Error checking Eras Tour:', error);
+        }
+      );
+    } else {
+      console.error('User profile not loaded yet');
+    }
+  }
+
+  navigateToErasTour() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/share-setlist', this.userProfile.username])
+    );
+    window.open(url, '_blank');
   }
 
   loadTopThirteenDetails() {
@@ -295,7 +323,7 @@ export class UserProfileComponent implements OnInit {
     const hasTopFiveAlbums = this.topFiveAlbums.length === 5;
     return !!hasTopThirteenSong && !!hasAnsweredQuestion && hasTopFiveAlbums;
   }
-  
+
   shareProfile() {
     if (!this.isProfileShareable()) {
       this.toastr.warning('Please add at least one song to your Top 13 and answer at least one question before sharing your profile.', 'Cannot Share Yet', {

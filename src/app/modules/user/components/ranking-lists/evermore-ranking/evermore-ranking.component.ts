@@ -6,7 +6,7 @@ import { Song } from "../../../../../interfaces/Song";
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { Ranking, Rankings } from '../../../../../interfaces/Rankings';
 import { Album } from "../../../../../interfaces/Album";
-
+import { Router } from "@angular/router";
 @Component({
   selector: 'app-debut-ranking',
   standalone: true,   
@@ -22,7 +22,8 @@ export class EvermoreRankingComponent implements OnInit {
 
   constructor(
     private rankingsService: RankingsService,
-    private albumService: AlbumService
+    private albumService: AlbumService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -99,6 +100,10 @@ export class EvermoreRankingComponent implements OnInit {
   onDrop(event: CdkDragDrop<Song[]>) {
     moveItemInArray(this.songs, event.previousIndex, event.currentIndex);
     this.updateRankings();
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 
   updateRankings() {

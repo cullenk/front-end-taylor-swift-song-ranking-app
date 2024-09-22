@@ -1,0 +1,8 @@
+<div class="album-popularity-container">
+    <div class="album-grid">
+      <div *ngFor="let album of albums; let i = index" class="album-item">
+        <img [src]="album.albumCover" [alt]="album.albumName" class="album-cover">
+        <span class="rank">{{ i + 1 }}</span>
+      </div>
+    </div>
+  </div>

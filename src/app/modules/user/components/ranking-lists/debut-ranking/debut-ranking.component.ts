@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
 import { RankingsService } from "../../../../../services/rankings.service";
 import { AlbumService } from "../../../../../services/album.service";
 import { Song } from "../../../../../interfaces/Song";
@@ -21,6 +22,7 @@ export class DebutRankingComponent implements OnInit {
   currentlyPlaying: Song | null = null;
 
   constructor(
+    private router: Router,
     private rankingsService: RankingsService,
     private albumService: AlbumService
   ) {}
@@ -36,6 +38,10 @@ export class DebutRankingComponent implements OnInit {
         e.preventDefault();
       }
     }, false);
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 
   loadAlbumData() {

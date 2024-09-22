@@ -6,6 +6,8 @@ import { Album } from "../../../../../interfaces/Album";
 import { Song } from "../../../../../interfaces/Song";
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { Ranking, Rankings } from '../../../../../interfaces/Rankings';
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-midnights-ranking',
@@ -22,12 +24,17 @@ export class MidnightsRankingComponent implements OnInit {
 
   constructor(
     private rankingsService: RankingsService,
-    private albumService: AlbumService
+    private albumService: AlbumService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.loadAlbumData();
     this.disableAudioRightClick();
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 
   disableAudioRightClick() {

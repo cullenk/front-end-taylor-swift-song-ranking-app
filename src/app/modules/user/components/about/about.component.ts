@@ -49,35 +49,45 @@ export class AboutComponent {
     }
   ];
 
-  openLightbox(index: number): void {
+  openLightbox(index: number) {
     this.currentIndex = index;
+    this.lightboxVisible = true;
     this.lightboxImage = this.images[index].src;
     this.lightboxCaption = this.images[index].caption;
-    this.lightboxVisible = true;
   }
 
-  closeLightbox(event: Event): void {
+  closeLightbox(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.lightboxVisible = false;
+    }
+  }
+
+  navigate(event: Event | KeyboardEvent, direction: number) {
     event.stopPropagation();
-    this.lightboxVisible = false;
-  }
-
-  navigate(direction: number): void {
-    this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
-    this.lightboxImage = this.images[this.currentIndex].src;
-    this.lightboxCaption = this.images[this.currentIndex].caption;
+    if (event instanceof KeyboardEvent) {
+      event.preventDefault();
+    }
+    const newIndex = this.currentIndex + direction;
+    if (newIndex >= 0 && newIndex < this.images.length) {
+      this.currentIndex = newIndex;
+      this.lightboxImage = this.images[this.currentIndex].src;
+      this.lightboxCaption = this.images[this.currentIndex].caption;
+    }
   }
 
   @HostListener('document:keydown.arrowright', ['$event'])
   onArrowRight(event: KeyboardEvent) {
     if (this.lightboxVisible) {
-      this.navigate(1);
+      event.preventDefault(); // Prevent default arrow key behavior
+      this.navigate(event, 1);
     }
   }
-
+  
   @HostListener('document:keydown.arrowleft', ['$event'])
   onArrowLeft(event: KeyboardEvent) {
     if (this.lightboxVisible) {
-      this.navigate(-1);
+      event.preventDefault(); // Prevent default arrow key behavior
+      this.navigate(event, -1);
     }
   }
 }

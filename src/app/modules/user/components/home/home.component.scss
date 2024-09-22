@@ -289,14 +289,19 @@ html, body {
   flex-direction: column;
 }
 
-
-
-.top-users-widget, .top-songs-widget {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.widget.surprise-songs {
+  background-image: url('https://d3e29z0m37b0un.cloudfront.net/surpriseSongs.png');
+  background-size: cover;
+  background-position: center;
 }
 
+.widget.widget.surprise-songs h2 {
+  color: white;
+}
+
+.widget.widget.surprise-songs p {
+  color: rgb(213, 213, 213);
+}
 
 h2 {
   margin: 10px 0px 20px 0px;

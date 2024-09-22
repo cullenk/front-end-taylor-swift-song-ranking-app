@@ -98,7 +98,8 @@
     }
   }
 
-  .share-btn {
+  .share-btn,
+  .eras-tour-btn {
     padding: calc(var(--padding-base) * 0.5) var(--padding-base);
     background-color: var(--secondary-color);
     color: var(--text-color);
@@ -580,6 +581,10 @@ audio {
       max-width: 50%;
     }
 
+    .questionnaire h2 {
+      text-align: center;
+    }
+
     .btn-container {
       flex-direction: column;
     }
@@ -621,6 +626,10 @@ audio {
 @media (max-width: 768px) {
   .user-profile {
     padding: 10px; // Reduce padding on smaller screens
+
+    .welcome-div h1 {
+      font-size: 7vw;
+    }
 
     .profile-content {
       flex-direction: column;

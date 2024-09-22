@@ -8,27 +8,27 @@
       <nav [class.mobile-menu-open]="isMobileMenuOpen" [attr.aria-hidden]="!isMobileMenuOpen">
         <ul class="header-menu-list">
           <li class="nav-item">
-            <a routerLink="./userHome">Home</a>
+            <a routerLink="./userHome" (click)="closeMobileMenu()">Home</a>
           </li>
           <li class="nav-item">
-            <a routerLink="./about">About</a>
+            <a routerLink="./about" (click)="closeMobileMenu()">About</a>
           </li>
-        <li class="nav-item">
-          <a routerLink="./rankings">Album Rankings</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="./top13list">Top 13 List</a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="./erasTourBuilder">Eras Tour Builder</a>
+          <li class="nav-item">
+            <a routerLink="./rankings" (click)="closeMobileMenu()">Album Rankings</a>
           </li>
-        <li class="nav-item">
-          <a routerLink="./userProfile">My Profile</a>
-        </li>
-        <li class="nav-item" *ngIf="userAuthenticated">
-          <button type="button" class="logout-btn" (click)="logout()">Logout</button>
-        </li>
-      </ul>
-    </nav>
+          <li class="nav-item">
+            <a routerLink="./top13list" (click)="closeMobileMenu()">Top 13 List</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="./erasTourBuilder" (click)="closeMobileMenu()">Eras Tour Builder</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="./userProfile" (click)="closeMobileMenu()">My Profile</a>
+          </li>
+          <li class="nav-item" *ngIf="userAuthenticated">
+            <button type="button" class="logout-btn" (click)="logout(); closeMobileMenu()">Logout</button>
+          </li>
+        </ul>
+      </nav>
   </header>
   

@@ -42,7 +42,7 @@
     <span class="close" (click)="closeLightbox($event)">&times;</span>
     <img class="lightbox-content" [src]="lightboxImage" (click)="$event.stopPropagation()">
     <div id="caption" class="caption">{{ lightboxCaption }}</div>
-    <a class="prev" (click)="navigate(-1)">&lt;</a>
-    <a class="next" (click)="navigate(1)">&gt;</a>
+    <a class="prev" (click)="navigate($event, -1)">&lt;</a>
+<a class="next" (click)="navigate($event, 1)">&gt;</a>
   </div>
   

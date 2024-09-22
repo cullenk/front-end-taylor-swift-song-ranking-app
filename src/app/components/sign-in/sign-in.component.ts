@@ -2,16 +2,16 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, Hos
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { MailService } from '../../services/mail.service';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-sign-in',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterModule],
+  selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
@@ -21,6 +21,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
   forgotPasswordForm: FormGroup;
   isLoginMode = true;
   isForgotPasswordMode = false;
+  showPassword: boolean = false;
   albumCovers: string[] = [
     'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
     'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
@@ -55,8 +56,8 @@ export class SignInComponent implements OnInit, AfterViewInit {
     });
 
     this.signupForm = new FormGroup({
-      'username': new FormControl('', [Validators.required]),
-      'email': new FormControl('', [Validators.required]),
+      'username': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'email': new FormControl('', [Validators.required, Validators.email]),
       'password': new FormControl('', [Validators.required])
     });
 
@@ -82,7 +83,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     // Open Graph
     this.meta.updateTag({ property: 'og:title', content: 'Sign In - Swiftie Ranking Hub' });
     this.meta.updateTag({ property: 'og:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
-    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/noto_heart-hands.png' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
     this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/login' });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     
@@ -90,7 +91,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: 'Sign In - Swiftie Ranking Hub' });
     this.meta.updateTag({ name: 'twitter:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
-    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/noto_heart-hands.png' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
   }
 
   shuffleAlbumCovers() {
@@ -149,28 +150,46 @@ export class SignInComponent implements OnInit, AfterViewInit {
     });
   }
 
-  //On create account submit from frontend
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   onSubmit() {
     if (this.isLoginMode) {
       this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(
           (response) => {
-            this.toastr.success('Login successful!', 'Success');
-            // Handle successful login (e.g., navigate to dashboard)
           },
           (error) => {
             this.toastr.error('Login failed. Please check your credentials.', 'Error');
           }
         );
     } else {
+      // Check username length
+      if (this.signupForm.get('username')!.value.length < 3) {
+        this.toastr.warning('Username must be at least 3 characters long.', 'Invalid Username', {
+          timeOut: 5000,
+          closeButton: true,
+          progressBar: true
+        });
+        return; // Stop the submission
+      }
+
       this.AuthService.createNewUser(this.signupForm.value.username, this.signupForm.value.email, this.signupForm.value.password)
         .subscribe(
           (response) => {
-            // this.toastr.success('Account created successfully! Check your email for a welcome message.', 'Success');
-            this.isLoginMode = true; // Switch back to login mode
+            this.isLoginMode = true; 
           },
           (error) => {
-            this.toastr.error('Account creation failed. Please try again.', 'Error');
+            if (error.error && error.error.message && error.error.message.includes('Password must be')) {
+              this.toastr.warning(error.error.message, 'Password Requirements', {
+                timeOut: 10000,
+                closeButton: true,
+                progressBar: true
+              });
+            } else {
+              this.toastr.error('Account creation failed. Please try again.', 'Error');
+            }
           }
         );
     }
@@ -205,4 +224,3 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.forgotPasswordForm.reset();
   }
 }
-

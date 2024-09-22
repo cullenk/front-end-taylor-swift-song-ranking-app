@@ -1,0 +1,72 @@
+.surprise-songs-container {
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  .surprise-song {
+    transition: opacity 0.5s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.8); // Semi-transparent white background
+    padding: 15px;
+    border-radius: 8px;
+  
+    p {
+      text-align: center;
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 15px;
+    }
+  
+    .username {
+      font-weight: bold;
+      color: var(--secondary-color);
+    }
+  }
+  
+  .song-pick {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      background-color: rgba(232, 239, 245, 0.9); // Light blue on hover
+    }
+  
+    i, img {
+      margin-right: 15px;
+      font-size: 24px;
+    }
+  
+    .piano-icon {
+      width: 24px;
+      height: 24px;
+      filter: invert(1) brightness(0); // This inverts the white to black
+    }
+  
+    p {
+      margin: 0;
+      font-size: 1em;
+      color: #555;
+    }
+  }
+  
+  .no-songs {
+    text-align: center;
+    color: #fff;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }

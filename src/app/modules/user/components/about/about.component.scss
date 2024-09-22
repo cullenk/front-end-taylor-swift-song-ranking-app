@@ -244,8 +244,38 @@
     justify-content: center;
   }
 
+
 .about-widget {
   padding: 1rem;
+}
+
+@media (max-width: 768px) {
+.about-container {
+  padding: 1rem;
+}
+
+.info-widget {
+  min-height: 350px;
+  width: 100%;
+}
+
+.message-text {
+  max-width: 310px;
+  font-size: .8rem !important;
+  text-align: center;
+}
+
+.photos-row {
+flex-direction: column;
+justify-content: center;
+}
+
+.photo-item {
+  margin: 0px auto;
+  width: 80%;
+  height: auto;
+}
+
 }
 
 }

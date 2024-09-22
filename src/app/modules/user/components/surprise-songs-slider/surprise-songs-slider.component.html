@@ -1,0 +1,16 @@
+<div class="surprise-songs-container">
+    <div class="surprise-song" *ngIf="currentSong">
+      <p><span class="username">{{ currentSong.username }}</span>'s picks:</p>
+      <div class="song-pick">
+        <i class="fas fa-guitar"></i>
+        <p>{{ currentSong.guitar }}</p>
+      </div>
+      <div class="song-pick">
+        <img class="piano-icon" src="https://d3e29z0m37b0un.cloudfront.net/graphics/pianoIcon.svg">
+        <p>{{ currentSong.piano }}</p>
+      </div>
+    </div>
+    <div class="no-songs" *ngIf="!currentSong">
+      <p>No surprise songs available</p>
+    </div>
+  </div>

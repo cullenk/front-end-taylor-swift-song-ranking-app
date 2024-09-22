@@ -10,11 +10,12 @@ import { TopThirteenItem } from '../../../../interfaces/Top13Item';
 import { ToastrService } from 'ngx-toastr';
 import { AlbumThemeService } from '../../../../services/album-theme.service';
 import { AlbumTheme } from '../../../../interfaces/AlbumTheme';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-top-13-song-slot',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CdkDragHandle],
   templateUrl: './top-13-song-slot.component.html',
   styleUrls: ['./top-13-song-slot.component.scss']
 })
@@ -23,8 +24,9 @@ export class Top13SongSlotComponent implements OnInit {
   searchQuery: string = '';
   searchResults: SearchResult[] = [];
   selectedSong: Song | null = null;
-  topThirteen: TopThirteenItem[] = [];
+  topThirteenItem: TopThirteenItem | null = null;
   albumTheme: AlbumTheme;
+  topThirteenList: TopThirteenItem[] = [];
 
   constructor(
     private albumService: AlbumService,
@@ -38,7 +40,7 @@ export class Top13SongSlotComponent implements OnInit {
 
   ngOnInit() {
     this.topThirteenStateService.topThirteen$.subscribe(
-      list => this.topThirteen = list
+      list => this.topThirteenList = list
     );
     this.loadTopThirteenList();
     this.disableAudioRightClick();
@@ -74,11 +76,18 @@ export class Top13SongSlotComponent implements OnInit {
   }
 
   loadExistingSong() {
-    const existingSong = this.topThirteen.find(item => item.slot === this.slotIndex);
+    const existingSong = this.topThirteenList.find(item => item.slot === this.slotIndex);
     if (existingSong) {
       this.albumService.getSongById(existingSong.songId).subscribe(
         (song: Song) => {
           this.selectedSong = song;
+          this.topThirteenItem = {
+            slot: this.slotIndex,
+            albumName: existingSong.albumName,
+            songId: existingSong.songId,
+            songTitle: existingSong.songTitle,
+            albumCover: existingSong.albumCover
+          };
           this.updateAlbumTheme();
         },
         error => {
@@ -87,15 +96,18 @@ export class Top13SongSlotComponent implements OnInit {
         }
       );
     } else {
-      // console.log(`No song selected for slot ${this.slotIndex}`);
       this.updateAlbumTheme();
     }
   }
 
   searchSongs() {
-    this.albumService.searchSongs(this.searchQuery).subscribe(
+    const trimmedQuery = this.searchQuery.trim().replace(/\s+/g, ' ');
+    if (trimmedQuery.length === 0) {
+      this.searchResults = [];
+      return;
+    }
+    this.albumService.searchSongs(trimmedQuery).subscribe(
       (results: SearchResult[]) => {
-        console.log('Search results:', results);
         this.searchResults = results;
       },
       error => {
@@ -106,9 +118,35 @@ export class Top13SongSlotComponent implements OnInit {
   }
 
   selectSong(song: SearchResult) {
-    console.log('Audio source:', song.audioSource);
-    this.fetchSongDetails(song._id);
-    this.updateAlbumTheme();
+    this.selectedSong = {
+      _id: song._id,
+      title: song.title,
+      album: song.album,
+      albumImageSource: song.albumImageSource,
+      audioSource: song.audioSource
+    };
+    
+    this.topThirteenItem = {
+      slot: this.slotIndex,
+      albumName: song.album,
+      songId: song._id,
+      songTitle: song.title,
+      albumCover: song.albumImageSource
+    };
+  
+    this.updateTopThirteen();
+  }
+  
+  resetSong() {
+    this.selectedSong = null;
+    this.topThirteenItem = {
+      slot: this.slotIndex,
+      albumName: '',
+      songId: '',
+      songTitle: '',
+      albumCover: ''
+    };
+    this.updateTopThirteen();
   }
 
   handleAudioError(event: any) {
@@ -130,7 +168,7 @@ export class Top13SongSlotComponent implements OnInit {
 
   checkAndUpdateTopThirteen(song: Song) {
     // Check if the song is already in the top 13 list
-    const duplicateSong = this.topThirteen.find(item => item.songTitle === song.title && item.slot !== this.slotIndex);
+    const duplicateSong = this.topThirteenList.find(item => item.songTitle === song.title && item.slot !== this.slotIndex);
     if (duplicateSong) {
       this.toastr.error('This song is already in your top 13 list!', 'Duplicate Song');
       this.resetSelection();
@@ -144,13 +182,13 @@ export class Top13SongSlotComponent implements OnInit {
   }
 
   updateTopThirteen() {
-    if (this.selectedSong) {
+    if (this.topThirteenItem) {
       this.topThirteenService.updateSong(
-        this.slotIndex,
-        this.selectedSong.album,
-        this.selectedSong._id!,
-        this.selectedSong.title,
-        this.selectedSong.albumImageSource
+        this.topThirteenItem.slot,
+        this.topThirteenItem.albumName,
+        this.topThirteenItem.songId,
+        this.topThirteenItem.songTitle,
+        this.topThirteenItem.albumCover
       ).subscribe(
         (updatedList) => {
           console.log('Top 13 list updated successfully', updatedList);
@@ -175,20 +213,5 @@ export class Top13SongSlotComponent implements OnInit {
   handleImageError(event: any) {
     event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg'; // Set a fallback image
     console.error('Failed to load album image');
-  }
-
-  resetSong() {
-    this.topThirteenService.removeSong(this.slotIndex).subscribe(
-      (updatedList) => {
-        console.log('Song removed from top 13 list');
-        this.topThirteenStateService.updateTopThirteen(updatedList);
-        this.toastr.success('Song removed from your top 13 list', 'Success');
-        this.resetSelection();
-      },
-      error => {
-        console.error('Error removing song from top 13 list:', error);
-        this.toastr.error('Error removing song from top 13 list', 'Error');
-      }
-    );
   }
 }

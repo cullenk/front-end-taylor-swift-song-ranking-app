@@ -5,6 +5,7 @@ import { AlbumService } from "../../../../../services/album.service";
 import { Album } from "../../../../../interfaces/Album";
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { AlbumRanking } from "../../../../../interfaces/AlbumRanking";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-all-albums-ranking',
@@ -20,7 +21,8 @@ export class AllAlbumsRankingComponent implements OnInit {
   constructor(
     private rankingsService: RankingsService,
     private albumService: AlbumService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -86,6 +88,10 @@ export class AllAlbumsRankingComponent implements OnInit {
   onDrop(event: CdkDragDrop<Album[]>) {
     moveItemInArray(this.albums, event.previousIndex, event.currentIndex);
     this.updateAlbumRankings();
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 
   updateAlbumRankings() {

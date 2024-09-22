@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TopThirteenItem } from '../interfaces/Top13Item';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,10 @@ export class TopThirteenService {
         return of([]);
       })
     );
+  }
+
+  updateEntireList(list: TopThirteenItem[]): Observable<TopThirteenItem[]> {
+    return this.http.put<TopThirteenItem[]>(`${this.apiUrl}/rankings/user/top-thirteen`, list);
   }
 
   updateSong(slot: number, albumName: string, songId: string, songTitle: string, albumCover: string): Observable<TopThirteenItem[]> {

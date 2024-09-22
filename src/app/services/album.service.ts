@@ -6,7 +6,7 @@ import { Album } from '../interfaces/Album';
 import { Song } from '../interfaces/Song';
 import { SearchResult } from '../interfaces/SearchResult';
 import { AlbumRanking } from '../interfaces/AlbumRanking';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -49,15 +49,8 @@ export class AlbumService {
   }
 
   searchSongs(query: string): Observable<SearchResult[]> {
-    return this.http.get<SearchResult[]>(`${this.apiUrl}/songSearch`, {
-      headers: this.getHeaders(),
-      params: { q: encodeURIComponent(query) }
-    }).pipe(
-      catchError(error => {
-        console.error('Error searching songs:', error);
-        return of([]);
-      })
-    );
+    const encodedQuery = encodeURIComponent(query);
+    return this.http.get<SearchResult[]>(`${this.apiUrl}/songSearch?q=${encodedQuery}`);
   }
 
   getAlbumBySong(songTitle: string): Observable<Album> {
@@ -138,48 +131,6 @@ export class AlbumService {
       })
     );
   }
-
-  //Get Popular Album Data
-  // getPopularAlbums(): Observable<Album[]> {
-  //   return forkJoin({
-  //     topSongs: this.http.get<Song[]>('/api/top-songs'),
-  //     albumRankings: this.http.get<AlbumRanking[]>('/api/album-rankings'),
-  //     albums: this.http.get<Album[]>('/api/albums')
-  //   }).pipe(
-  //     map(({ topSongs, albumRankings, albums }) => {
-  //       // Count occurrences of albums in top songs
-  //       const albumCounts = topSongs.reduce((acc, song) => {
-  //         acc[song.albumId] = (acc[song.albumId] || 0) + 1;
-  //         return acc;
-  //       }, {} as {[key: string]: number});
-
-  //       // Calculate average ranking for each album
-  //       const albumRankingAverages = albumRankings.reduce((acc, ranking) => {
-  //         if (!acc[ranking.albumId]) {
-  //           acc[ranking.albumId] = { sum: 0, count: 0 };
-  //         }
-  //         acc[ranking.albumId].sum += ranking.rank;
-  //         acc[ranking.albumId].count++;
-  //         return acc;
-  //       }, {} as {[key: string]: {sum: number, count: number}});
-
-  //       // Calculate popularity score for each album
-  //       const albumScores = albums.map(album => {
-  //         const topSongScore = albumCounts[album.id] || 0;
-  //         const rankingAverage = albumRankingAverages[album.id] 
-  //           ? albumRankingAverages[album.id].sum / albumRankingAverages[album.id].count 
-  //           : 0;
-  //         const popularityScore = topSongScore * 2 + (10 - rankingAverage);
-  //         return { ...album, popularityScore };
-  //       });
-
-  //       // Sort albums by popularity score and return top 5
-  //       return albumScores
-  //         .sort((a, b) => b.popularityScore - a.popularityScore)
-  //         .slice(0, 5);
-  //     })
-  //   );
-  // }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
