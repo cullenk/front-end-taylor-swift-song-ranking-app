@@ -8,7 +8,7 @@ import { AuthModelCreate } from './auth-model-create';
 import { ToastService } from './toast-service.service';
 import { isPlatformBrowser } from '@angular/common';
 import { MailService } from './mail.service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
