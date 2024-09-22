@@ -1,7 +1,7 @@
 export interface Song {
   _id: string;
   title: string;
-  audioSource: string;
+  album: string;
   albumImageSource: string;
-  album: string; 
+  audioSource: string;
 }

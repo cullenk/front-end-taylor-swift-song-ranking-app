@@ -205,20 +205,23 @@ export class UserProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
-    if (this.userProfile.rankings && this.userProfile.rankings.topThirteen && this.userProfile.rankings.topThirteen.length > 0) {
+    if (this.userProfile.rankings?.topThirteen?.length > 0) {
       const songRequests = this.userProfile.rankings.topThirteen.map(song =>
         this.albumService.getSongById(song.songId)
       );
       forkJoin(songRequests).subscribe(
-        (songs: Song[]) => {
+        (songs: (Song | null)[]) => {
           this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => {
             const songDetails = songs[index];
-            return {
-              ...song,
-              albumImage: songDetails.albumImageSource,
-              audioSource: songDetails.audioSource,
-              albumCover: song.albumCover || songDetails.albumImageSource, // Add this line
-            };
+            if (songDetails) {
+              return {
+                ...song,
+                albumImage: songDetails.albumImageSource,
+                audioSource: songDetails.audioSource,
+                albumCover: song.albumCover || songDetails.albumImageSource,
+              };
+            }
+            return song; // Return the original song if no details were found
           });
           this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
           this.isLoading = false;

@@ -110,13 +110,17 @@ export class AlbumService {
     );
   }
 
-  getSongById(songId: string): Observable<Song> {
+  getSongById(songId: string): Observable<Song | null> {
+    if (!songId) {
+      console.log('No song ID provided');
+      return of(null);
+    }
     return this.http.get<Song>(`${this.apiUrl}/songs/${encodeURIComponent(songId)}`, {
       headers: this.getHeaders()
     }).pipe(
       catchError(error => {
         console.error('Error fetching song by ID:', error);
-        return throwError(error);
+        return of(null); // Return null instead of throwing an error
       })
     );
   }

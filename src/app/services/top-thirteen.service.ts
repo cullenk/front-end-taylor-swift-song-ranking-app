@@ -28,10 +28,6 @@ export class TopThirteenService {
     );
   }
 
-  updateEntireList(list: TopThirteenItem[]): Observable<TopThirteenItem[]> {
-    return this.http.put<TopThirteenItem[]>(`${this.apiUrl}/rankings/user/top-thirteen`, list);
-  }
-
   updateSong(slot: number, albumName: string, songId: string, songTitle: string, albumCover: string): Observable<TopThirteenItem[]> {
     return this.http.post<TopThirteenItem[]>(`${this.apiUrl}/rankings/user/top-thirteen`, { slot, albumName, songId, songTitle, albumCover }, { headers: this.getHeaders() }).pipe(
       catchError(error => {

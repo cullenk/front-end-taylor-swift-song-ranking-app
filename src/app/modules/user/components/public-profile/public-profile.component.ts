@@ -191,24 +191,28 @@ export class PublicProfileComponent implements OnInit {
   }
 
   loadTopThirteenDetails() {
-    // console.log('Entering loadTopThirteenDetails');
-    if (this.userProfile?.rankings?.topThirteen) {
+    if (this.userProfile?.rankings?.topThirteen?.length > 0) {
       const songRequests = this.userProfile.rankings.topThirteen.map(song =>
         this.albumService.getSongById(song.songId)
       );
   
       forkJoin(songRequests).subscribe(
-        (songs: Song[]) => {
-          this.userProfile!.rankings.topThirteen = this.userProfile!.rankings.topThirteen.map((song, index) => {
-            const songDetails = songs[index];
-            return {
-              ...song,
-              albumImage: songDetails.albumImageSource,
-              audioSource: songDetails.audioSource
-            };
-          });
-          // Ensure the list is sorted by slot
-          this.userProfile!.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
+        (songs: (Song | null)[]) => {
+          if (this.userProfile && this.userProfile.rankings && this.userProfile.rankings.topThirteen) {
+            this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => {
+              const songDetails = songs[index];
+              if (songDetails) {
+                return {
+                  ...song,
+                  albumImage: songDetails.albumImageSource,
+                  audioSource: songDetails.audioSource
+                };
+              }
+              return song; // Return the original song if no details were found
+            });
+            // Ensure the list is sorted by slot
+            this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
+          }
           this.isLoading = false;
         },
         error => {
@@ -218,6 +222,7 @@ export class PublicProfileComponent implements OnInit {
         }
       );
     } else {
+      console.log('No top thirteen songs found');
       this.isLoading = false;
     }
   }

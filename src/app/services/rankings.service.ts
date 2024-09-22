@@ -1,8 +1,9 @@
 // rankings.service.ts
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
+import { tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, tap } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
 import { AlbumRanking } from "../interfaces/AlbumRanking";

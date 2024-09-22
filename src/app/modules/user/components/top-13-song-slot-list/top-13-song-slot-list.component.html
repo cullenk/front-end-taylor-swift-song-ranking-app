@@ -2,13 +2,12 @@
   <div class="header-container">
     <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
     <div class="header-div">
-      <h1 class="header-title">My Top 13</h1>
-      <h1 class="header-sub-title">Taylor Swift Songs</h1>
+    <h1 class="header-title">My Top 13</h1>
+    <h1 class="header-sub-title">Taylor Swift Songs</h1>
     </div>
   </div>
-  <p>**Click and drag the ranking number to reorder your list.</p>
-  <div class="song-slots-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
-    <div class="song-slot" *ngFor="let slot of slots; let i = index" cdkDrag>
+  <div class="song-slots-list">
+    <div class="song-slot" *ngFor="let slot of slots; let i = index">
       <app-top-13-song-slot [slotIndex]="i + 1"></app-top-13-song-slot>
     </div>
   </div>
