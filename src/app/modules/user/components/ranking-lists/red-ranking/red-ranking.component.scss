@@ -229,8 +229,13 @@ audio {
 @media (max-width: 480px) {
   .song-item {
     flex-direction: column;
-    align-items: flex-start;
   }
+
+.song-title {
+  width: 100%;
+  text-align: center;
+  padding: 0px;
+}
 
   audio {
     width: 100%;

@@ -225,6 +225,12 @@ audio {
     align-items: flex-start;
   }
 
+  .song-title {
+    width: 100%;
+    text-align: center;
+    padding: 0px;
+  }
+
   audio {
     width: 100%;
     margin-top: 10px;

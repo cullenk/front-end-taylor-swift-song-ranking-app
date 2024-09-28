@@ -83,17 +83,22 @@ export class TopUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserLogins().subscribe((users: User[]) => {
+      // Filter out your account
+      const filteredUsers = users.filter(user => user.username !== "Cullen'sVersion1994");
+  
       const maxUsers = this.isMobileScreen() ? 5 : 10;
-      const sortedUsers = users.sort((a, b) => b.loginCount - a.loginCount).slice(0, maxUsers);
-
+      const sortedUsers = filteredUsers
+        .sort((a, b) => b.loginCount - a.loginCount)
+        .slice(0, maxUsers);
+  
       // Pad the data to always have the correct number of entries
-    while (sortedUsers.length < maxUsers) {
-      sortedUsers.push({ username: '', loginCount: 0 });
-    }
-
-    const usernames = sortedUsers.map((user: User) => user.username);
-    const loginCounts = sortedUsers.map((user: User) => user.loginCount);
-
+      while (sortedUsers.length < maxUsers) {
+        sortedUsers.push({ username: '', loginCount: 0 });
+      }
+  
+      const usernames = sortedUsers.map((user: User) => user.username);
+      const loginCounts = sortedUsers.map((user: User) => user.loginCount);
+  
       const colors = [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -106,7 +111,7 @@ export class TopUsersComponent implements OnInit {
         'rgba(255, 99, 64, 0.2)',
         'rgba(255, 205, 86, 0.2)'
       ].slice(0, maxUsers);
-
+  
       this.chartData = {
         labels: usernames,
         datasets: [

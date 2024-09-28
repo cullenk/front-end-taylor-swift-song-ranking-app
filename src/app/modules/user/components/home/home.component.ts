@@ -242,21 +242,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   updateMetaTags() {
-    this.title.setTitle('Sign In - Swiftie Ranking Hub');
+    this.title.setTitle('Home - Swiftie Ranking Hub');
     
-    this.meta.updateTag({ name: 'description', content: 'Sign in or create an account to join Swiftie Ranking Hub. Rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ name: 'description', content: 'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
     
     // Open Graph
-    this.meta.updateTag({ property: 'og:title', content: 'Sign In - Swiftie Ranking Hub' });
-    this.meta.updateTag({ property: 'og:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ property: 'og:title', content: 'Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: 'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
     this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
     this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/userHome' });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     
     // Twitter Card
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.meta.updateTag({ name: 'twitter:title', content: 'Sign In - Swiftie Ranking Hub' });
-    this.meta.updateTag({ name: 'twitter:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
+    this.meta.updateTag({ name: 'twitter:title', content: 'Home - Swiftie Ranking Hub' });
+    this.meta.updateTag({ name: 'twitter:description', content: 'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
     this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
   }
 

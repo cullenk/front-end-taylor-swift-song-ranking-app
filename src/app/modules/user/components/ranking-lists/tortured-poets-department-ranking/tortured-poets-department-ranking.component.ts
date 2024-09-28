@@ -123,6 +123,22 @@ export class TorturedPoetsDepartmentRankingComponent implements OnInit {
     );
   }
 
+  handleAudioPlay(event: Event) {
+    const audioElement = event.target as HTMLAudioElement;
+  
+    // Pause all other audio elements
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (audio !== audioElement && !audio.paused) {
+        audio.pause();
+      }
+    });
+  
+    // Play the clicked audio
+    if (audioElement.paused) {
+      audioElement.play();
+    }
+  }
+
   handleAudioError(event: any) {
     console.error('Audio failed to load:', event);
     // You can add error handling logic here, e.g., showing a toast message

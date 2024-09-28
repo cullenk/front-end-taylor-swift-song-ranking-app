@@ -8,14 +8,19 @@
         </div>
         <h1>{{ userProfile.username }}</h1>
         
-        <!-- Top 5 Albums -->
+     <!-- Top 5 Albums -->
         <div class="top-albums-section">
           <h2>Top 5 Albums</h2>
-          <div class="top-5-album-list">
-            <div *ngFor="let album of topFiveAlbums || []; let i = index" class="album-item">
-              <img [src]="album?.albumCover || 'path/to/default/album/cover.jpg'" [alt]="album?.albumName + ' cover'" class="top-5-album-cover">
+          <ng-container *ngIf="topFiveAlbums && topFiveAlbums.length > 0; else noAlbums">
+            <div class="top-5-album-list">
+              <div *ngFor="let album of topFiveAlbums; let i = index" class="album-item">
+                <img [src]="album?.albumCover || 'path/to/default/album/cover.jpg'" [alt]="album?.albumName + ' cover'" class="top-5-album-cover">
+              </div>
             </div>
-          </div>
+          </ng-container>
+          <ng-template #noAlbums>
+            <p class="no-albums-text">User hasn't ranked their albums yet.</p>
+          </ng-template>
         </div>
 
         <!-- Eras Tour Link -->
@@ -55,7 +60,12 @@
             <div class="song-details">
               <h3>{{ song.songTitle }}</h3>
             </div>
-            <audio *ngIf="song.audioSource" controls controlsList="nodownload">
+            <audio 
+            *ngIf="song.audioSource" 
+            controls 
+            controlsList="nodownload"
+            (play)="handleAudioPlay($event)" 
+           >
               <source [src]="song.audioSource" type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +17,7 @@ import { Meta, Title } from '@angular/platform-browser';
   templateUrl: './public-profile.component.html',
   styleUrls: ['./public-profile.component.scss']
 })
-export class PublicProfileComponent implements OnInit {
+export class PublicProfileComponent implements OnInit, OnDestroy {
   userProfile: UserProfile = {
     theme: '',
     profileImage: '',
@@ -139,6 +139,15 @@ export class PublicProfileComponent implements OnInit {
     this.disableAudioRightClick();
   }
 
+  ngOnDestroy() {
+    // Pause all audio elements when the component is destroyed
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (!audio.paused) {
+        audio.pause();
+      }
+    });
+  }
+
   updateMetaTags(username: string) {
     const title = `${username}'s Profile - Swiftie Ranking Hub`;
     const description = `Check out ${username}'s Taylor Swift rankings and profile on Swiftie Ranking Hub!`;
@@ -183,10 +192,10 @@ export class PublicProfileComponent implements OnInit {
   setDefaultsIfNeeded(profile: UserProfile): UserProfile {
     return {
       ...profile,
-      theme: profile.theme || 'Debut',
+      theme: profile.theme || 'Fearless',
       profileImage: profile.profileImage || this.defaultProfileImage,
-      rankings: profile.rankings || { topThirteen: [] }, 
-      profileQuestions: profile.profileQuestions || []
+      rankings: profile.rankings || { topThirteen: [] },
+      profileQuestions: profile.profileQuestions || this.getDefaultProfileQuestions()
     };
   }
   
@@ -242,7 +251,7 @@ export class PublicProfileComponent implements OnInit {
   }
 
   getThemeClass(): string {
-    return this.userProfile?.theme ? (this.themeClassMap[this.userProfile.theme] || '') : '';
+    return this.userProfile?.theme ? (this.themeClassMap[this.userProfile.theme] || 'Fearless') : 'Fearless';
   }
 
   getProfileImage(): string {
@@ -260,7 +269,24 @@ export class PublicProfileComponent implements OnInit {
   }
 
   getThemeBackground(): string {
-    return this.userProfile?.theme ? this.themeBackgrounds[this.userProfile.theme] : '';
+    const theme = this.userProfile?.theme || 'Fearless';
+    return this.themeBackgrounds[theme] || this.themeBackgrounds['Fearless'];
+  }
+
+  handleAudioPlay(event: Event) {
+    const audioElement = event.target as HTMLAudioElement;
+  
+    // Pause all other audio elements
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (audio !== audioElement && !audio.paused) {
+        audio.pause();
+      }
+    });
+  
+    // Play the clicked audio
+    if (audioElement.paused) {
+      audioElement.play();
+    }
   }
 
   disableAudioRightClick() {

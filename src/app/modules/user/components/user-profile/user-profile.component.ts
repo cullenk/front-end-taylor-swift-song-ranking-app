@@ -133,7 +133,7 @@ export class UserProfileComponent implements OnInit {
       profile => {
         this.userProfile = this.setDefaultsIfNeeded(profile);
         this.loadTopThirteenDetails();
-        this.checkErasTour(); // Add this line
+        this.checkErasTour(); 
         this.isLoading = false;
       },
       error => {
@@ -233,7 +233,6 @@ export class UserProfileComponent implements OnInit {
         }
       );
     } else {
-      console.log('No top thirteen songs, setting isLoading to false');
       this.userProfile.rankings = this.userProfile.rankings || {};
       this.userProfile.rankings.topThirteen = [];
       this.isLoading = false;
@@ -246,6 +245,23 @@ export class UserProfileComponent implements OnInit {
         e.preventDefault();
       }
     }, false);
+  }
+
+  handleAudioPlay(event: Event) {
+    console.log('clicked')
+    const audioElement = event.target as HTMLAudioElement;
+  
+    // Pause all other audio elements
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (audio !== audioElement && !audio.paused) {
+        audio.pause();
+      }
+    });
+  
+    // Play the clicked audio
+    if (audioElement.paused) {
+      audioElement.play();
+    }
   }
 
   openProfileImageDialog() {
@@ -274,11 +290,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   getThemeClass(): string {
-    return this.themeClassMap[this.userProfile?.theme] || '';
+    return this.themeClassMap[this.userProfile?.theme] || this.themeClassMap[this.defaultTheme];
   }
 
   getThemeBackground(): string {
-    return this.userProfile?.theme ? this.themeBackgrounds[this.userProfile.theme] : '';
+    if (this.userProfile?.theme && this.themeBackgrounds[this.userProfile.theme]) {
+      return this.themeBackgrounds[this.userProfile.theme];
+    }
+    return this.themeBackgrounds[this.defaultTheme];
   }
 
   startEditing() {
@@ -294,8 +313,14 @@ export class UserProfileComponent implements OnInit {
     if (this.userProfile) {
       this.userProfile.theme = theme;
       this.userProfileService.updateTheme(theme).subscribe(
-        () => this.loadUserProfile(),
-        error => console.error('Error updating theme', error)
+        () => {
+          this.loadUserProfile();
+          this.toastr.success('Theme updated successfully!', 'Success');
+        },
+        error => {
+          console.error('Error updating theme', error);
+          this.toastr.error('Failed to update theme. Please try again.', 'Error');
+        }
       );
     }
   }

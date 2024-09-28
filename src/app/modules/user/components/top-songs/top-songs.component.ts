@@ -30,12 +30,19 @@ export class TopSongsComponent implements OnInit {
   };
 
   public chartOptions: ChartOptions = {
-    indexAxis: 'y', // Make the chart horizontal
+    indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false
+      },
+      tooltip: {
+        callbacks: {
+          title: (tooltipItems) => {
+            return this.originalTitles[tooltipItems[0].dataIndex]; // Return the full title
+          }
+        }
       }
     },
     scales: {
@@ -58,16 +65,41 @@ export class TopSongsComponent implements OnInit {
           font: {
             weight: 'bold'
           }
+        },
+        ticks: {
+          callback: function(value, index, values) {
+            const label = this.chart.data.labels?.[index];
+            if (typeof label === 'string') {
+              const maxLength = 30; // Adjust this value based on your needs
+              return label.length > maxLength ? label.substr(0, maxLength) + '...' : label;
+            }
+            return '';
+          },
+          autoSkip: false,
+          maxRotation: 0,
+          minRotation: 0,
+          font: {
+            size: 10 // Adjust this value based on your needs
+          }
         }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10 // Adjust this value to provide more space for labels
       }
     }
   };
+
+  private originalTitles: string[] = [];
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.getTopSongs().subscribe((songs: Song[]) => {
-      const titles = songs.map(song => song.title);
+      const maxTitleLength = 20; // Adjust this value based on your needs
+      this.originalTitles = songs.map(song => song.title);
+      const titles = songs.map(song => this.truncateTitle(song.title, maxTitleLength));
       const counts = songs.map(song => song.count);
       const colors = titles.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.6)`);
 
@@ -83,5 +115,12 @@ export class TopSongsComponent implements OnInit {
         ]
       };
     });
+  }
+
+  private truncateTitle(title: string, maxLength: number): string {
+    if (title.length > maxLength) {
+      return title.substr(0, maxLength) + '...';
+    }
+    return title;
   }
 }

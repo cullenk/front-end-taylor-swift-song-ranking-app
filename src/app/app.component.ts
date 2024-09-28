@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { LoadingScreenComponent } from './modules/user/components/loading-screen/loading-screen.component';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -12,45 +13,39 @@ import { LoadingScreenComponent } from './modules/user/components/loading-screen
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  isLoading = true;
-
   constructor(
     private authService: AuthService,
     private router: Router,
+    private loadingService: LoadingService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      // Authenticate user
       this.authService.authenticateFromLocalStorage().then(() => {
-        // Hide loading screen after authentication
-        this.isLoading = false;
+        this.loadingService.setLoading(false);
       }).catch(error => {
         console.error('Authentication failed', error);
-        this.isLoading = false;
+        this.loadingService.setLoading(false);
       });
 
-      // Show loading screen during navigation
       this.router.events.subscribe(event => {
         if (event instanceof NavigationStart) {
-          this.isLoading = true;
+          this.loadingService.setLoading(true);
         } else if (
           event instanceof NavigationEnd ||
           event instanceof NavigationCancel ||
           event instanceof NavigationError
         ) {
-          this.isLoading = false;
+          this.loadingService.setLoading(false);
         }
       });
 
-      // Ensure loading screen is hidden after all resources have loaded
       window.addEventListener('load', () => {
-        this.isLoading = false;
+        this.loadingService.setLoading(false);
       });
     } else {
-      // If not in a browser environment, immediately hide the loading screen
-      this.isLoading = false;
+      this.loadingService.setLoading(false);
     }
   }
 

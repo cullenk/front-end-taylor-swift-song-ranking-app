@@ -4,6 +4,7 @@ import { Router, RouterModule, RouterOutlet, NavigationStart } from "@angular/ro
 import { filter } from 'rxjs/operators';
 import { CommonModule } from "@angular/common";
 import { ToastrService } from 'ngx-toastr';
+import { Meta, Title } from '@angular/platform-browser';
 
 interface Album {
   id: string;
@@ -44,10 +45,13 @@ export class RankingsComponent implements OnInit, OnDestroy {
   constructor(
     private rankingsService: RankingsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private meta: Meta,
+    private title: Title
   ) {}
 
   ngOnInit() {
+    this.updateMetaTags();
     this.rankingsService.getUserRankings().subscribe(
       rankings => this.rankings = rankings,
       error => {
@@ -65,6 +69,25 @@ export class RankingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopAllAudio();
+  }
+
+  updateMetaTags() {
+    this.title.setTitle('Album Rankings - Swiftie Ranking Hub');
+    
+    this.meta.updateTag({ name: 'description', content: 'Rank your favorite Taylor Swift songs by album.' });
+    
+    // Open Graph
+    this.meta.updateTag({ property: 'og:title', content: 'Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: 'Rank your favorite Taylor Swift songs by album.' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/rankings' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    
+    // Twitter Card
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: 'Album Rankings - Swiftie Ranking Hub' });
+    this.meta.updateTag({ name: 'twitter:description', content: 'Rank your favorite Taylor Swift songs by album.' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
   }
 
   private stopAllAudio() {

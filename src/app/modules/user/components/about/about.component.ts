@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-about',
@@ -48,6 +50,34 @@ export class AboutComponent {
       caption: 'I created a custom Taylor Funko Pop and display case :)'
     }
   ];
+
+  constructor(
+    private meta: Meta,
+    private title: Title
+  ){}
+
+  ngOnInit() {
+    this.updateMetaTags();
+  }
+
+  updateMetaTags() {
+    this.title.setTitle('About - Swiftie Ranking Hub');
+    
+    this.meta.updateTag({ name: 'description', content: 'Learn more about the Swiftie Ranking Hub and how you can rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
+    
+    // Open Graph
+    this.meta.updateTag({ property: 'og:title', content: 'Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: 'Learn more about the Swiftie Ranking Hub and how you can rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/about' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    
+    // Twitter Card
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: 'About - Swiftie Ranking Hub' });
+    this.meta.updateTag({ name: 'twitter:description', content: 'Learn more about the Swiftie Ranking Hub and how you can rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+  }
 
   openLightbox(index: number) {
     this.currentIndex = index;

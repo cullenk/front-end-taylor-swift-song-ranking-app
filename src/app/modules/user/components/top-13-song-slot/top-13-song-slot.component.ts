@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlbumService } from '../../../../services/album.service';
@@ -18,7 +18,7 @@ import { AlbumTheme } from '../../../../interfaces/AlbumTheme';
   templateUrl: './top-13-song-slot.component.html',
   styleUrls: ['./top-13-song-slot.component.scss']
 })
-export class Top13SongSlotComponent implements OnInit {
+export class Top13SongSlotComponent implements OnInit, OnDestroy {
   @Input() slotIndex!: number;
   searchQuery: string = '';
   searchResults: SearchResult[] = [];
@@ -42,6 +42,15 @@ export class Top13SongSlotComponent implements OnInit {
     );
     this.loadTopThirteenList();
     this.disableAudioRightClick();
+  }
+
+  ngOnDestroy() {
+    // Pause all audio elements when the component is destroyed
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (!audio.paused) {
+        audio.pause();
+      }
+    });
   }
 
   updateAlbumTheme() {
@@ -189,6 +198,22 @@ export class Top13SongSlotComponent implements OnInit {
   handleImageError(event: any) {
     event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg'; // Set a fallback image
     console.error('Failed to load album image');
+  }
+
+  handleAudioPlay(event: Event) {
+    const audioElement = event.target as HTMLAudioElement;
+  
+    // Pause all other audio elements
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (audio !== audioElement && !audio.paused) {
+        audio.pause();
+      }
+    });
+  
+    // Play the clicked audio
+    if (audioElement.paused) {
+      audioElement.play();
+    }
   }
 
   resetSong() {

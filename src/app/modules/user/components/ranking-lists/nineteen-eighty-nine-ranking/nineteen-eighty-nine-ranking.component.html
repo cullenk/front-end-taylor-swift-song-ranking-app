@@ -15,7 +15,7 @@
           <span class="rank-number">{{ i + 1 }}.</span>
           <div class="title-audio-div">
             <span class="song-title">{{ song.title }}</span>
-            <audio controls [src]="song.audioSource" (error)="handleAudioError($event)" controlsList="nodownload"></audio>
+            <audio controls [src]="song.audioSource" (play)="handleAudioPlay($event)" (error)="handleAudioError($event)" controlsList="nodownload"></audio>
           </div>
       </div>
     </div>

@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
   standalone: true,
   imports: [CommonModule],
   selector: 'app-loading-screen',
   templateUrl: './loading-screen.component.html',
-  styleUrls: ['./loading-screen.component.scss']
+  styleUrl: './loading-screen.component.scss'
 })
 export class LoadingScreenComponent {
-  @Input() isLoading: boolean = false;
+  constructor(public loadingService: LoadingService) {}
 }

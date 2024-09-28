@@ -1,4 +1,4 @@
-<div class="user-profile" [ngClass]="getThemeClass()" [style.backgroundImage]="'url(' + getThemeBackground() + ')'">
+<div class="user-profile" [ngClass]="getThemeClass()" [ngStyle]="{'background-image': 'url(' + getThemeBackground() + ')'}">
   <div class="profile-content">
     <!-- Left column: Welcome div -->
     <div class="column welcome-column">
@@ -17,7 +17,7 @@
       <div class="theme-selector">
         <label for="theme">Choose your profile theme:</label>
         <select id="theme" [(ngModel)]="userProfile.theme" (ngModelChange)="updateTheme($event)">
-          <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>
+          <option *ngFor="let theme of themes" [value]="theme" [selected]="theme === defaultTheme">{{ theme }}</option>
         </select>
       </div>
       <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
@@ -57,7 +57,7 @@
               <div class="song-details">
                 <h3>{{ song.songTitle }}</h3>
               </div>
-              <audio controls *ngIf="song.audioSource" controlsList="nodownload">
+              <audio controls *ngIf="song.audioSource" controlsList="nodownload" (play)="handleAudioPlay($event)">
                 <source [src]="song.audioSource" type="audio/mpeg">
                 Your browser does not support the audio element.
               </audio>
