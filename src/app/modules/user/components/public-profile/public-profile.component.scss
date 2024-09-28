@@ -239,6 +239,39 @@
         color: black;
       }
     }
+
+    .song-item.placeholder,
+.question-item.placeholder {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.song-item.placeholder {
+  .placeholder-image {
+    width: 60px;
+    height: 60px;
+    background-color: #ddd;
+    margin-right: 10px;
+  }
+
+  .song-details h3 {
+    color: #999;
+  }
+}
+
+.question-item.placeholder {
+  .question {
+    color: #666;
+  }
+
+  .answer {
+    color: #999;
+  }
+}
   }
 
   .questionnaire {

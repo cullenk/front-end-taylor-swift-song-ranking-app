@@ -69,7 +69,7 @@ export class PublicProfileComponent implements OnInit {
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/ttpd.png',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/youBelong.png',
   ];
-  defaultProfileImage = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.jpg';
+  defaultProfileImage = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.png';
 
   themeClassMap: { [key: string]: string } = {
     'Debut': 'Debut',
@@ -185,9 +185,13 @@ export class PublicProfileComponent implements OnInit {
       ...profile,
       theme: profile.theme || 'Debut',
       profileImage: profile.profileImage || this.defaultProfileImage,
-      rankings: profile.rankings || { topThirteen: [] },
+      rankings: profile.rankings || { topThirteen: [] }, 
       profileQuestions: profile.profileQuestions || []
     };
+  }
+  
+  getDefaultProfileQuestions(): { question: string, answer: string }[] {
+    return this.orderedQuestions.map(question => ({ question, answer: '' }));
   }
 
   loadTopThirteenDetails() {
@@ -222,7 +226,17 @@ export class PublicProfileComponent implements OnInit {
         }
       );
     } else {
-      console.log('No top thirteen songs found');
+      console.log('No top thirteen songs found, setting defaults');
+      this.userProfile.rankings = {
+        topThirteen: Array(13).fill(null).map((_, index) => ({
+          slot: index + 1,
+          songId: '',
+          songTitle: 'Not selected',
+          albumImage: 'path/to/default/album/image.jpg',
+          audioSource: '',
+          albumName: 'Unknown Album'
+        }))
+      };
       this.isLoading = false;
     }
   }

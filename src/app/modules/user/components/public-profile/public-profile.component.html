@@ -6,33 +6,36 @@
         <div class="profile-image-container">
           <img [src]="getProfileImage()" alt="Profile Image" class="profile-image">
         </div>
-          <h1>{{ userProfile.username }}</h1>
-            <!-- Top 5 Albums -->
-            <div class="top-albums-section">
-              <h2>Top 5 Albums</h2>
-              <div class="top-5-album-list">
-                <div *ngFor="let album of topFiveAlbums; let i = index" class="album-item">
-                  <img [src]="album.albumCover" [alt]="album.albumName + ' cover'" class="top-5-album-cover">
-                </div>
-              </div>
+        <h1>{{ userProfile.username }}</h1>
+        
+        <!-- Top 5 Albums -->
+        <div class="top-albums-section">
+          <h2>Top 5 Albums</h2>
+          <div class="top-5-album-list">
+            <div *ngFor="let album of topFiveAlbums || []; let i = index" class="album-item">
+              <img [src]="album?.albumCover || 'path/to/default/album/cover.jpg'" [alt]="album?.albumName + ' cover'" class="top-5-album-cover">
             </div>
-            <!-- Eras Tour Link -->
-            <div class="eras-tour-section">
-              <h2>Dream Eras Tour</h2>
-              <ng-container *ngIf="hasErasTourSetlist; else noSetlist">
-                <a 
-                [routerLink]="['/share-setlist', userProfile.username]" 
-                [attr.href]="'/share-setlist/' + userProfile.username"
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="eras-tour-link">
-                View {{ userProfile.username }}'s Dream Eras Tour
-                </a>
-              </ng-container>
-              <ng-template #noSetlist>
-                <p class="no-tour-text">{{ userProfile.username }} hasn't created their dream Eras Tour yet.</p>
-              </ng-template>
-            </div>
+          </div>
+        </div>
+
+        <!-- Eras Tour Link -->
+        <div class="eras-tour-section">
+          <h2>Dream Eras Tour</h2>
+          <ng-container *ngIf="hasErasTourSetlist; else noSetlist">
+            <a 
+              [routerLink]="['/share-setlist', userProfile.username]" 
+              [attr.href]="'/share-setlist/' + userProfile.username"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="eras-tour-link">
+              View {{ userProfile.username }}'s Dream Eras Tour
+            </a>
+          </ng-container>
+          <ng-template #noSetlist>
+            <p class="no-tour-text">{{ userProfile.username }} hasn't created their dream Eras Tour yet.</p>
+          </ng-template>
+        </div>
+
         <a href="https://www.swiftierankinghub.com" target="_blank">
           <button class="share-btn">Create Your Own Profile!</button>
         </a>
@@ -40,41 +43,69 @@
     </div>
 
     <!-- Top 13 column -->
-    <div class="column top-13-column">
-      <section class="top-13-list">
-        <h2>Top 13 Songs</h2>
-        <div class="song-list">
-          <div *ngFor="let song of userProfile?.rankings?.topThirteen" class="song-item">
-            <div class="ranking-bubble">{{ song.slot }}</div>
-            <img [src]="song.albumImage" [alt]="song.songTitle + ' cover'" class="album-cover">
-            <div class="title-audio">
-              <div class="song-details">
-                <h3>{{ song.songTitle }}</h3>
-              </div>
-              <audio controls *ngIf="song.audioSource" controlsList="nodownload">
-                <source [src]="song.audioSource" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
+<div class="column top-13-column">
+  <section class="top-13-list">
+    <h2>Top 13 Songs</h2>
+    <div class="song-list">
+      <ng-container *ngIf="userProfile?.rankings?.topThirteen?.length && userProfile.rankings.topThirteen[0]?.songId !== ''; else placeholderSongs">
+        <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
+          <div class="ranking-bubble">{{ song.slot }}</div>
+          <img [src]="song.albumImage || 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.jpg'" [alt]="song.songTitle + ' cover'" class="album-cover">
+          <div class="title-audio">
+            <div class="song-details">
+              <h3>{{ song.songTitle }}</h3>
+            </div>
+            <audio *ngIf="song.audioSource" controls controlsList="nodownload">
+              <source [src]="song.audioSource" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #placeholderSongs>
+        <div *ngFor="let i of [1,2,3,4,5]" class="song-item placeholder">
+          <div class="ranking-bubble">{{ i }}</div>
+          <div class="placeholder-image"></div>
+          <div class="title-audio">
+            <div class="song-details">
+              <h3>User hasn't selected any songs yet.</h3>
             </div>
           </div>
         </div>
-      </section>
+      </ng-template>
     </div>
+  </section>
+</div>
 
     <!-- Questionnaire column -->
     <div class="column questionnaire-column">
       <section class="questionnaire">
         <h2>Swiftie Questionnaire</h2>
         <div class="question-list">
-          <div *ngFor="let questionObj of userProfile?.profileQuestions" class="question-item">
-            <p class="question">{{ questionObj.question }}</p>
-            <div class="answer">{{ questionObj.answer }}</div>
-          </div>
+          <ng-container *ngIf="userProfile?.profileQuestions?.length; else placeholderQuestions">
+            <!-- Existing question items code -->
+            <div *ngFor="let questionObj of userProfile.profileQuestions" class="question-item">
+              <p class="question">{{ questionObj.question }}</p>
+              <div class="answer">{{ questionObj.answer }}</div>
+            </div>
+          </ng-container>
+
+          <!-- Placeholder for Questions -->
+          <ng-template #placeholderQuestions>
+            <div *ngFor="let i of [1,2,3,4,5]" class="question-item placeholder">
+              <p class="question">Question {{ i }}</p>
+              <div class="answer">User hasn't answered any questions yet.</div>
+            </div>
+          </ng-template>
         </div>
       </section>
     </div>
-  </div>
-</div>
 
-<div *ngIf="isLoading" class="loading">Loading...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+  </div>
+
+  <!-- Loading and Error Messages -->
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+</div>
