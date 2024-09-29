@@ -10,6 +10,7 @@ import { TopThirteenItem } from '../../../../interfaces/Top13Item';
 import { ToastrService } from 'ngx-toastr';
 import { AlbumThemeService } from '../../../../services/album-theme.service';
 import { AlbumTheme } from '../../../../interfaces/AlbumTheme';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-top-13-song-slot',
@@ -25,6 +26,9 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
   selectedSong: Song | null = null;
   topThirteen: TopThirteenItem[] = [];
   albumTheme: AlbumTheme;
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+  isSearching = false;
 
   constructor(
     private albumService: AlbumService,
@@ -42,6 +46,31 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
     );
     this.loadTopThirteenList();
     this.disableAudioRightClick();
+    
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(query => {
+      if (query) {
+        this.isSearching = true;
+        this.albumService.searchSongs(query).subscribe(
+          (results: SearchResult[]) => {
+            console.log('Search results:', results);
+            this.searchResults = results;
+            this.isSearching = false;
+          },
+          error => {
+            console.error('Error searching songs:', error);
+            this.toastr.error('Error searching songs', 'Error');
+            this.isSearching = false;
+          }
+        );
+      } else {
+        this.searchResults = [];
+        this.isSearching = false;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -51,7 +80,11 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
         audio.pause();
       }
     });
+  
+    this.destroy$.next();
+    this.destroy$.complete();
   }
+
 
   updateAlbumTheme() {
     if (this.selectedSong) {
@@ -111,17 +144,21 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
   }
 
   searchSongs() {
-    this.albumService.searchSongs(this.searchQuery).subscribe(
-      (results: SearchResult[]) => {
-        console.log('Search results:', results);
-        this.searchResults = results;
-      },
-      error => {
-        console.error('Error searching songs:', error);
-        this.toastr.error('Error searching songs', 'Error');
-      }
-    );
+    this.searchSubject.next(this.searchQuery);
   }
+
+  // searchSongs() {
+  //   this.albumService.searchSongs(this.searchQuery).subscribe(
+  //     (results: SearchResult[]) => {
+  //       console.log('Search results:', results);
+  //       this.searchResults = results;
+  //     },
+  //     error => {
+  //       console.error('Error searching songs:', error);
+  //       this.toastr.error('Error searching songs', 'Error');
+  //     }
+  //   );
+  // }
 
   selectSong(song: SearchResult) {
     console.log('Audio source:', song.audioSource);

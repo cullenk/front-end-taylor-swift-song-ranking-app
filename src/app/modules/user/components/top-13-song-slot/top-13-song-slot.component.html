@@ -7,7 +7,8 @@
     <div class="song-search-card" *ngIf="!selectedSong">
       <div class="dropdown-parent">
         <input class="search-input" type="text" [(ngModel)]="searchQuery" placeholder="Search for a song" (input)="searchSongs()">
-        <div class="search-dropdown" *ngIf="searchResults.length > 0">
+        <div class="search-indicator" *ngIf="isSearching">Searching...</div>
+        <div class="search-dropdown" *ngIf="searchResults.length > 0 && !isSearching">
           <div class="dropdown-option" *ngFor="let song of searchResults" (click)="selectSong(song)">
             {{ song.title }}
           </div>
