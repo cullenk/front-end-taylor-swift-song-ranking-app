@@ -20,7 +20,15 @@
           <option *ngFor="let theme of themes" [value]="theme" [selected]="theme === defaultTheme">{{ theme }}</option>
         </select>
       </div>
-      <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+      <div class="share-profile-section">
+        <button class="share-btn" (click)="shareProfile()" [disabled]="!isProfileShareable()">Share My Profile</button>
+        <div *ngIf="!isProfileShareable()" class="share-helper-text">
+          <p>To share your profile, please complete the following:</p>
+          <ul>
+            <li *ngFor="let reason of getProfileShareReasons()">{{ reason }}</li>
+          </ul>
+        </div>
+      </div>
          
       <!-- Top 5 Albums -->
           <div class="top-albums-section">
@@ -31,9 +39,9 @@
               </div>
             </div>
             <ng-template #noTopAlbums>
-              <p class="empty-albums-text">Rank your albums on the Rankings page to see your top 5 here!</p>
+              <p class="empty-albums-text"><a href="https://swiftierankinghub.com/user/rankings/allAlbums">Rank your albums</a> on the Rankings page to see your top 5 here!</p>
               <div class="empty-albums">
-                <div *ngFor="let i of [1,2,3,4,5]" class="empty-album-placeholder"></div>
+                <div *ngFor="let i of [1,2,3,4,5]" class="empty-album-placeholder">?</div>
               </div>
             </ng-template>
           </div>

@@ -345,6 +345,20 @@ export class UserProfileComponent implements OnInit {
     this.userProfile.profileQuestions[index].answer = answer || '';
   }
 
+  getProfileShareReasons(): string[] {
+    const reasons: string[] = [];
+    if (!this.userProfile?.rankings?.topThirteen?.length) {
+      reasons.push("Add at least one song to your Top 13");
+    }
+    if (!this.userProfile?.profileQuestions?.some(q => q.answer && q.answer !== '')) {
+      reasons.push("Answer at least one question in the Swiftie Questionnaire");
+    }
+    if (this.topFiveAlbums.length < 5) {
+      reasons.push("Rank your top 5 albums");
+    }
+    return reasons;
+  }
+
   isProfileShareable(): boolean {
     const hasTopThirteenSong = this.userProfile?.rankings?.topThirteen?.length > 0;
     const hasAnsweredQuestion = this.userProfile?.profileQuestions?.some(q => q.answer && q.answer !== '');

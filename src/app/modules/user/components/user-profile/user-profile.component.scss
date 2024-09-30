@@ -100,6 +100,42 @@
     }
   }
 
+  .share-profile-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center horizontally */
+    margin: 0 auto;
+    width: 100%;  /* Ensure full width */
+  }
+  
+  .share-helper-text {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9em;
+    position: relative;
+    padding-left: 30px;  /* Make room for the icon */
+    width: 100%;  /* Full width */
+    box-sizing: border-box;
+  }
+
+  .share-helper-text p {
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .share-helper-text ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+  }
+  
+  .share-helper-text li {
+    margin-bottom: 5px;
+  }
+
   .share-btn,
   .eras-tour-btn {
     padding: calc(var(--padding-base) * 0.5) var(--padding-base);
@@ -380,7 +416,17 @@ audio {
     color: #333;
     font-style: italic;
   }
+
+  .empty-albums-text a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    transition: .2s ease;
+  }
   
+  .empty-albums-text a:hover {
+    color: rgb(156, 197, 241)
+  }
+
   .empty-albums {
     display: flex;
     flex-direction: column;
@@ -398,6 +444,10 @@ audio {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
   
     &::before {
       content: '';
@@ -408,8 +458,8 @@ audio {
       height: 200%;
       background: linear-gradient(
         to bottom right,
-        rgba(51, 216, 253, 0.432) 0%,
-        rgba(15, 209, 243, 0.726) 50%,
+        rgba(171, 171, 171, 0.432) 0%,
+        rgba(118, 147, 152, 0.726) 50%,
         rgba(36, 57, 247, 0.565) 100%
       );
       transform: rotate(45deg);
@@ -420,10 +470,10 @@ audio {
       transform: translateY(-5px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   
-      &::before {
-        top: -100%;
-        left: -100%;
-      }
+      // &::before {
+      //   top: -100%;
+      //   left: -100%;
+      // }
     }
   }
 

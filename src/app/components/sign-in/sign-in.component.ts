@@ -56,7 +56,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     });
 
     this.signupForm = new FormGroup({
-      'username': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'username': new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       'email': new FormControl('', [Validators.required, Validators.email]),
       'password': new FormControl('', [Validators.required])
     });
@@ -154,46 +154,63 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit() {
-    if (this.isLoginMode) {
-      this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
-        .subscribe(
-          (response) => {
-          },
-          (error) => {
-            this.toastr.error('Login failed. Please check your credentials.', 'Error');
-          }
-        );
-    } else {
-      // Check username length
-      if (this.signupForm.get('username')!.value.length < 3) {
-        this.toastr.warning('Username must be at least 3 characters long.', 'Invalid Username', {
-          timeOut: 5000,
-          closeButton: true,
-          progressBar: true
-        });
-        return; // Stop the submission
-      }
+ onSubmit() {
+  if (this.isLoginMode) {
+    // Login mode logic remains the same
+    this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
+      .subscribe(
+        (response) => {
+          // Handle successful login
+        },
+        (error) => {
+          this.toastr.error('Login failed. Please check your credentials.', 'Error');
+        }
+      );
+  } else {
+    // Signup mode
+    const username = this.signupForm.get('username')!.value;
 
-      this.AuthService.createNewUser(this.signupForm.value.username, this.signupForm.value.email, this.signupForm.value.password)
-        .subscribe(
-          (response) => {
-            this.isLoginMode = true; 
-          },
-          (error) => {
-            if (error.error && error.error.message && error.error.message.includes('Password must be')) {
-              this.toastr.warning(error.error.message, 'Password Requirements', {
-                timeOut: 10000,
-                closeButton: true,
-                progressBar: true
-              });
-            } else {
-              this.toastr.error('Account creation failed. Please try again.', 'Error');
-            }
-          }
-        );
+    // Check username length
+    if (username.length < 3) {
+      this.toastr.warning('Username must be at least 3 characters long.', 'Invalid Username', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true
+      });
+      return; // Stop the submission
     }
+
+    // New check for maximum username length
+    if (username.length > 30) {
+      this.toastr.warning('Username must not exceed 30 characters.', 'Invalid Username', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true
+      });
+      return; // Stop the submission
+    }
+
+    // Proceed with account creation if checks pass
+    this.AuthService.createNewUser(username, this.signupForm.value.email, this.signupForm.value.password)
+      .subscribe(
+        (response) => {
+          this.isLoginMode = true; 
+          // Handle successful account creation
+        },
+        (error) => {
+          if (error.error && error.error.message && error.error.message.includes('Password must be')) {
+            this.toastr.warning(error.error.message, 'Password Requirements', {
+              timeOut: 10000,
+              closeButton: true,
+              progressBar: true
+            });
+          } else {
+            this.toastr.error('Account creation failed. Please try again.', 'Error');
+          }
+        }
+      );
   }
+}
   
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
