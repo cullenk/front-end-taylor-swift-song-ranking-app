@@ -111,8 +111,11 @@
         <app-top-songs></app-top-songs>
     </div>
     <div class="widget top-users">
-      <h2>Top Users</h2>
-      <p>Recognizing the top users in our Swiftie community!</p>
+      <div>
+        <h2>Top Users</h2>
+        <p>Recognizing the top users in our Swiftie community!</p>
+      </div>
+      <button class="explore-button" (click)="navigateTo('user/userExplorer')">Explore All Users</button>
         <app-top-users></app-top-users>
     </div>
     <div class="widget album-popularity">

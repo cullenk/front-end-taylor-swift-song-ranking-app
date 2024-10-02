@@ -48,4 +48,8 @@ export class UserProfileService {
 getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
   return this.http.get<EraSetList[]>(`${this.apiUrl}/profile/eras-tour-set-list/${username}`);
 }
+
+getAllPublicProfiles(): Observable<UserProfile[]> {
+  return this.http.get<UserProfile[]>(`${this.apiUrl}/profile/all-public-profiles`);
+}
 }

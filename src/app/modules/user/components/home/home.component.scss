@@ -277,6 +277,21 @@ html, body {
   justify-content: space-between;
 }
 
+.explore-button {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.explore-button:hover {
+  background-color: #0056b3;
+}
+
 .widget {
   background: white;
   border-radius: 0.625rem;

@@ -23,6 +23,7 @@ import { SinglesComponent } from './components/ranking-lists/singles/singles.com
 import { AboutComponent } from './components/about/about.component';
 import { AllAlbumsRankingComponent } from './components/ranking-lists/all-albums-ranking/all-albums-ranking.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { UserExplorerComponent } from './components/user-explorer/user-explorer.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: 'userProfile', component: UserProfileComponent},
     { path: 'top13list', component: Top13SongSlotListComponent},
     { path: 'erasTourBuilder', component: ErasTourBuilderComponent},
+    { path: 'userExplorer', component: UserExplorerComponent},
     { path: 'rankings', component: RankingsComponent },
     { path: 'rankings/debut', component: DebutRankingComponent},
     { path: 'rankings/fearless', component: FearlessRankingComponent },

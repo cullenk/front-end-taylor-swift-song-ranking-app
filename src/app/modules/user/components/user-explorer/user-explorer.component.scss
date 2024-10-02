@@ -1,0 +1,146 @@
+.user-explorer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .header-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .background-graphic {
+    position: absolute;
+    opacity: 50%;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  } 
+  
+  .header-div {
+    background-color: #ffd78c;
+    height: 100%;
+    border-radius: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 20px 20px 20px;
+  }
+  
+  .header-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: black;
+    text-align: left;
+    margin: 0px 0px 10px 0px;
+    font-size: 3rem;
+  }
+  
+  .header-sub-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: #266DD3;
+    text-align: left;
+    margin: 0px;
+    font-size: 3.6rem;
+  }
+
+  .search-bar {
+    margin: 0 auto 20px auto;
+    width: 100%;
+    max-width: 550px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+ .helper-text {
+    text-align: center;
+    color: rgb(215, 215, 215);
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .user-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .user-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .user-card.disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+  
+  .username {
+    max-width: 150px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      height: auto;
+      min-height: 150px;
+    }
+  
+    .header-title {
+      font-size: 1.5rem;
+    }
+  
+    .header-sub-title {
+      font-size: 2rem;
+    }
+  
+    .search-bar {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
