@@ -84,7 +84,7 @@ export class TopUsersComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUserLogins().subscribe((users: User[]) => {
       // Filter out your account
-      const filteredUsers = users.filter(user => user.username !== "Cullen'sVersion1994");
+      const filteredUsers = users.filter(user => user.username !== "CullensVersion1994");
   
       const maxUsers = this.isMobileScreen() ? 5 : 10;
       const sortedUsers = filteredUsers
