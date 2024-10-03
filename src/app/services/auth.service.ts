@@ -45,7 +45,6 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/signup`, authData).pipe(
       tap((response: any) => {
         console.log('Account created successfully!');
-        this.toastService.showSuccess('Account created successfully. Please check your email for a welcome message.');
       }),
       catchError(error => {
         let errorMessage = 'An error occurred during signup';
