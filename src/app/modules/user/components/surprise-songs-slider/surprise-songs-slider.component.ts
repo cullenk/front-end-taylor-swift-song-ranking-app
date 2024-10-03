@@ -17,26 +17,18 @@ export class SurpriseSongsSliderComponent implements OnInit, OnDestroy {
   currentIndex = 0;
   private intervalSubscription: Subscription | null = null;
 
-  constructor(private rankingsService: RankingsService) {
-    console.log('SurpriseSongsSliderComponent constructed');
-  }
+  constructor(private rankingsService: RankingsService) {}
 
   ngOnInit() {
-    console.log('SurpriseSongsSliderComponent initialized');
     this.loadSurpriseSongs();
   }
 
   loadSurpriseSongs() {
-    console.log('Loading surprise songs');
     this.rankingsService.getSurpriseSongs().subscribe(
       songs => {
-        console.log('Received surprise songs:', songs);
         this.surpriseSongs = this.shuffleArray(songs.filter(song => song.guitar !== 'Not set' || song.piano !== 'Not set'));
-        console.log('Filtered and shuffled surprise songs:', this.surpriseSongs);
         if (this.surpriseSongs.length > 0) {
           this.startCycling();
-        } else {
-          console.log('No valid surprise songs found');
         }
       },
       error => console.error('Error loading surprise songs:', error)
@@ -46,8 +38,28 @@ export class SurpriseSongsSliderComponent implements OnInit, OnDestroy {
   startCycling() {
     this.currentSong = this.surpriseSongs[0];
     this.intervalSubscription = interval(8000).subscribe(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.surpriseSongs.length;
-      this.currentSong = this.surpriseSongs[this.currentIndex];
+      this.nextSong();
+    });
+  }
+
+  nextSong() {
+    this.currentIndex = (this.currentIndex + 1) % this.surpriseSongs.length;
+    this.currentSong = this.surpriseSongs[this.currentIndex];
+    this.resetInterval();
+  }
+
+  previousSong() {
+    this.currentIndex = (this.currentIndex - 1 + this.surpriseSongs.length) % this.surpriseSongs.length;
+    this.currentSong = this.surpriseSongs[this.currentIndex];
+    this.resetInterval();
+  }
+
+  resetInterval() {
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+    this.intervalSubscription = interval(8000).subscribe(() => {
+      this.nextSong();
     });
   }
 
@@ -60,7 +72,6 @@ export class SurpriseSongsSliderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('SurpriseSongsSliderComponent being destroyed');
     if (this.intervalSubscription) {
       this.intervalSubscription.unsubscribe();
     }

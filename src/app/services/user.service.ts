@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
-
-interface User {
-  username: string;
-  loginCount: number;
-}
+import { User } from '../interfaces/User';
 
 interface Song {
   title: string;
@@ -17,7 +13,6 @@ interface Song {
   providedIn: 'root'
 })
 export class UserService {
-  // private apiUrl = 'http://localhost:3000/api/users';
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -31,8 +26,11 @@ export class UserService {
     return this.http.get<User[]>(`${this.apiUrl}/users/logins`, { headers: this.getHeaders() });
   }
 
-  getTopSongs(): Observable<Song[]> {
-    return this.http.get<Song[]>(`${this.apiUrl}/users/top-songs`, { headers: this.getHeaders() });
+  getTopFavoriteSongs(): Observable<Song[]> {
+    return this.http.get<Song[]>(`${this.apiUrl}/users/top-favorite-songs`, { headers: this.getHeaders() });
   }
 
+  getPopularErasTourSongs(): Observable<Song[]> {
+    return this.http.get<Song[]>(`${this.apiUrl}/users/popular-eras-tour-songs`, { headers: this.getHeaders() });
+  }
 }

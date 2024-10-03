@@ -6,5 +6,6 @@ export interface User {
     password: string;
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    loginCount: number,
     topThirteen: TopThirteenItem[];
   }

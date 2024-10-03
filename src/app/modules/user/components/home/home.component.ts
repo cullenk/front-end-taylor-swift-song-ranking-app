@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TopUsersComponent } from '../top-users/top-users.component';
-import { TopSongsComponent } from '../top-songs/top-songs.component';
+import { UserFavoriteSongsComponent } from '../user-favorite-songs/user-favorite-songs.component';
+import { PopularErasTourSongsComponent } from '../popular-eras-tour-songs/popular-eras-tour-songs.component';
 import { AlbumPopularityComponent } from '../album-popularity/album-popularity.component';
 import { SurpriseSongsSliderComponent } from '../surprise-songs-slider/surprise-songs-slider.component';
 import { Meta, Title } from '@angular/platform-browser';
@@ -17,7 +18,7 @@ interface Song {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TopUsersComponent, TopSongsComponent, AlbumPopularityComponent, SurpriseSongsSliderComponent],
+  imports: [CommonModule, TopUsersComponent, UserFavoriteSongsComponent, PopularErasTourSongsComponent, AlbumPopularityComponent, SurpriseSongsSliderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

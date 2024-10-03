@@ -1,73 +1,189 @@
 .surprise-songs-container {
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    height: 100%; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%; 
+  max-height: 250px; // Adjust this value as needed
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
-  
-  .surprise-song {
-    transition: opacity 0.5s ease-in-out;
-    background-color: rgba(255, 255, 255, 0.8); // Semi-transparent white background
-    padding: 15px;
-    border-radius: 8px;
-  
-    p {
-      text-align: center;
-      font-size: 1.2em;
-      color: #333;
-      margin-bottom: 15px;
-    }
-  
-    .username {
-      font-weight: bold;
-      color: var(--secondary-color);
-    }
-  }
-  
-  .song-pick {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  
-    &:hover {
-      background-color: rgba(232, 239, 245, 0.9); // Light blue on hover
-    }
-  
-    i, img {
-      margin-right: 15px;
-      font-size: 24px;
-    }
-  
-    .piano-icon {
-      width: 24px;
-      height: 24px;
-      filter: invert(1) brightness(0); // This inverts the white to black
-    }
-  
-    p {
-      text-align: left;
-      margin: 0;
-      font-size: 1em;
-      color: #555;
-    }
-  }
-  
-  .no-songs {
+}
+
+.slider-wrapper {
+  width: 80%; 
+  max-width: 800px; 
+  position: relative; 
+}
+
+.surprise-song {
+  transition: opacity 0.5s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.8); 
+  padding: 15px;
+  border-radius: 8px;
+  height: auto; // Allow height to adjust based on content
+  overflow: hidden;
+
+  p {
     text-align: center;
-    color: #fff;
-    font-style: italic;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
+
+  .username {
+    font-weight: bold;
+    color: var(--secondary-color);
+    display: inline-block;
+    max-width: 80%; // Adjust this value as needed
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+  }
+}
+
+.song-pick {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  
+   &:hover {
+    background-color: rgba(232,239,245,0.9); // Light blue on hover
+   }
+
+   i, img {
+     margin-right:15px;
+     font-size:24px; 
+     flex-shrink :0; // Prevent icons from shrinking
+   }
+
+   .piano-icon {
+     width :24px; 
+     height :24px; 
+     filter :invert(1) brightness(0); // This inverts the white to black
+   }
+
+   p {
+     text-align:left; 
+     margin :0; 
+     font-size :1em; 
+     color :#555; 
+     white-space :nowrap; 
+     overflow:hidden; 
+     text-overflow :ellipsis; 
+     flex-grow :1; // Allow text to take available space
+   }
+}
+
+.no-songs {
+   text-align:center; 
+   color:#fff; 
+   font-style :italic; 
+   text-shadow :1px1px2px rgba(0,0,0,0.5); 
+}
+
+.navigation-arrows {
+   position:absolute; 
+   top :50%; 
+   left :0; 
+   right :0; 
+   display:flex; 
+   justify-content :space-between; 
+   transform :translateY(-50%);
+}
+
+.nav-arrow {
+   background-color :rgba(255,255,255,0.7); 
+   border:none; 
+   border-radius :50%; 
+   width :40px; 
+   height :40px; 
+   font-size :20px; 
+   cursor: pointer; 
+   transition: background-color 0.3s ease;
+
+   &:hover {
+      background-color :rgba(255,255,255,0.9);
+   }
+
+   &.left {
+      margin-left :-50px;
+      z-index:10; // Ensure it stays above other elements
+   }
+
+   &.right {
+      margin-right :-60px;
+      z-index:10; // Ensure it stays above other elements
+   }
+}
+
+@media (max-width :768px) {
+
+ .surprise-songs-container {
+    padding :10px;
+ }
+
+ .slider-wrapper {
+    width :100%;
+    max-width:none;
+ }
+
+ .surprise-song {
+    height:auto;
+
+    p {
+       font-size :1em;
+    }
+
+    .username {
+       max-width :60%;
+    }
+ }
+
+ .song-pick {
+    margin-bottom :5px;
+
+    i,img {
+       margin-right :10px;
+       font-size :18px;
+    }
+
+    .piano-icon {
+       width :18px;
+       height :18px;
+    }
+
+    p {
+       font-size: 0.9em;
+
+       max-width: calc(100% - 28px); 
+    }
+ }
+
+ .nav-arrow {
+      width :30px;
+      height :30px;
+
+      &.left {
+         left :-15px;
+      }
+
+      &.right {
+         right :-15px;
+      }
+ }
+}

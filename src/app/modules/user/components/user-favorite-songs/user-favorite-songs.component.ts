@@ -10,13 +10,14 @@ interface Song {
 }
 
 @Component({
+  selector: 'app-user-favorite-songs',
   standalone: true,
   imports: [BaseChartDirective, CommonModule],
-  selector: 'app-top-songs',
-  templateUrl: './top-songs.component.html',
-  styleUrls: ['./top-songs.component.scss']
+  templateUrl: './user-favorite-songs.component.html',
+  styleUrl: './user-favorite-songs.component.scss'
 })
-export class TopSongsComponent implements OnInit {
+export class UserFavoriteSongsComponent {
+
   public chartData: ChartData<'bar'> = {
     labels: [],
     datasets: [
@@ -96,7 +97,7 @@ export class TopSongsComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getTopSongs().subscribe((songs: Song[]) => {
+    this.userService.getTopFavoriteSongs().subscribe((songs: Song[]) => {
       const maxTitleLength = 20; // Adjust this value based on your needs
       this.originalTitles = songs.map(song => song.title);
       const titles = songs.map(song => this.truncateTitle(song.title, maxTitleLength));
