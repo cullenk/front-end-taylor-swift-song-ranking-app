@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -16,6 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class PasswordResetComponent implements OnInit {
   resetForm: FormGroup;
   token: string | null = null;
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,7 +26,7 @@ export class PasswordResetComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.resetForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
   }
@@ -46,15 +47,55 @@ export class PasswordResetComponent implements OnInit {
   onSubmit() {
     if (this.resetForm.valid && this.token) {
       const newPassword = this.resetForm.get('password')?.value;
+
+      // Additional password validation
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordRegex.test(newPassword)) {
+        this.toastr.warning(
+          'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+          'Password Requirements',
+          { timeOut: 10000, closeButton: true, progressBar: true }
+        );
+        return;
+      }
+
       this.authService.resetPassword(this.token, newPassword).subscribe(
         () => {
           this.toastr.success('Your password has been reset successfully');
           this.router.navigate(['/login']);
         },
-        error => {
-          this.toastr.error('Failed to reset password. Please try again.');
+        (error) => {
+          if (error.error && error.error.message) {
+            if (error.error.message.includes('Password must be')) {
+              this.toastr.warning(error.error.message, 'Password Requirements', {
+                timeOut: 10000,
+                closeButton: true,
+                progressBar: true
+              });
+            } else {
+              this.toastr.error(error.error.message, 'Password Reset Failed');
+            }
+          } else {
+            this.toastr.error('Failed to reset password. Please try again.', 'Error');
+          }
         }
       );
+    } else {
+      // Form is invalid, show error messages
+      Object.keys(this.resetForm.controls).forEach(key => {
+        const control = this.resetForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
+    }
+  }
+
+  togglePasswordVisibility(field: 'password' | 'confirmPassword') {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
     }
   }
 }

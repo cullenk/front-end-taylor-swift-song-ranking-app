@@ -43,7 +43,8 @@ export class UserExplorerComponent implements OnInit {
   loadUsers(): void {
     this.userProfileService.getAllPublicProfiles().subscribe(
       (profiles: UserProfile[]) => {
-        this.users = this.sortUsers(profiles);
+        // Filter out users without profile image or theme
+        this.users = this.filterValidUsers(profiles);
         this.filteredUsers = this.users;
       },
       error => {
@@ -52,12 +53,8 @@ export class UserExplorerComponent implements OnInit {
     );
   }
 
-  sortUsers(users: UserProfile[]): UserProfile[] {
-    return users.sort((a, b) => {
-      const aHasProfileAndTheme = a.profileImage && a.theme ? 1 : 0;
-      const bHasProfileAndTheme = b.profileImage && b.theme ? 1 : 0;
-      return bHasProfileAndTheme - aHasProfileAndTheme;
-    });
+  filterValidUsers(users: UserProfile[]): UserProfile[] {
+    return users.filter(user => user.profileImage && user.theme);
   }
 
   filterUsers(): void {
@@ -67,17 +64,10 @@ export class UserExplorerComponent implements OnInit {
   }
 
   goToUserProfile(username: string): void {
-    if (this.isUserEnabled(username)) {
-      this.router.navigate(['/public-profile', username]);
-    }
+    this.router.navigate(['/public-profile', username]);
   }
 
   getThemeColor(theme: string): string {
     return this.themeColors[theme] || 'rgba(255, 255, 255, 0.7)';
-  }
-
-  isUserEnabled(username: string): boolean {
-    const user = this.users.find(u => u.username === username);
-    return user ? !!(user.profileImage && user.theme) : false;
   }
 }
