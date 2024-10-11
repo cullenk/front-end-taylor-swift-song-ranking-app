@@ -1,0 +1,203 @@
+.all-songs-ranking-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .header-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .background-graphic {
+    position: absolute;
+    opacity: 50%;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  } 
+  
+  .header-div {
+    background-color: #ffd78c;
+    height: 100%;
+    border-radius: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 20px 20px 20px;
+  }
+  
+  .header-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: black;
+    text-align: left;
+    margin: 0px 0px 10px 0px;
+    font-size: 3rem;
+  }
+  
+  .header-sub-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: #266DD3;
+    text-align: left;
+    margin: 0px;
+    font-size: 3.6rem;
+  }
+
+  .intro-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .intro-container h2 {
+    color: #333;
+  }
+  
+  .intro-container p {
+    color: #555;
+  }
+  
+  .intro-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .save-button-container {
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff97;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .save-button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .save-button.disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .warning {
+    color: red;
+    margin-bottom: 10px auto;
+  }
+
+  .duplicate-rank {
+    background-color: #ff8c8c !important;
+  }
+  
+  .song-list {
+    margin-top: 20px;
+  }
+  
+  .song-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+  }
+  
+  .album-cover {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+  
+  .song-info {
+    flex-grow: 1;
+  }
+  
+  .song-title {
+    font-weight: bold;
+    display: block;
+  }
+  
+  .album-name {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .rank {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  .rank-input {
+    width: 50px;
+    height: 30px;
+    font-size: 18px;
+    margin-left: 10px;
+    text-align: center;
+  }
+  
+  .drag-handle {
+    cursor: move;
+    padding: 0 10px;
+  }
+
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .song-list.cdk-drop-list-dragging .song-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      height: auto;
+      min-height: 150px;
+    }
+  
+    .header-title {
+      font-size: 1.5rem;
+    }
+  
+    .header-sub-title {
+      font-size: 2rem;
+    }
+}

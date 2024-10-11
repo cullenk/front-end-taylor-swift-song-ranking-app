@@ -1,0 +1,14 @@
+<div class="release-notes-container">
+    <h2>Release Notes</h2>
+    <div class="timeline">
+      <div *ngFor="let release of releaseNotes" class="release-item">
+        <div class="release-header">
+          <h3>Version {{ release.version }}</h3>
+          <span class="release-date">{{ release.date }}</span>
+        </div>
+        <ul class="feature-list">
+          <li *ngFor="let feature of release.features">{{ feature }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>

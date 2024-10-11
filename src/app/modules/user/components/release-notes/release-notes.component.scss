@@ -1,0 +1,62 @@
+.release-notes-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+
+  h2 {
+color: white;
+  }
+
+  .timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    background: #007bff;
+  }
+  
+  .release-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 40px;
+  }
+  
+  .release-item::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+  }
+  
+  .release-header {
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .release-date {
+    font-size: 0.9em;
+    color: #82bbf8;
+  }
+  
+  .feature-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #a7a7a7;
+
+  }

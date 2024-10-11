@@ -73,17 +73,17 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    // Pause all audio elements when the component is destroyed
-    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
-      if (!audio.paused) {
-        audio.pause();
-      }
-    });
-  
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+ngOnDestroy() {
+  // Pause all audio elements when the component is destroyed
+  document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+    if (!audio.paused) {
+      audio.pause();
+    }
+  });
+
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
 
   updateAlbumTheme() {

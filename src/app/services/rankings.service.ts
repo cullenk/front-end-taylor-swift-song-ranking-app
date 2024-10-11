@@ -120,9 +120,7 @@ getAlbumPopularity(): Observable<HomePageAlbumRanking[]> {
 
 //Get Surprise Songs of all users for home page
 getSurpriseSongs(): Observable<SurpriseSong[]> {
-  console.log('Fetching surprise songs from API');
   return this.http.get<SurpriseSong[]>(`${this.apiUrl}/rankings/surprise-songs`, { headers: this.getHeaders() }).pipe(
-    tap(songs => console.log('Received surprise songs from API:', songs)),
     catchError(error => {
       console.error('Error fetching surprise songs:', error);
       return throwError(() => new Error('Failed to fetch surprise songs'));

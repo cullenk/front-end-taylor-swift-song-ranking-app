@@ -1,0 +1,79 @@
+<div class="container">
+    <div class="header-container">
+      <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
+      <div class="header-div">
+        <h1 class="header-title">Rank Songs By Track #</h1>
+        <h1 class="header-sub-title">Build Your Perfect Album</h1>
+      </div>
+    </div>
+  
+    <div class="steps-container">
+      <div class="steps-row">
+        <div class="step-card">
+          <span class="step-number">1</span>
+          <h3>Rank Each Song</h3>
+          <p>Drag and drop each song to rank by each track number.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">2</span>
+          <h3>Save Your Choices</h3>
+          <p>Make sure to click the button to save your rankings.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">3</span>
+          <h3>View Your Album</h3>
+          <p>Check out your perfect album compiled from your top-ranked songs!</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="tabs">
+      <button (click)="activeTab = 'rankings'" [class.active]="activeTab === 'rankings'">Track Rankings</button>
+      <button (click)="activeTab = 'perfectAlbum'" [class.active]="activeTab === 'perfectAlbum'">Your Album</button>
+    </div>
+  
+    <div *ngIf="activeTab === 'rankings'" class="tab-content">
+        <div class="save-button-container">
+          <button (click)="saveRankings()" class="save-button">Save Rankings</button>
+        </div>
+        <div class="track-rankings-grid">
+          <div *ngFor="let trackList of trackRankings; let i = index" class="track-ranking-widget">
+            <div class="track-number-div">
+              <span class="track-label">Track</span>
+              <span class="track-number">{{ i + 1 }}'s</span>
+            </div>
+            <div cdkDropList (cdkDropListDropped)="drop(i, $event)" class="song-list">
+              <div *ngFor="let song of trackList" cdkDrag class="song-item">
+                <img [src]="song.albumImageSource" alt="{{ song.albumName }} cover" class="album-cover">
+                <div class="song-info">
+                  <span class="song-title">{{ song.songTitle }}</span>
+                  <span class="album-name">{{ song.albumName }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <div *ngIf="activeTab === 'perfectAlbum'" class="tab-content">
+      <div class="perfect-album">
+        <div *ngIf="perfectAlbum.length > 0; else noRankings">
+          <div *ngFor="let song of perfectAlbum; let i = index" class="song-item">
+            <div class="track-number">{{ i + 1 }}</div>
+            <img [src]="song.albumImageSource" alt="{{ song.albumName }} cover" class="album-cover">
+            <div class="song-info">
+              <span class="song-title">{{ song.songTitle }}</span>
+              <span class="album-name">{{ song.albumName }}</span>
+            </div>
+            <audio controls *ngIf="song.audioSource" class="audio-player" (error)="handleAudioError($event)" (play)="handleAudioPlay($event)" controlsList="nodownload">
+              <source [src]="song.audioSource" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+        <ng-template #noRankings>
+          <p>You haven't ranked any songs yet. Start ranking to build your perfect album!</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>

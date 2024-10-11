@@ -36,8 +36,10 @@ export class RankingsComponent implements OnInit, OnDestroy {
     { id: 'evermore', title: 'evermore', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/evermore-sound-clip.mp3', routerLink: './evermore' },
     { id: 'midnights', title: 'Midnights', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/midnights.jpeg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/midnights-sound-clip.mp3', routerLink: './midnights' },
     { id: 'ttpd', title: 'The Tortured Poets Department', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/ttpd-sound-clip.mp3', routerLink: './tortured-poets-department' },
-    { id: 'singles', title: 'Singles', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/singles/Singles.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/singles-sound-clip.mp3', routerLink: './singles' },
     { id: 'allAlbums', title: 'All Albums', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/All-Albums.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/allAlbumsClip.mp3', routerLink: './allAlbums' },
+    { id: 'allSongs', title: 'All Songs', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/AllSongs.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/allSongsClip.mp3', routerLink: './allSongs' },
+    { id: 'singles', title: 'Singles', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/SinglesAndFeatures.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/singles-sound-clip.mp3', routerLink: './singles' },
+    { id: 'byTrackNumber', title: 'By Track Number', coverImage: 'https://d3e29z0m37b0un.cloudfront.net/byTrackNumber.svg', sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/readyForIt.mp3', routerLink: './byTrackNumber' },
   ];
 
   private audioElements: { [key: string]: HTMLAudioElement } = {};

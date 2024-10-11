@@ -1,0 +1,359 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .header-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .background-graphic {
+    position: absolute;
+    opacity: 50%;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  } 
+  
+  .header-div {
+    background-color: #ffd78c;
+    height: 100%;
+    border-radius: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 20px 20px 20px;
+  }
+  
+  .header-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: black;
+    text-align: left;
+    margin: 0px 0px 10px 0px;
+    font-size: 3rem;
+  }
+  
+  .header-sub-title {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    color: #266DD3;
+    text-align: left;
+    margin: 0px;
+    font-size: 3.6rem;
+  }
+
+  /*  Steps Container and Tabs */
+  .steps-container {
+    margin-bottom: 20px;
+  }
+  
+  .steps-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .step-card {
+    flex: 1;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all .2 ease;
+  }
+
+  .step-card:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: scale(1.01);
+  }
+  
+  .step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .tabs {
+    display: flex;
+  }
+  
+  .tabs button {
+    flex: 1;
+    margin: 0px 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 8px 8px 0px 0px;
+    cursor: pointer;
+  }
+  
+  .tabs button.active {
+    background-color: #2e2e2e;
+    color: white;
+  }
+  
+  .tab-content {
+    position: relative;
+    padding: 60px 20px 20px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    border-radius: 8px;
+    background-color: #2e2e2e;
+  }
+
+  .save-button-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .save-button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+/* Track Rankings Grid */
+.track-rankings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .track-ranking-widget {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .track-number-div {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+.track-label {
+    display: block;
+    font-size: 14px;
+    color: #4a4a4a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.track-number {
+    display: block;
+    font-size: 48px;
+    font-weight: bold;
+    color: #007bff; // Your primary blue color
+    // -webkit-text-stroke: 1px #333; // White outline for webkit browsers
+    // text-stroke: 1px #007bff; // White outline for other browsers
+    // text-shadow: 
+    //     -1px -1px 0 #333,
+    //     1px -1px 0 #333,
+    //     -1px 1px 0 #333,
+    //     1px 1px 0 #333; // Fallback white outline for browsers that don't support text-stroke
+}
+  
+  .song-list {
+    min-height: 100px;
+  }
+  
+  .song-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    cursor: move;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+  
+  .album-cover {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .song-title {
+    font-weight: bold;
+  }
+  
+  .album-name {
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* Perfect Album Styling */
+  .perfect-album {
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .perfect-album h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+  }
+  
+  .song-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  
+  .track-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #007bff;
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+  }
+  
+  .album-cover {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .song-title {
+    font-weight: bold;
+  }
+  
+  .album-name {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .audio-player {
+    max-width: 200px;
+    height: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      height: auto;
+      min-height: 150px;
+    }
+  
+    .header-title {
+      font-size: 1.5rem;
+    }
+  
+    .header-sub-title {
+      font-size: 2rem;
+    }
+    .song-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+      }
+
+      .album-cover {
+        width: 30px;
+        height: 30px;
+      }
+
+      .steps-row {
+        flex-direction: column;
+      }
+    
+      .track-rankings-grid {
+        grid-template-columns: repeat(2, 1fr); 
+      }
+
+      .audio-player {
+        width: 100%;
+        margin-top: 10px;
+      }
+  }
+
+  @media (max-width: 448px) {
+ 
+      .track-rankings-grid {
+        grid-template-columns: repeat(1, 1fr); 
+      }
+      
+  }

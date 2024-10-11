@@ -98,16 +98,6 @@
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
-
-  .user-card.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .user-card.disabled:hover {
-    transform: none;
-    box-shadow: none;
-  }
   
   .profile-image {
     width: 50px;

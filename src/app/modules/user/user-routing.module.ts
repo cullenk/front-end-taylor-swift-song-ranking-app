@@ -24,6 +24,9 @@ import { AboutComponent } from './components/about/about.component';
 import { AllAlbumsRankingComponent } from './components/ranking-lists/all-albums-ranking/all-albums-ranking.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { UserExplorerComponent } from './components/user-explorer/user-explorer.component';
+import { RankByTrackComponent } from './components/ranking-lists/rank-by-track/rank-by-track.component';
+import { ReleaseNotesComponent } from './components/release-notes/release-notes.component';
+import { AllSongsRankingComponent } from './components/ranking-lists/all-songs/all-songs-ranking.component';
 
 const routes: Routes = [
   {
@@ -49,8 +52,11 @@ const routes: Routes = [
     { path: 'rankings/midnights', component: MidnightsRankingComponent },
     { path: 'rankings/tortured-poets-department', component: TorturedPoetsDepartmentRankingComponent },
     { path: 'rankings/singles', component: SinglesComponent },
-    { path: 'rankings/allAlbums', component: AllAlbumsRankingComponent},
+    { path: 'rankings/allAlbums', component: AllAlbumsRankingComponent },
+    { path: 'rankings/byTrackNumber', component: RankByTrackComponent },
+    { path: 'rankings/allSongs', component: AllSongsRankingComponent },
     { path: 'contact', component: ContactComponent},
+    { path: 'releaseNotes', component: ReleaseNotesComponent},
     { path: '', redirectTo: '/user/userProfile', pathMatch: 'full'},
     {path: '**', component: DashboardNotFoundComponent},
 ]}];
