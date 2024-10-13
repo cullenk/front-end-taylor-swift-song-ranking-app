@@ -48,14 +48,17 @@ export class AuthService {
       }),
       catchError(error => {
         let errorMessage = 'An error occurred during signup';
+        let errorField = '';
         if (error.error && error.error.message) {
           errorMessage = error.error.message;
+          errorField = error.error.field;
         }
-        this.toastService.showError(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Signup error:', error);
+        return throwError(() => ({ message: errorMessage, field: errorField }));
       })
     );
   }
+
   loginUser(username: string, password: string): Observable<any> {
     const authData: AuthModelLogin = { username, password };
 

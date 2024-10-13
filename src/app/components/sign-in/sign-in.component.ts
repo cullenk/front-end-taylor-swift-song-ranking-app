@@ -22,6 +22,13 @@ export class SignInComponent implements OnInit, AfterViewInit {
   isLoginMode = true;
   isForgotPasswordMode = false;
   showPassword: boolean = false;
+
+ // New password strength properties
+ passwordStrength = 0;
+ passwordLength = false;
+ hasUpperCase = false;
+ hasNumber = false;
+
   albumCovers: string[] = [
     'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
     'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
@@ -63,7 +70,11 @@ export class SignInComponent implements OnInit, AfterViewInit {
         Validators.pattern(/^[a-zA-Z0-9_]+$/)
       ]),
       'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', [Validators.required])
+      'password': new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)/)
+      ])
     });
 
 
@@ -160,13 +171,24 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.showPassword = !this.showPassword;
   }
 
+  onPasswordInput() {
+    const password = this.signupForm.get('password')?.value;
+    this.passwordLength = password.length >= 6;
+    this.hasUpperCase = /[A-Z]/.test(password);
+    this.hasNumber = /\d/.test(password);
+
+    // Calculate password strength
+    this.passwordStrength = 
+      (this.passwordLength ? 33 : 0) + 
+      (this.hasUpperCase ? 33 : 0) + 
+      (this.hasNumber ? 34 : 0);
+  }
+
   onSubmit() {
     if (this.isLoginMode) {
-      // Login mode logic remains the same
       this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(
           (response) => {
-            // Handle successful login
             this.toastr.success('Login successful!', 'Welcome');
           },
           (error) => {
@@ -174,55 +196,36 @@ export class SignInComponent implements OnInit, AfterViewInit {
           }
         );
     } else {
-      // Signup mode
-      if (this.signupForm.valid) {
-        const { username, email, password } = this.signupForm.value;
-  
-        // Additional check for username format
-        const usernameRegex = /^[a-zA-Z0-9_]+$/;
-        if (!usernameRegex.test(username)) {
-          this.toastr.warning('Username can only contain letters, numbers, and underscores.', 'Invalid Username', {
-            timeOut: 5000,
-            closeButton: true,
-            progressBar: true
-          });
-          return;
-        }
-  
-        // Proceed with account creation
-        this.AuthService.createNewUser(username, email, password)
-          .subscribe(
-            (response) => {
-              this.toastr.success('Account created successfully!', 'Welcome');
-              this.isLoginMode = true; 
-            },
-            (error) => {
-              if (error.error && error.error.message) {
-                if (error.error.message.includes('Password must be')) {
-                  this.toastr.warning(error.error.message, 'Password Requirements', {
-                    timeOut: 10000,
-                    closeButton: true,
-                    progressBar: true
-                  });
-                } else {
-                  this.toastr.error(error.error.message, 'Account Creation Failed');
+        // Signup mode
+        if (this.signupForm.valid) {
+          const { username, email, password } = this.signupForm.value;
+    
+          this.AuthService.createNewUser(username, email, password)
+            .subscribe(
+              (response) => {
+                this.toastr.success('Account created successfully!', 'Welcome');
+                this.isLoginMode = true; 
+              },
+              (error) => {
+                if (error.field === 'username') {
+                  this.signupForm.get('username')?.setErrors({ 'taken': true });
+                } else if (error.field === 'email') {
+                  this.signupForm.get('email')?.setErrors({ 'taken': true });
                 }
-              } else {
-                this.toastr.error('Account creation failed. Please try again.', 'Error');
+                this.toastr.error(error.message, 'Account Creation Failed');
               }
+            );
+        } else {
+          // Form is invalid, show error messages
+          Object.keys(this.signupForm.controls).forEach(key => {
+            const control = this.signupForm.get(key);
+            if (control?.invalid) {
+              control.markAsTouched();
             }
-          );
-      } else {
-        // Form is invalid, show error messages
-        Object.keys(this.signupForm.controls).forEach(key => {
-          const control = this.signupForm.get(key);
-          if (control?.invalid) {
-            control.markAsTouched();
-          }
-        });
+          });
+        }
       }
     }
-  }
   
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;

@@ -26,7 +26,11 @@ export class PasswordResetComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.resetForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(6),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)/)
+      ]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
   }
@@ -48,17 +52,6 @@ export class PasswordResetComponent implements OnInit {
     if (this.resetForm.valid && this.token) {
       const newPassword = this.resetForm.get('password')?.value;
 
-      // Additional password validation
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if (!passwordRegex.test(newPassword)) {
-        this.toastr.warning(
-          'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-          'Password Requirements',
-          { timeOut: 10000, closeButton: true, progressBar: true }
-        );
-        return;
-      }
-
       this.authService.resetPassword(this.token, newPassword).subscribe(
         () => {
           this.toastr.success('Your password has been reset successfully');
@@ -66,15 +59,7 @@ export class PasswordResetComponent implements OnInit {
         },
         (error) => {
           if (error.error && error.error.message) {
-            if (error.error.message.includes('Password must be')) {
-              this.toastr.warning(error.error.message, 'Password Requirements', {
-                timeOut: 10000,
-                closeButton: true,
-                progressBar: true
-              });
-            } else {
-              this.toastr.error(error.error.message, 'Password Reset Failed');
-            }
+            this.toastr.error(error.error.message, 'Password Reset Failed');
           } else {
             this.toastr.error('Failed to reset password. Please try again.', 'Error');
           }
