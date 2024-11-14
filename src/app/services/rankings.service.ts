@@ -121,12 +121,13 @@ getAlbumPopularity(): Observable<HomePageAlbumRanking[]> {
 //Get Surprise Songs of all users for home page
 getSurpriseSongs(): Observable<SurpriseSong[]> {
   return this.http.get<SurpriseSong[]>(`${this.apiUrl}/rankings/surprise-songs`, { headers: this.getHeaders() }).pipe(
-    catchError(error => {
-      console.error('Error fetching surprise songs:', error);
-      return throwError(() => new Error('Failed to fetch surprise songs'));
-    })
+      catchError(error => {
+          console.error('Error fetching surprise songs:', error);
+          return throwError(() => new Error('Failed to fetch surprise songs'));
+      })
   );
 }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {

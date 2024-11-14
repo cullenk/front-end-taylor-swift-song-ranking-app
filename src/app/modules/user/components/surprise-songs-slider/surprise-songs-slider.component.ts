@@ -26,9 +26,12 @@ export class SurpriseSongsSliderComponent implements OnInit, OnDestroy {
   loadSurpriseSongs() {
     this.rankingsService.getSurpriseSongs().subscribe(
       songs => {
-        this.surpriseSongs = this.shuffleArray(songs.filter(song => song.guitar !== 'Not set' || song.piano !== 'Not set'));
+        // Check if songs are returned correctly and filter out any invalid entries
+        this.surpriseSongs = this.shuffleArray(songs.filter(song => song.guitar && song.piano));
         if (this.surpriseSongs.length > 0) {
           this.startCycling();
+        } else {
+          console.log('No valid surprise songs available');
         }
       },
       error => console.error('Error loading surprise songs:', error)

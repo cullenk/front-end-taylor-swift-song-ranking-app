@@ -49,7 +49,11 @@ getErasTourSetListByUsername(username: string): Observable<EraSetList[]> {
   return this.http.get<EraSetList[]>(`${this.apiUrl}/profile/eras-tour-set-list/${username}`);
 }
 
-getAllPublicProfiles(): Observable<UserProfile[]> {
-  return this.http.get<UserProfile[]>(`${this.apiUrl}/profile/all-public-profiles`);
+getAllPublicProfiles(page: number = 1, limit: number = 20): Observable<{ totalCount: number; users: UserProfile[] }> {
+  return this.http.get<{ totalCount: number; users: UserProfile[] }>(`${this.apiUrl}/profile/all-public-profiles?page=${page}&limit=${limit}`, { headers: this.getHeaders() });
+}
+
+getAllPublicProfilesWithoutPagination(): Observable<UserProfile[]> {
+  return this.http.get<UserProfile[]>(`${this.apiUrl}/profile/all-public-profiles/all`, { headers: this.getHeaders() });
 }
 }

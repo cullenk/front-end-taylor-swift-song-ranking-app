@@ -1,30 +1,36 @@
 <div class="user-explorer-container">
   <div class="header-container">
-    <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
-    <div class="header-div">
-      <h1 class="header-title">It's Nice To Have A Friend</h1>
-      <h1 class="header-sub-title">Explore Other User Profiles!</h1>
-    </div>
+     <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
+     <div class="header-div">
+        <h1 class="header-title">It's Nice To Have A Friend</h1>
+        <h1 class="header-sub-title">Explore Other User Profiles!</h1>
+     </div>
   </div>
   <div class="search-bar">
-    <p class="helper-text">Only users with completed profiles are displayed.</p>
-    <input 
-      type="text" 
-      [(ngModel)]="searchTerm" 
-      (input)="filterUsers()" 
-      placeholder="Search users..."
-    >
+     <p class="helper-text">Only users with completed profiles are displayed.</p>
+     <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="filterUsers()" 
+        placeholder="Search users..."
+     >
   </div>
 
   <div class="user-grid">
-    <div 
-      *ngFor="let user of filteredUsers" 
-      class="user-card" 
-      [style.background-color]="getThemeColor(user.theme)"
-      (click)="goToUserProfile(user.username)"
-    >
-      <img [src]="user.profileImage" alt="{{ user.username }}'s profile" class="profile-image">
-      <span class="username">{{ user.username }}</span>
-    </div>
+     <div 
+        *ngFor="let user of filteredUsers" 
+        class="user-card" 
+        [style.background-color]="getThemeColor(user.theme)"
+        (click)="goToUserProfile(user.username)"
+     >
+        <img [src]="user.profileImage" alt="{{ user.username }}'s profile" class="profile-image">
+        <span class="username">{{ user.username }}</span>
+     </div>
+  </div>
+
+  <div class="pagination-controls">
+     <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+     <span>Page {{ currentPage }} of {{ totalPages }}</span>
+     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
   </div>
 </div>

@@ -17,6 +17,15 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   releaseNotes: ReleaseNote[] = [
     {
+      version: '1.3.0',
+      date: '2024-11-13',
+      features: [
+        'Implemented better database querying to handle more traffic',
+        'Cached homepage data to improve load times',
+        'Added pagination to the user explorer page',
+      ]
+    },
+    {
       version: '1.2.0',
       date: '2024-10-10',
       features: [

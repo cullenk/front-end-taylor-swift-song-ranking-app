@@ -115,6 +115,45 @@
     display: inline-block;
   }
 
+  .user-explorer-container {
+    // Other styles...
+  
+    .pagination-controls {
+      display: flex;                   // Use flexbox for alignment
+      justify-content: center;         // Center align items
+      align-items: center;             // Center vertically
+      margin: 20px 0;                 // Add vertical spacing from other content
+      gap: 10px;                       // Space between buttons and text
+  
+      button {
+        background-color: var(--secondary-color);     // Green background color
+        color: white;                   // White text color
+        border: none;                   // Remove border
+        padding: 10px 15px;             // Add padding
+        text-align: center;             // Center text
+        text-decoration: none;          // Remove underline
+        display: inline-block;          // Inline-block for button behavior
+        font-size: 16px;                // Font size
+        border-radius: 5px;             // Rounded corners
+        cursor: pointer;                // Pointer cursor on hover
+  
+        &:disabled {
+          background-color: #ccc;       // Gray background for disabled state
+          cursor: not-allowed;           // Not-allowed cursor for disabled state
+        }
+  
+        &:hover:not(:disabled) {
+          background-color: var(--hover-color);     // Darker green on hover
+        }
+      }
+  
+      span {
+        font-size: 16px;                // Font size for page info
+        margin: 0 10px;                 // Space around the text
+      }
+    }
+  }
+
   @media (max-width: 768px) {
     .header-container {
       height: auto;

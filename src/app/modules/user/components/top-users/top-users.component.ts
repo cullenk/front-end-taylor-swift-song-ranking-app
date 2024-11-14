@@ -67,7 +67,7 @@ export class TopUsersComponent implements OnInit {
           }
         },
         ticks: {
-          stepSize: 1
+          stepSize: 25
         },
         suggestedMax: 10 // Ensure y-axis always goes up to at least 10
       }

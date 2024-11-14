@@ -56,7 +56,7 @@ export class UserFavoriteSongsComponent {
           }
         },
         ticks: {
-          stepSize: 1
+          stepSize: 25
         }
       },
       y: {
