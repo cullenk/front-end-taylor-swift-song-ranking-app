@@ -27,6 +27,9 @@ export class AllSongsRankingService {
   }
 
   getAllSongsRanking(): Observable<AllSongsRankingItem[]> {
+    if (this.cachedRanking) {
+      return of(this.cachedRanking);
+    }
     return this.http.get<AllSongsRankingItem[]>(`${this.apiUrl}/all-songs-ranking`).pipe(
       tap(ranking => {
         this.cachedRanking = ranking;
@@ -37,6 +40,7 @@ export class AllSongsRankingService {
       })
     );
   }
+  
   saveAllSongsRanking(ranking: AllSongsRankingItem[]): Observable<AllSongsRankingItem[]> {
     return this.http.put<AllSongsRankingItem[]>(`${this.apiUrl}/all-songs-ranking`, { ranking }).pipe(
       tap(updatedRanking => this.cachedRanking = updatedRanking),

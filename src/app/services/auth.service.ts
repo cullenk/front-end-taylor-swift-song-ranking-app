@@ -1,13 +1,10 @@
-import { Observable, Subject, of, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthModelLogin } from './auth-model-login';
-import { AuthModelCreate } from './auth-model-create';
-import { ToastService } from './toast-service.service';
 import { isPlatformBrowser } from '@angular/common';
-import { MailService } from './mail.service';
 import { environment } from '../../environments/environment.prod';
 
 @Injectable({
@@ -23,8 +20,6 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastService: ToastService,
-    private mailService: MailService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
