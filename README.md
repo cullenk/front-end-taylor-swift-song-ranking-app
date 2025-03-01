@@ -7,7 +7,7 @@ A web application for Taylor Swift fans to rank their favorite songs and albums.
 - **User Authentication**: Create accounts, sign in securely and customize your profile.
 - **Song Ranking**: Rank your favorite Taylor Swift songs and albums, build your own Eras Tour.
 - **Album Ranking**: Create personalized rankings of Taylor Swift albums.
-- **Responsive Design**: Enjoy a seamless experience across devices.
+- **Responsive Design**: Enjoy a seamless experience across devices and share with friends.
 
 ## Technology Stack
 
