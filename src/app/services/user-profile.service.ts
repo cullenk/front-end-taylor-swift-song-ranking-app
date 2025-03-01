@@ -56,4 +56,5 @@ getAllPublicProfiles(page: number = 1, limit: number = 20): Observable<{ totalCo
 getAllPublicProfilesWithoutPagination(): Observable<UserProfile[]> {
   return this.http.get<UserProfile[]>(`${this.apiUrl}/profile/all-public-profiles/all`, { headers: this.getHeaders() });
 }
+
 }

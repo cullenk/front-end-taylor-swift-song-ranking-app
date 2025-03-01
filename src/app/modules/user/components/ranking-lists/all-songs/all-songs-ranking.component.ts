@@ -5,6 +5,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { AllSongsRankingService, AllSongsRankingItem } from '../../../../../services/all-songs-ranking.service';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-all-songs-ranking',
@@ -23,7 +24,9 @@ export class AllSongsRankingComponent implements OnInit {
 
   constructor(
     private allSongsRankingService: AllSongsRankingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
+
   ) {}
 
   ngOnInit() {
@@ -151,5 +154,9 @@ export class AllSongsRankingComponent implements OnInit {
         this.toastr.error('Error saving ranking');
       }
     );
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 }

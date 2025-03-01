@@ -48,7 +48,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
     this.disableAudioRightClick();
     
     this.searchSubject.pipe(
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
       takeUntil(this.destroy$)
     ).subscribe(query => {
@@ -137,7 +137,6 @@ ngOnDestroy() {
         }
       );
     } else {
-      console.log(`No song selected for slot ${this.slotIndex}`);
       this.selectedSong = null;
       this.updateAlbumTheme();
     }

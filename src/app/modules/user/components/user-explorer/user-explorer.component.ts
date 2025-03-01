@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { FormsModule } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -12,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './user-explorer.component.html',
   styleUrls: ['./user-explorer.component.scss']
 })
-export class UserExplorerComponent implements OnInit {
+export class UserExplorerComponent implements OnInit, OnDestroy {
   users: UserProfile[] = [];
   filteredUsers: UserProfile[] = [];
   searchTerm: string = '';
@@ -35,62 +37,79 @@ export class UserExplorerComponent implements OnInit {
     'The Tortured Poets Department': '#E3E0C8'
 };
 
-constructor(
+  private searchTermSubject = new Subject<string>();
+  private searchTermSubscription!: Subscription;
+
+  constructor(
     private router: Router,
     private userProfileService: UserProfileService
-) {}
+  ) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.loadUsers();
-}
+    this.searchTermSubscription = this.searchTermSubject.pipe(
+      debounceTime(500), // wait 300ms after each keystroke before considering the term
+      distinctUntilChanged() // ignore if next search term is same as previous
+    ).subscribe(searchTerm => {
+      this.filterUsers(searchTerm);
+    });
+  }
 
-loadUsers(page: number = this.currentPage): void {
+  ngOnDestroy(): void {
+    this.searchTermSubscription.unsubscribe();
+  }
+
+  loadUsers(page: number = this.currentPage): void {
     this.userProfileService.getAllPublicProfiles(page, this.limit).subscribe(
-        response => {
-            this.users = response.users; // No need to filter here based on topThirteen
-            this.totalCount = response.totalCount;
-            this.currentPage = page;
-            this.totalPages = Math.ceil(this.totalCount / this.limit);
-            this.filteredUsers = this.users; // Initialize filteredUsers with all users initially
-        },
-        error => {
-            console.error('Error fetching user profiles:', error);
-        }
+      response => {
+        this.users = response.users; 
+        this.totalCount = response.totalCount;
+        this.currentPage = page;
+        this.totalPages = Math.ceil(this.totalCount / this.limit);
+        this.filteredUsers = this.users; // Initialize filteredUsers with all users initially
+      },
+      error => {
+        console.error('Error fetching user profiles:', error);
+      }
     );
-}
+  }
 
-filterUsers(): void {
-    if (this.searchTerm.trim() === '') {
-        // If search term is empty reset filtered users to all users
-        this.filteredUsers = this.users;
+  filterUsers(searchTerm: string = ''): void {
+    if (searchTerm.trim() === '') {
+      // If search term is empty reset filtered users to all users
+      this.filteredUsers = this.users;
     } else {
-        // Fetch all users for searching
-        this.userProfileService.getAllPublicProfilesWithoutPagination().subscribe(allUsers => {
-            // Filter through all users based on the search term
-            this.filteredUsers = allUsers.filter(user =>
-                user.username.toLowerCase().includes(this.searchTerm.toLowerCase())
-            );
-        });
+      // Fetch all users for searching
+      this.userProfileService.getAllPublicProfilesWithoutPagination().subscribe(allUsers => {
+        // Filter through all users based on the search term
+        this.filteredUsers = allUsers.filter(user =>
+          user.username.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
     }
-}
+  }
 
-goToUserProfile(username: string): void {
+  onSearchTermChange(searchTerm: string): void {
+    this.searchTermSubject.next(searchTerm);
+  }
+
+  goToUserProfile(username: string): void {
     this.router.navigate(['/public-profile', username]);
-}
+  }
 
-nextPage(): void {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
-        this.loadUsers(this.currentPage + 1);
+      this.loadUsers(this.currentPage + 1);
     }
-}
+  }
 
-previousPage(): void {
+  previousPage(): void {
     if (this.currentPage > 1) {
-        this.loadUsers(this.currentPage - 1);
+      this.loadUsers(this.currentPage - 1);
     }
-}
+  }
 
-getThemeColor(theme: string): string {
-     return this.themeColors[theme] || 'rgba(255,255,255,0.7)';
-}
+  getThemeColor(theme: string): string {
+    return this.themeColors[theme] || 'rgba(255,255,255,0.7)';
+  }
 }

@@ -6,17 +6,16 @@ import { AlbumService } from '../../../../services/album.service';
 import { RankingsService } from '../../../../services/rankings.service';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
-import { Album } from '../../../../interfaces/Album';
 import { Song } from '../../../../interfaces/Song';
 import { UserProfile } from '../../../../interfaces/userProfile';
-import { UserProfileSong } from '../../../../interfaces/userProfile';
 import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
@@ -116,7 +115,8 @@ export class UserProfileComponent implements OnInit {
     private RankingsService: RankingsService,
     private albumService: AlbumService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -193,7 +193,7 @@ export class UserProfileComponent implements OnInit {
         }
       );
     } else {
-      console.error('User profile not loaded yet');
+      
     }
   }
 
@@ -248,7 +248,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   handleAudioPlay(event: Event) {
-    console.log('clicked')
     const audioElement = event.target as HTMLAudioElement;
   
     // Pause all other audio elements
@@ -302,6 +301,10 @@ export class UserProfileComponent implements OnInit {
 
   startEditing() {
     this.isEditing = true;
+  }
+
+  sanitizeInput(input: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(input);
   }
 
   saveAnswers() {

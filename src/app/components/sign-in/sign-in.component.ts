@@ -1,19 +1,30 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { MailService } from '../../services/mail.service';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
+  styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit, AfterViewInit {
   loginForm: FormGroup;
@@ -23,11 +34,11 @@ export class SignInComponent implements OnInit, AfterViewInit {
   isForgotPasswordMode = false;
   showPassword: boolean = false;
 
- // New password strength properties
- passwordStrength = 0;
- passwordLength = false;
- hasUpperCase = false;
- hasNumber = false;
+  // New password strength properties
+  passwordStrength = 0;
+  passwordLength = false;
+  hasUpperCase = false;
+  hasNumber = false;
 
   albumCovers: string[] = [
     'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
@@ -41,9 +52,9 @@ export class SignInComponent implements OnInit, AfterViewInit {
     'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
     'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.jpg',
     'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg'
+    'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg',
   ];
-  
+
   shuffledColumns: string[][] = [];
 
   @ViewChild('albumColumns') albumColumnsElement!: ElementRef;
@@ -51,35 +62,33 @@ export class SignInComponent implements OnInit, AfterViewInit {
 
   constructor(
     private AuthService: AuthService,
-    private MailService: MailService,
     private renderer: Renderer2,
     private toastr: ToastrService,
     private meta: Meta,
     private title: Title
   ) {
     this.loginForm = new FormGroup({
-      'username': new FormControl('', [Validators.required]),
-      'password': new FormControl('', [Validators.required])
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
 
     this.signupForm = new FormGroup({
-      'username': new FormControl('', [
-        Validators.required, 
-        Validators.minLength(3), 
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
         Validators.maxLength(30),
-        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+        Validators.pattern(/^[a-zA-Z0-9_]+$/),
       ]),
-      'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', [
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)/)
-      ])
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)/),
+      ]),
     });
 
-
     this.forgotPasswordForm = new FormGroup({
-      'email': new FormControl('', [Validators.required, Validators.email])
+      email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
 
@@ -93,22 +102,54 @@ export class SignInComponent implements OnInit, AfterViewInit {
   }
 
   updateMetaTags() {
-    this.title.setTitle('Sign In - Swiftie Ranking Hub');
-    
-    this.meta.updateTag({ name: 'description', content: 'Sign in or create an account to join Swiftie Ranking Hub. Rank your favorite Taylor Swift songs and share your profile with other fans!' });
-    
+    this.title.setTitle('Swiftie Ranking Hub');
+
+    this.meta.updateTag({
+      name: 'description',
+      content:
+        'Sign in or create an account to join Swiftie Ranking Hub. Rank your favorite Taylor Swift songs and share your profile with other fans!',
+    });
+
     // Open Graph
-    this.meta.updateTag({ property: 'og:title', content: 'Sign In - Swiftie Ranking Hub' });
-    this.meta.updateTag({ property: 'og:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
-    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
-    this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/login' });
+    this.meta.updateTag({
+      property: 'og:title',
+      content: 'Swiftie Ranking Hub',
+    });
+    this.meta.updateTag({
+      property: 'og:description',
+      content:
+        'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!',
+    });
+    this.meta.updateTag({
+      property: 'og:image',
+      content:
+        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png',
+    });
+    this.meta.updateTag({
+      property: 'og:url',
+      content: 'https://swiftierankinghub.com/login',
+    });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
-    
+
     // Twitter Card
-    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.meta.updateTag({ name: 'twitter:title', content: 'Sign In - Swiftie Ranking Hub' });
-    this.meta.updateTag({ name: 'twitter:description', content: 'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!' });
-    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
+    this.meta.updateTag({
+      name: 'twitter:title',
+      content: 'Swiftie Ranking Hub',
+    });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content:
+        'Join Swiftie Ranking Hub to rank your favorite Taylor Swift songs and share your profile with other fans!',
+    });
+    this.meta.updateTag({
+      name: 'twitter:image',
+      content:
+        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png',
+    });
   }
 
   shuffleAlbumCovers() {
@@ -122,7 +163,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.shuffledColumns = [
       shuffled.slice(0, 4),
       shuffled.slice(4, 8),
-      shuffled.slice(8, 12)
+      shuffled.slice(8, 12),
     ];
   }
 
@@ -136,19 +177,19 @@ export class SignInComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < numSquares; i++) {
       const square = this.renderer.createElement('div');
       this.renderer.addClass(square, 'random-square');
-      
+
       const size = Math.floor(Math.random() * 50) + 20;
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const color = colors[Math.floor(Math.random() * colors.length)];
-      
+
       this.renderer.setStyle(square, 'width', `${size}px`);
       this.renderer.setStyle(square, 'height', `${size}px`);
       this.renderer.setStyle(square, 'top', `${top}%`);
       this.renderer.setStyle(square, 'left', `${left}%`);
       this.renderer.setStyle(square, 'background-color', color);
       this.renderer.setStyle(square, 'opacity', '0.5');
-      
+
       this.renderer.appendChild(container, square);
     }
   }
@@ -157,7 +198,8 @@ export class SignInComponent implements OnInit, AfterViewInit {
   onMouseMove(event: MouseEvent) {
     if (!this.albumColumnsElement) return;
 
-    const columns = this.albumColumnsElement.nativeElement.querySelectorAll('.column');
+    const columns =
+      this.albumColumnsElement.nativeElement.querySelectorAll('.column');
     const mouseX = event.clientX / window.innerWidth;
     const mouseY = event.clientY / window.innerHeight;
 
@@ -178,55 +220,69 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.hasNumber = /\d/.test(password);
 
     // Calculate password strength
-    this.passwordStrength = 
-      (this.passwordLength ? 33 : 0) + 
-      (this.hasUpperCase ? 33 : 0) + 
+    this.passwordStrength =
+      (this.passwordLength ? 33 : 0) +
+      (this.hasUpperCase ? 33 : 0) +
       (this.hasNumber ? 34 : 0);
   }
 
   onSubmit() {
     if (this.isLoginMode) {
-      this.AuthService.loginUser(this.loginForm.value.username, this.loginForm.value.password)
-        .subscribe(
-          (response) => {
-            this.toastr.success('Login successful!', 'Welcome');
-          },
-          (error) => {
-            this.toastr.error('Login failed. Please check your credentials.', 'Error');
-          }
-        );
+      this.AuthService.loginUser(
+        this.loginForm.value.username,
+        this.loginForm.value.password
+      ).subscribe(
+        (response) => {
+          this.toastr.success('Login successful!', 'Welcome');
+        },
+        (error) => {
+          this.toastr.error(
+            'Login failed. Please check your credentials.',
+            'Error'
+          );
+        }
+      );
     } else {
-        // Signup mode
-        if (this.signupForm.valid) {
-          const { username, email, password } = this.signupForm.value;
-    
-          this.AuthService.createNewUser(username, email, password)
-            .subscribe(
-              (response) => {
-                this.toastr.success('Account created successfully!', 'Welcome');
-                this.isLoginMode = true; 
+      // Signup mode
+      if (this.signupForm.valid) {
+        const { username, email, password } = this.signupForm.value;
+  
+        this.AuthService.createNewUser(username, email, password).subscribe(
+          (response) => {
+            this.toastr.success('Account created successfully!', 'Welcome');
+            // Automatically login the user after successful signup
+            this.AuthService.loginUser(username, password).subscribe(
+              (loginResponse) => {
+                this.toastr.success('You are now logged in!', 'Welcome');
+                // Navigation is handled in the AuthService
               },
-              (error) => {
-                if (error.field === 'username') {
-                  this.signupForm.get('username')?.setErrors({ 'taken': true });
-                } else if (error.field === 'email') {
-                  this.signupForm.get('email')?.setErrors({ 'taken': true });
-                }
-                this.toastr.error(error.message, 'Account Creation Failed');
+              (loginError) => {
+                this.toastr.error('Auto-login failed. Please log in manually.', 'Error');
               }
             );
-        } else {
-          // Form is invalid, show error messages
-          Object.keys(this.signupForm.controls).forEach(key => {
-            const control = this.signupForm.get(key);
-            if (control?.invalid) {
-              control.markAsTouched();
+          },
+          (error) => {
+            if (error.field === 'username') {
+              this.signupForm.get('username')?.setErrors({ taken: true });
+            } else if (error.field === 'email') {
+              this.signupForm.get('email')?.setErrors({ taken: true });
             }
-          });
-        }
+            this.toastr.error(error.message, 'Account Creation Failed');
+          }
+        );
+      } else {
+        // Form is invalid, show error messages
+        Object.keys(this.signupForm.controls).forEach((key) => {
+          const control = this.signupForm.get(key);
+          if (control?.invalid) {
+            control.markAsTouched();
+          }
+        });
       }
     }
+  }
   
+
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     // Reset forms when toggling
@@ -239,13 +295,21 @@ export class SignInComponent implements OnInit, AfterViewInit {
 
   onForgotPassword() {
     if (this.forgotPasswordForm.valid) {
-      this.AuthService.forgotPassword(this.forgotPasswordForm.value.email).subscribe(
+      this.AuthService.forgotPassword(
+        this.forgotPasswordForm.value.email
+      ).subscribe(
         () => {
-          this.toastr.success('Password reset email sent. Please check your inbox.', 'Success');
+          this.toastr.success(
+            'Password reset email sent. Please check your inbox.',
+            'Success'
+          );
           this.isForgotPasswordMode = false;
         },
         (error) => {
-          this.toastr.error('Failed to send password reset email. Please try again.', 'Error');
+          this.toastr.error(
+            'Failed to send password reset email. Please try again.',
+            'Error'
+          );
         }
       );
     }

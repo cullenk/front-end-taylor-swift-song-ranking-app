@@ -17,8 +17,17 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   releaseNotes: ReleaseNote[] = [
     {
+      version: '1.4.0',
+      date: 'March 1st, 2025',
+      features: [
+        'Added debouncing in search inputs',
+        'Handled input sanitization for questionnaire form',
+        'Updated user explorer logic and various styling',
+      ]
+    },
+    {
       version: '1.3.0',
-      date: '2024-11-13',
+      date: 'Nov 13th, 2024',
       features: [
         'Implemented better database querying to handle more traffic',
         'Cached homepage data to improve load times',
@@ -27,7 +36,7 @@ export class ReleaseNotesComponent {
     },
     {
       version: '1.2.0',
-      date: '2024-10-10',
+      date: 'Oct 10th, 2024',
       features: [
         'Added "Rank By Track" feature with personal album builder',
         'Added "Rank All Songs" feature',
@@ -37,7 +46,7 @@ export class ReleaseNotesComponent {
     },
     {
       version: '1.1.0',
-      date: '2024-10-01',
+      date: 'Oct 1st, 2024',
       features: [
         'Implemented top Eras Tour vs Popular songs chart data',
         'Fixed bugs in username/password creation and reset',
@@ -46,7 +55,7 @@ export class ReleaseNotesComponent {
     },
     {
       version: '1.0.0',
-      date: '2024-09-28',
+      date: 'Sept 28th, 2024',
       features: [
         'Initial release of Swiftie Ranking Hub',
         'Basic album ranking functionality',

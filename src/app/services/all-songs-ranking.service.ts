@@ -27,10 +27,8 @@ export class AllSongsRankingService {
   }
 
   getAllSongsRanking(): Observable<AllSongsRankingItem[]> {
-    console.log('Fetching all songs ranking');
     return this.http.get<AllSongsRankingItem[]>(`${this.apiUrl}/all-songs-ranking`).pipe(
       tap(ranking => {
-        console.log('Received ranking:', ranking);
         this.cachedRanking = ranking;
       }),
       catchError(error => {

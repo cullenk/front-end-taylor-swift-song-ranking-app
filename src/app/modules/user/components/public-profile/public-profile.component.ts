@@ -119,7 +119,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       this.userProfileService.getPublicProfile(username).subscribe(
         (data: UserProfile) => {
           this.userProfile = this.setDefaultsIfNeeded(data);
-          console.log('Loaded public profile:', this.userProfile);
           this.sortProfileQuestions();
           this.loadTopThirteenDetails();
           this.loadTopFiveAlbums(username);
@@ -176,8 +175,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   checkErasTourSetlist(username: string) {
-    console.log('Has set list?', this.hasErasTourSetlist)
-    console.log('Checking for eras tour setlist...')
     this.userProfileService.hasCompletedErasTourSetlist(username).subscribe(
       hasSetlist => {
         this.hasErasTourSetlist = hasSetlist;
@@ -186,7 +183,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         console.error('Error checking Eras Tour setlist:', error);
       }
     );
-    console.log('Has set list?', this.hasErasTourSetlist)
   }
 
   setDefaultsIfNeeded(profile: UserProfile): UserProfile {

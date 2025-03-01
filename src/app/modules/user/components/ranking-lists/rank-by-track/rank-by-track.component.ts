@@ -4,6 +4,8 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { TrackRankingService } from '../../../../../services/track-ranking-service';
 import { TrackRankingItem } from '../../../../../interfaces/TrackRankingItem';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-rank-by-track',
@@ -20,6 +22,8 @@ export class RankByTrackComponent implements OnInit {
   constructor(
     private trackRankingService: TrackRankingService,
     private toastr: ToastrService,
+    private router: Router
+
     ) {}
 
   ngOnInit() {
@@ -88,6 +92,9 @@ export class RankByTrackComponent implements OnInit {
 
   handleAudioError(event: any) {
     console.error('Audio failed to load:', event);
-    // You can add error handling logic here, e.g., showing a toast message
+  }
+
+  goBackToAlbumRankings() {
+    this.router.navigate(['user/rankings']); 
   }
 }
