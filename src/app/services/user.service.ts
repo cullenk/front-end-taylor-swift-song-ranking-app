@@ -22,13 +22,22 @@ export class UserService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
+
   getUserLogins(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users/logins`, { headers: this.getHeaders() });
   }
 
-  getTopFavoriteSongs(): Observable<Song[]> {
+  //20 song preview for home page
+getTopFavoriteSongs(): Observable<Song[]> {
     return this.http.get<Song[]>(`${this.apiUrl}/users/top-favorite-songs`, { headers: this.getHeaders() });
   }
+
+  //All songs for separate top songs page
+  getAllFavoriteSongs(): Observable<Song[]> {
+    return this.http.get<Song[]>(`${this.apiUrl}/users/all-top-favorite-songs`, { headers: this.getHeaders() });
+  }
+
+  
 
   getPopularErasTourSongs(): Observable<Song[]> {
     return this.http.get<Song[]>(`${this.apiUrl}/users/popular-eras-tour-songs`, { headers: this.getHeaders() });

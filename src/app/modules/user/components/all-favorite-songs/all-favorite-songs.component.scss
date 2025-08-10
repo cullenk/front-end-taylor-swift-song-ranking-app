@@ -1,0 +1,134 @@
+.all-favorite-songs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.back-btn {
+  padding: calc(var(--padding-base) * 0.5) var(--padding-base);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+  margin-bottom: 20px;
+
+  i {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+.header-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 30px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.background-graphic {
+  position: absolute;
+  opacity: 50%;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+} 
+
+.header-div {
+  background-color: #ffd78c;
+  height: 100%;
+  border-radius: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 20px 20px;
+  min-height: 120px;
+}
+
+.header-title {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  color: black;
+  text-align: left;
+  margin: 0px 0px 10px 0px;
+  font-size: 3rem;
+}
+
+.header-sub-title {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  color: #266DD3;
+  text-align: left;
+  margin: 0px;
+  font-size: 3.6rem;
+}
+
+.content-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.description {
+  margin-bottom: 20px;
+  
+  p {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.chart-container {
+  margin-top: 20px;
+}
+
+.chart-wrapper {
+  height: 3000px; // Increased height to accommodate all songs
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    height: auto;
+    min-height: 150px;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-sub-title {
+    font-size: 2rem;
+  }
+
+  .chart-wrapper {
+    height: 2500px; // Smaller height for mobile
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-wrapper {
+    height: 2000px;
+  }
+}

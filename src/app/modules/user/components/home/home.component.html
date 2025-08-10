@@ -106,9 +106,19 @@
 <div class="home-container">
   <section class="main-content">
     <div class="widget popular-songs">
-      <h2>Users' Favorite Songs</h2>
-      <p>Most Popular Songs from Users' Top 13 Rankings</p>
-        <app-user-favorite-songs></app-user-favorite-songs>
+      <div class="widget-header">
+        <div>
+          <h2>Users' Favorite Songs</h2>
+          <p>Most Popular Songs from Users' Top 13 Rankings</p>
+        </div>
+        <button
+          class="view-all-btn"
+          (click)="navigateTo('user/all-favorite-songs')"
+        >
+          View All
+        </button>
+      </div>
+      <app-user-favorite-songs></app-user-favorite-songs>
     </div>
     <div class="widget popular-songs">
       <h2>Popular Eras Tour Songs</h2>

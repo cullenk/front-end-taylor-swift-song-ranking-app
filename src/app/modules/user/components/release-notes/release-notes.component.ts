@@ -17,6 +17,14 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   releaseNotes: ReleaseNote[] = [
     {
+      version: '2.0.0',
+      date: 'August 10th, 2025',
+      features: [
+        'Replaced Sendgrid email service with MailerSend',
+        "Added 'Users' Favorite Songs' page"
+      ]
+    },
+     {
       version: '1.4.0',
       date: 'March 1st, 2025',
       features: [

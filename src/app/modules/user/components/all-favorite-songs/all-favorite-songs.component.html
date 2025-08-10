@@ -1,0 +1,33 @@
+<div class="all-favorite-songs-container">
+  <div class="header-container">
+    <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
+    <div class="header-div">
+      <h1 class="header-title">Complete List</h1>
+      <h1 class="header-sub-title">Users' Favorite Songs</h1>
+    </div>
+  </div>
+  
+  <div class="content-container">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i>Back to Home
+    </button>
+    
+    <div class="description">
+      <p>Complete ranking of all Taylor Swift songs based on how often they appear in users' Top 13 lists, from most popular to least popular.</p>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-indicator">
+      Loading all favorite songs...
+    </div>
+
+    <div *ngIf="!isLoading" class="chart-container">
+      <div class="chart-wrapper">
+        <canvas baseChart
+                [data]="chartData"
+                [options]="chartOptions"
+                [type]="'bar'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
