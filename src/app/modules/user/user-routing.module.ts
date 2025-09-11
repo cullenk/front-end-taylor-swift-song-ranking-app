@@ -19,6 +19,7 @@ import { EvermoreRankingComponent } from './components/ranking-lists/evermore-ra
 import { MidnightsRankingComponent } from './components/ranking-lists/midnights-ranking/midnights-ranking.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { ErasTourBuilderComponent } from './eras-tour-builder/eras-tour-builder.component';
+import { TheLifeOfAShowgirlRankingComponent } from './components/ranking-lists/the-life-of-a-showgirl-ranking/the-life-of-a-showgirl-ranking.component';
 import { SinglesComponent } from './components/ranking-lists/singles/singles.component';
 import { AboutComponent } from './components/about/about.component';
 import { AllAlbumsRankingComponent } from './components/ranking-lists/all-albums-ranking/all-albums-ranking.component';
@@ -29,7 +30,7 @@ import { ReleaseNotesComponent } from './components/release-notes/release-notes.
 import { AllSongsRankingComponent } from './components/ranking-lists/all-songs/all-songs-ranking.component';
 import { AllFavoriteSongsComponent } from './components/all-favorite-songs/all-favorite-songs.component';
 
- const routes: Routes = [
+const routes: Routes = [
   {
     path: '',
     component: UserDashboardComponent,
@@ -58,6 +59,10 @@ import { AllFavoriteSongsComponent } from './components/all-favorite-songs/all-f
       {
         path: 'rankings/tortured-poets-department',
         component: TorturedPoetsDepartmentRankingComponent,
+      },
+      {
+        path: 'rankings/the-life-of-a-showgirl',
+        component: TheLifeOfAShowgirlRankingComponent,
       },
       { path: 'rankings/singles', component: SinglesComponent },
       { path: 'rankings/allAlbums', component: AllAlbumsRankingComponent },

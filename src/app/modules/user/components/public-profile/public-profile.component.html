@@ -55,7 +55,7 @@
       <ng-container *ngIf="userProfile?.rankings?.topThirteen?.length && userProfile.rankings.topThirteen[0]?.songId !== ''; else placeholderSongs">
         <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
           <div class="ranking-bubble">{{ song.slot }}</div>
-          <img [src]="song.albumImage || 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.jpg'" [alt]="song.songTitle + ' cover'" class="album-cover">
+          <img [src]="song.albumImage || 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp'" [alt]="song.songTitle + ' cover'" class="album-cover">
           <div class="title-audio">
             <div class="song-details">
               <h3>{{ song.songTitle }}</h3>

@@ -3,43 +3,73 @@
   <div class="video-grid-overlay"></div>
   <div class="video-grid">
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/1989_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/1989_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Evermore_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Evermore_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Fearless_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Fearless_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Folklore_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Folklore_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/TTPD2_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/TTPD2_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Speak_Now_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Speak_Now_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Red_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Red_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Midnights_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Midnights_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/TTPD1_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/TTPD1_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Lover_Phone.mp4" type="video/mp4">
+      <source
+        src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/Lover_Phone.mp4"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <!-- Add more video items as needed -->
@@ -47,21 +77,37 @@
   <div class="hero-content">
     <div class="hero-text">
       <h1>Welcome to the Swiftie Ranking Hub!</h1>
-      <p>Your personal hub to discover and rank your favorite Taylor Swift songs and more.</p>
+      <p>
+        Your personal hub to discover and rank your favorite Taylor Swift songs
+        and more.
+      </p>
     </div>
     <div class="hero-graphic">
-      <img src="https://d3e29z0m37b0un.cloudfront.net/graphics/HeroGraphicSimple.png" alt="Hero Graphic">
+      <img
+        src="https://d3e29z0m37b0un.cloudfront.net/graphics/HeroGraphicSimple.webp"
+        alt="Hero Graphic"
+      />
       <div class="song-items">
-        <div class="song-item" *ngFor="let song of displayedSongs; let i = index" 
-             [style.top]="30 + i * 12 + '%'" [style.right]="30 - i * 2 + '%'">
+        <div
+          class="song-item"
+          *ngFor="let song of displayedSongs; let i = index"
+          [style.top]="30 + i * 12 + '%'"
+          [style.right]="30 - i * 2 + '%'"
+        >
           <div class="ranking-box">
             <span>{{ i + 1 }}</span>
           </div>
-          <div class="song-card" [ngStyle]="{'background-image': 'url(' + song.albumCover + ')'}">
-            <div class="overlay" [ngStyle]="{'background': song.overlay}"></div>
+          <div
+            class="song-card"
+            [ngStyle]="{ 'background-image': 'url(' + song.albumCover + ')' }"
+          >
+            <div class="overlay" [ngStyle]="{ background: song.overlay }"></div>
             <div class="song-card-content">
               <div class="album-cover-div">
-                <img [src]="song.albumCover" [alt]="song.albumName + ' Cover'">
+                <img
+                  [src]="song.albumCover"
+                  [alt]="song.albumName + ' Cover'"
+                />
               </div>
               <div class="song-details-div">
                 <h3 class="song-title">{{ song.title }}</h3>
@@ -75,7 +121,7 @@
   </div>
 </div>
 
-<div class="cards-container">
+<!-- <div class="cards-container">
   <div class="card" (click)="navigateTo('user/about')">
     <img src="https://d3e29z0m37b0un.cloudfront.net/graphics/About-Icon.svg" alt="About Icon" class="card-icon">
     <h3>About</h3>
@@ -101,6 +147,41 @@
     <h3>Profile</h3>
     <p>View and edit your personal profile theme, Swiftie questionnaire and share with friends!</p>
   </div>
+</div> -->
+
+<div class="countdown-container">
+  <div class="countdown-card">
+    <div class="album-cover-section">
+      <img
+        src="https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp"
+        alt="The Life Of A Showgirl Album Cover"
+        class="album-cover"
+      />
+    </div>
+    <div class="countdown-content">
+      <h2 class="welcome-text">Welcome TS12!</h2>
+      <h3 class="album-title">The Life Of A Showgirl</h3>
+      <div class="countdown-timer">
+        <div class="time-unit">
+          <span class="time-value">{{ timeRemaining.days }}</span>
+          <span class="time-label">Days</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ timeRemaining.hours }}</span>
+          <span class="time-label">Hours</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ timeRemaining.minutes }}</span>
+          <span class="time-label">Minutes</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ timeRemaining.seconds }}</span>
+          <span class="time-label">Seconds</span>
+        </div>
+      </div>
+      <p class="release-text">Until October 3rd Release</p>
+    </div>
+  </div>
 </div>
 
 <div class="home-container">
@@ -123,24 +204,34 @@
     <div class="widget popular-songs">
       <h2>Popular Eras Tour Songs</h2>
       <p>Songs Commonly Featured in Swifties' Dream Eras Tour Lineups</p>
-        <app-popular-eras-tour-songs></app-popular-eras-tour-songs>
+      <app-popular-eras-tour-songs></app-popular-eras-tour-songs>
     </div>
     <div class="widget top-users">
-      <div>
-        <h2>Top Users</h2>
-        <p>Recognizing the top users in our Swiftie community!</p>
+      <div class="widget-header">
+        <div>
+          <h2>Top Users</h2>
+          <p>Recognizing the top users in our Swiftie community!</p>
+        </div>
+        <button class="view-all-btn" (click)="navigateTo('user/userExplorer')">
+          All Users
+        </button>
       </div>
-      <button class="explore-button" (click)="navigateTo('user/userExplorer')">Explore All Users</button>
-        <app-top-users></app-top-users>
+      <app-top-users></app-top-users>
     </div>
     <div class="widget album-popularity">
       <h2>Album Popularity</h2>
-      <p>The popularity of an album is measured by how often it shows up in users' album rankings.</p>
+      <p>
+        The popularity of an album is measured by how often it shows up in
+        users' album rankings.
+      </p>
       <app-album-popularity></app-album-popularity>
     </div>
     <div class="widget surprise-songs">
       <h2>User Surprise Songs</h2>
-      <p>A few surprise song mash-ups envisioned by users for their perfect Eras Tours.</p>
+      <p>
+        A few surprise song mash-ups envisioned by users for their perfect Eras
+        Tours.
+      </p>
       <app-surprise-songs-slider></app-surprise-songs-slider>
     </div>
   </section>

@@ -41,18 +41,18 @@ export class SignInComponent implements OnInit, AfterViewInit {
   hasNumber = false;
 
   albumCovers: string[] = [
-    'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
-    'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
-    'https://d3e29z0m37b0un.cloudfront.net/fearless_taylors_version_album.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/midnights.jpeg',
-    'https://d3e29z0m37b0un.cloudfront.net/ttpd1.png',
-    'https://d3e29z0m37b0un.cloudfront.net/red-tv.jpeg',
-    'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg',
-    'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg',
+    'https://d3e29z0m37b0un.cloudfront.net/1989.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/evermore.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/fearless_taylors_version_album.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/folklore.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/lover.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/midnights.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/ttpd1.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/red-tv.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/reputation.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
   ];
 
   shuffledColumns: string[][] = [];

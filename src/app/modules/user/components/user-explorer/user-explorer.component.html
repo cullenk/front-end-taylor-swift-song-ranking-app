@@ -1,6 +1,6 @@
 <div class="user-explorer-container">
   <div class="header-container">
-     <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
+     <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" alt="Background Graphic">
      <div class="header-div">
         <h1 class="header-title">It's Nice To Have A Friend</h1>
         <h1 class="header-sub-title">Explore Other User Profiles!</h1>
@@ -16,16 +16,18 @@
      >
   </div>
 
-  <div class="user-grid">
-     <div 
+ <div class="user-grid">
+     <a 
         *ngFor="let user of filteredUsers" 
         class="user-card" 
         [style.background-color]="getThemeColor(user.theme)"
-        (click)="goToUserProfile(user.username)"
+        [href]="'https://swiftierankinghub.com/public-profile/' + user.username"
+        target="_blank"
+        rel="noopener noreferrer"
      >
         <img [src]="user.profileImage" alt="{{ user.username }}'s profile" class="profile-image">
         <span class="username">{{ user.username }}</span>
-     </div>
+     </a>
   </div>
 
   <div class="pagination-controls">

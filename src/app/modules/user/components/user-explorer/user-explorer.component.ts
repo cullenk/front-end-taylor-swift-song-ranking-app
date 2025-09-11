@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   selector: 'app-user-explorer',
   templateUrl: './user-explorer.component.html',
   styleUrls: ['./user-explorer.component.scss']
@@ -91,10 +91,6 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
 
   onSearchTermChange(searchTerm: string): void {
     this.searchTermSubject.next(searchTerm);
-  }
-
-  goToUserProfile(username: string): void {
-    this.router.navigate(['/public-profile', username]);
   }
 
   nextPage(): void {
