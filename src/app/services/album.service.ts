@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError, forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -6,7 +7,8 @@ import { Album } from '../interfaces/Album';
 import { Song } from '../interfaces/Song';
 import { SearchResult } from '../interfaces/SearchResult';
 import { AlbumRanking } from '../interfaces/AlbumRanking';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +31,19 @@ export class AlbumService {
 
   private apiUrl = `${environment.apiUrl}/albums`;
 
-  constructor(private http: HttpClient) {}
+ constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    let token = '';
+    
+    // Only access localStorage if we're in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token') || '';
+    }
+    
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -62,7 +73,7 @@ export class AlbumService {
         // console.log('Album response:', response);
         return {
           ...response,
-          albumImage: response.albumCover || 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/singles.png'
+          albumImage: response.albumCover || 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/singles.webp'
         };
       }),
       catchError(error => {

@@ -7,8 +7,23 @@
           <img [src]="getProfileImage()" alt="Profile Image" class="profile-image">
         </div>
         <h1>{{ userProfile.username }}</h1>
+
+        <!-- Profile Stats - Simplified -->
+        <div class="profile-stats">
+          <div class="stat-item">
+            <i class="fas fa-house" style="color: #266dd3"></i>
+            <span class="stat-label">Logins:</span>
+            <span class="stat-value">{{ getLoginCountDisplay() }}</span>
+          </div>
+          <div class="stat-item" *ngIf="shouldShowCountry()">
+            <i class="fas fa-globe" style="color: #28a745"></i>
+            <span class="stat-label">Country:</span>
+            <span class="stat-value">{{ userProfile.country }}</span>
+          </div>
+        </div>
+
         
-     <!-- Top 5 Albums -->
+        <!-- Top 5 Albums -->
         <div class="top-albums-section">
           <h2>Top 5 Albums</h2>
           <ng-container *ngIf="topFiveAlbums && topFiveAlbums.length > 0; else noAlbums">
@@ -33,60 +48,60 @@
               target="_blank" 
               rel="noopener noreferrer" 
               class="eras-tour-link">
-              View {{ userProfile.username }}'s Dream Eras Tour
+              View Their Dream Eras Tour
             </a>
           </ng-container>
           <ng-template #noSetlist>
-            <p class="no-tour-text">{{ userProfile.username }} hasn't created their dream Eras Tour yet.</p>
+            <p class="eras-tour-link">Eras Tour not made yet!</p>
           </ng-template>
         </div>
 
         <a href="https://www.swiftierankinghub.com" target="_blank">
-          <button class="share-btn">Create Your Own Profile!</button>
+          <button class="share-btn">Create Your Own Profile</button>
         </a>
       </div>
     </div>
 
     <!-- Top 13 column -->
-<div class="column top-13-column">
-  <section class="top-13-list">
-    <h2>Top 13 Songs</h2>
-    <div class="song-list">
-      <ng-container *ngIf="userProfile?.rankings?.topThirteen?.length && userProfile.rankings.topThirteen[0]?.songId !== ''; else placeholderSongs">
-        <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
-          <div class="ranking-bubble">{{ song.slot }}</div>
-          <img [src]="song.albumImage || 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp'" [alt]="song.songTitle + ' cover'" class="album-cover">
-          <div class="title-audio">
-            <div class="song-details">
-              <h3>{{ song.songTitle }}</h3>
+    <div class="column top-13-column">
+      <section class="top-13-list">
+        <h2>Top 13 Songs</h2>
+        <div class="song-list">
+          <ng-container *ngIf="userProfile?.rankings?.topThirteen?.length && userProfile.rankings.topThirteen[0]?.songId !== ''; else placeholderSongs">
+            <div *ngFor="let song of userProfile.rankings.topThirteen" class="song-item">
+              <div class="ranking-bubble">{{ song.slot }}</div>
+              <img [src]="song.albumImage || 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp'" [alt]="song.songTitle + ' cover'" class="album-cover">
+              <div class="title-audio">
+                <div class="song-details">
+                  <h3>{{ song.songTitle }}</h3>
+                </div>
+                <audio 
+                *ngIf="song.audioSource" 
+                controls 
+                controlsList="nodownload"
+                (play)="handleAudioPlay($event)" 
+               >
+                  <source [src]="song.audioSource" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
             </div>
-            <audio 
-            *ngIf="song.audioSource" 
-            controls 
-            controlsList="nodownload"
-            (play)="handleAudioPlay($event)" 
-           >
-              <source [src]="song.audioSource" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-      </ng-container>
+          </ng-container>
 
-      <ng-template #placeholderSongs>
-        <div *ngFor="let i of [1,2,3,4,5]" class="song-item placeholder">
-          <div class="ranking-bubble">{{ i }}</div>
-          <div class="placeholder-image"></div>
-          <div class="title-audio">
-            <div class="song-details">
-              <h3>User hasn't selected any songs yet.</h3>
+          <ng-template #placeholderSongs>
+            <div *ngFor="let i of [1,2,3,4,5]" class="song-item placeholder">
+              <div class="ranking-bubble">{{ i }}</div>
+              <div class="placeholder-image"></div>
+              <div class="title-audio">
+                <div class="song-details">
+                  <h3>User hasn't selected any songs yet.</h3>
+                </div>
+              </div>
             </div>
-          </div>
+          </ng-template>
         </div>
-      </ng-template>
+      </section>
     </div>
-  </section>
-</div>
 
     <!-- Questionnaire column -->
     <div class="column questionnaire-column">
@@ -94,14 +109,12 @@
         <h2>Swiftie Questionnaire</h2>
         <div class="question-list">
           <ng-container *ngIf="userProfile?.profileQuestions?.length; else placeholderQuestions">
-            <!-- Existing question items code -->
             <div *ngFor="let questionObj of userProfile.profileQuestions" class="question-item">
               <p class="question">{{ questionObj.question }}</p>
               <div class="answer">{{ questionObj.answer }}</div>
             </div>
           </ng-container>
 
-          <!-- Placeholder for Questions -->
           <ng-template #placeholderQuestions>
             <div *ngFor="let i of [1,2,3,4,5]" class="question-item placeholder">
               <p class="question">Question {{ i }}</p>

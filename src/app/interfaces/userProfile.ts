@@ -9,10 +9,13 @@ export interface UserProfileSong {
   albumCover?: string; 
   rank?: number; 
 }
+
 export interface UserProfile {
   username: string;
   theme: string;
   profileImage: string;
+  country?: string | null;  
+  loginCount?: number;      
   rankings: {
     topThirteen: UserProfileSong[];
   };

@@ -1,14 +1,69 @@
-<div class="container">
-  <div class="header-container">
+<div class="top13-container">
+  <!-- Header Section -->
+ <div class="header-container">
     <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" alt="Background Graphic">
     <div class="header-div">
     <h1 class="header-title">My Top 13</h1>
     <h1 class="header-sub-title">Taylor Swift Songs</h1>
     </div>
   </div>
-  <div class="song-slots-list">
-    <div class="song-slot" *ngFor="let slot of slots; let i = index">
-      <app-top-13-song-slot [slotIndex]="i + 1"></app-top-13-song-slot>
+  
+  <!-- Sticky Controls -->
+  <div class="controls-sticky">
+    <div class="controls-content">
+      <p class="instructions">Search and add songs, drag to reorder, then save your changes!</p>
+      
+      <div class="action-buttons">
+        <button 
+          class="btn btn-save" 
+          (click)="saveChanges()"
+          [disabled]="!hasUnsavedChanges || isSaving"
+          [class.pulse]="hasUnsavedChanges">
+          <i class="fas fa-save"></i>
+          <span>{{ isSaving ? 'Saving...' : 'Save Changes' }}</span>
+        </button>
+        
+        <button 
+          class="btn btn-discard" 
+          (click)="discardChanges()"
+          [disabled]="!hasUnsavedChanges || isSaving"
+          *ngIf="hasUnsavedChanges">
+          <i class="fas fa-undo"></i>
+          <span>Discard Changes</span>
+        </button>
+      </div>
+      
+      <div class="status-indicator" *ngIf="hasUnsavedChanges">
+        <i class="fas fa-exclamation-circle blink"></i>
+        <span>You have unsaved changes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Song Slots List -->
+  <div class="slots-container">
+    <div 
+      class="slots-list"
+      cdkDropList 
+      (cdkDropListDropped)="onDrop($event)">
+      
+      <div 
+        class="slot-wrapper" 
+        *ngFor="let item of topThirteen; let i = index"
+        cdkDrag
+        [cdkDragDisabled]="!item.songId">
+        
+        <!-- Drag handle - always visible when song exists -->
+        <div class="drag-handle" *ngIf="item.songId" cdkDragHandle>
+          <i class="fas fa-grip-vertical"></i>
+        </div>
+        
+        <app-top-13-song-slot 
+          [slotIndex]="item.slot"
+          (songUpdated)="onSongUpdated()"
+          (songRemoved)="onSongRemoved()">
+        </app-top-13-song-slot>
+      </div>
     </div>
   </div>
 </div>

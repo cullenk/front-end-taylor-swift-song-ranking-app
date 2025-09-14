@@ -9,11 +9,19 @@ export class TopThirteenStateService {
   private topThirteenSubject = new BehaviorSubject<TopThirteenItem[]>([]);
   topThirteen$ = this.topThirteenSubject.asObservable();
 
+  constructor() {
+    console.log('TopThirteenStateService initialized');
+  }
+
   updateTopThirteen(newList: TopThirteenItem[]) {
+    console.log('TopThirteenStateService.updateTopThirteen() called with:', newList);
     this.topThirteenSubject.next(newList);
+    console.log('TopThirteenStateService - Current state updated, subscribers will be notified');
   }
 
   getTopThirteen() {
-    return this.topThirteenSubject.value;
+    const currentValue = this.topThirteenSubject.value;
+    console.log('TopThirteenStateService.getTopThirteen() called, current value:', currentValue);
+    return currentValue;
   }
 }

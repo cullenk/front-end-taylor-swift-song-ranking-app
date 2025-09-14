@@ -7,6 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
+// Add interface for country stats
+interface CountryStats {
+  totalUsersWithCountry: number;
+  countries: Array<{
+    country: string;
+    count: number;
+    percentage: string;
+  }>;
+}
+
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
@@ -22,6 +32,8 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   totalPages: number = 0;
   limit: number = 20; // Number of users per page
+   countryStats: CountryStats | null = null;
+  isLoadingCountryStats: boolean = false;
 
   private themeColors: { [key: string]: string } = {
     'Debut': 'rgba(82, 253, 164, 0.7)',
@@ -47,6 +59,7 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.loadCountryStats();
     this.searchTermSubscription = this.searchTermSubject.pipe(
       debounceTime(500), // wait 300ms after each keystroke before considering the term
       distinctUntilChanged() // ignore if next search term is same as previous
@@ -57,6 +70,20 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.searchTermSubscription.unsubscribe();
+  }
+
+  loadCountryStats(): void {
+    this.isLoadingCountryStats = true;
+    this.userProfileService.getCountryStats().subscribe({
+      next: (stats) => {
+        this.countryStats = stats;
+        this.isLoadingCountryStats = false;
+      },
+      error: (error) => {
+        console.error('Error fetching country stats:', error);
+        this.isLoadingCountryStats = false;
+      }
+    });
   }
 
   loadUsers(page: number = this.currentPage): void {
@@ -108,4 +135,106 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   getThemeColor(theme: string): string {
     return this.themeColors[theme] || 'rgba(255,255,255,0.7)';
   }
+
+  getCountryFlag(countryName: string): string {
+  const countryFlags: { [key: string]: string } = {
+    'Afghanistan': '🇦🇫',
+    'Albania': '🇦🇱',
+    'Algeria': '🇩🇿',
+    'Argentina': '🇦🇷',
+    'Armenia': '🇦🇲',
+    'Australia': '🇦🇺',
+    'Austria': '🇦🇹',
+    'Azerbaijan': '🇦🇿',
+    'Bahrain': '🇧🇭',
+    'Bangladesh': '🇧🇩',
+    'Belarus': '🇧🇾',
+    'Belgium': '🇧🇪',
+    'Bolivia': '🇧🇴',
+    'Bosnia and Herzegovina': '🇧🇦',
+    'Brazil': '🇧🇷',
+    'Bulgaria': '🇧🇬',
+    'Cambodia': '🇰🇭',
+    'Canada': '🇨🇦',
+    'Chile': '🇨🇱',
+    'China': '🇨🇳',
+    'Colombia': '🇨🇴',
+    'Costa Rica': '🇨🇷',
+    'Croatia': '🇭🇷',
+    'Cyprus': '🇨🇾',
+    'Czech Republic': '🇨🇿',
+    'Denmark': '🇩🇰',
+    'Dominican Republic': '🇩🇴',
+    'Ecuador': '🇪🇨',
+    'Egypt': '🇪🇬',
+    'Estonia': '🇪🇪',
+    'Finland': '🇫🇮',
+    'France': '🇫🇷',
+    'Georgia': '🇬🇪',
+    'Germany': '🇩🇪',
+    'Ghana': '🇬🇭',
+    'Greece': '🇬🇷',
+    'Guatemala': '🇬🇹',
+    'Honduras': '🇭🇳',
+    'Hong Kong': '🇭🇰',
+    'Hungary': '🇭🇺',
+    'Iceland': '🇮🇸',
+    'India': '🇮🇳',
+    'Indonesia': '🇮🇩',
+    'Iran': '🇮🇷',
+    'Iraq': '🇮🇶',
+    'Ireland': '🇮🇪',
+    'Israel': '🇮🇱',
+    'Italy': '🇮🇹',
+    'Japan': '🇯🇵',
+    'Jordan': '🇯🇴',
+    'Kazakhstan': '🇰🇿',
+    'Kenya': '🇰🇪',
+    'Kuwait': '🇰🇼',
+    'Latvia': '🇱🇻',
+    'Lebanon': '🇱🇧',
+    'Lithuania': '🇱🇹',
+    'Luxembourg': '🇱🇺',
+    'Malaysia': '🇲🇾',
+    'Malta': '🇲🇹',
+    'Mexico': '🇲🇽',
+    'Morocco': '🇲🇦',
+    'Netherlands': '🇳🇱',
+    'New Zealand': '🇳🇿',
+    'Nigeria': '🇳🇬',
+    'Norway': '🇳🇴',
+    'Pakistan': '🇵🇰',
+    'Panama': '🇵🇦',
+    'Peru': '🇵🇪',
+    'Philippines': '🇵🇭',
+    'Poland': '🇵🇱',
+    'Portugal': '🇵🇹',
+    'Qatar': '🇶🇦',
+    'Romania': '🇷🇴',
+    'Russia': '🇷🇺',
+    'Saudi Arabia': '🇸🇦',
+    'Serbia': '🇷🇸',
+    'Singapore': '🇸🇬',
+    'Slovakia': '🇸🇰',
+    'Slovenia': '🇸🇮',
+    'South Africa': '🇿🇦',
+    'South Korea': '🇰🇷',
+    'Spain': '🇪🇸',
+    'Sri Lanka': '🇱🇰',
+    'Sweden': '🇸🇪',
+    'Switzerland': '🇨🇭',
+    'Taiwan': '🇹🇼',
+    'Thailand': '🇹🇭',
+    'Turkey': '🇹🇷',
+    'Ukraine': '🇺🇦',
+    'United Arab Emirates': '🇦🇪',
+    'United Kingdom': '🇬🇧',
+    'United States': '🇺🇸',
+    'Uruguay': '🇺🇾',
+    'Venezuela': '🇻🇪',
+    'Vietnam': '🇻🇳'
+  };
+  
+  return countryFlags[countryName] || '🌍'; // Default globe emoji
+}
 }

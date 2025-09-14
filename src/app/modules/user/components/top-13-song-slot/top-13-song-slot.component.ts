@@ -1,8 +1,7 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlbumService } from '../../../../services/album.service';
-import { TopThirteenService } from '../../../../services/top-thirteen.service';
 import { TopThirteenStateService } from '../../../../services/top-thirteen-state.service';
 import { SearchResult } from '../../../../interfaces/SearchResult';
 import { Song } from '../../../../interfaces/Song';
@@ -21,6 +20,9 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 })
 export class Top13SongSlotComponent implements OnInit, OnDestroy {
   @Input() slotIndex!: number;
+  @Output() songUpdated = new EventEmitter<void>();
+  @Output() songRemoved = new EventEmitter<void>();
+  
   searchQuery: string = '';
   searchResults: SearchResult[] = [];
   selectedSong: Song | null = null;
@@ -32,7 +34,6 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
 
   constructor(
     private albumService: AlbumService,
-    private topThirteenService: TopThirteenService,
     private topThirteenStateService: TopThirteenStateService,
     private toastr: ToastrService,
     private albumThemeService: AlbumThemeService
@@ -41,12 +42,18 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
+    // Subscribe to state service
     this.topThirteenStateService.topThirteen$.subscribe(
-      list => this.topThirteen = list
+      list => {
+        this.topThirteen = list;
+        this.loadExistingSong();
+      }
     );
-    this.loadTopThirteenList();
+    
     this.disableAudioRightClick();
     
+    // Setup search debouncing
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -73,18 +80,17 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
     });
   }
 
-ngOnDestroy() {
-  // Pause all audio elements when the component is destroyed
-  document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
-    if (!audio.paused) {
-      audio.pause();
-    }
-  });
+  ngOnDestroy() {
+    // Pause all audio elements when the component is destroyed
+    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
+      if (!audio.paused) {
+        audio.pause();
+      }
+    });
 
-  this.destroy$.next();
-  this.destroy$.complete();
-}
-
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   updateAlbumTheme() {
     if (this.selectedSong) {
@@ -100,19 +106,6 @@ ngOnDestroy() {
         e.preventDefault();
       }
     }, false);
-  }
-
-  loadTopThirteenList() {
-    this.topThirteenService.getTopThirteen().subscribe(
-      (topThirteen: TopThirteenItem[]) => {
-        this.topThirteenStateService.updateTopThirteen(topThirteen);
-        this.loadExistingSong();
-      },
-      error => {
-        console.error('Error loading top thirteen:', error);
-        this.toastr.error('Error loading top 13 list', 'Error');
-      }
-    );
   }
 
   loadExistingSong() {
@@ -146,23 +139,9 @@ ngOnDestroy() {
     this.searchSubject.next(this.searchQuery);
   }
 
-  // searchSongs() {
-  //   this.albumService.searchSongs(this.searchQuery).subscribe(
-  //     (results: SearchResult[]) => {
-  //       console.log('Search results:', results);
-  //       this.searchResults = results;
-  //     },
-  //     error => {
-  //       console.error('Error searching songs:', error);
-  //       this.toastr.error('Error searching songs', 'Error');
-  //     }
-  //   );
-  // }
-
   selectSong(song: SearchResult) {
-    console.log('Audio source:', song.audioSource);
+    console.log('Selected song:', song.title);
     this.fetchSongDetails(song._id);
-    this.updateAlbumTheme();
   }
 
   handleAudioError(event: any) {
@@ -193,59 +172,61 @@ ngOnDestroy() {
     if (duplicateSong) {
       this.toastr.error('This song is already in your top 13 list!', 'Duplicate Song');
       this.resetSelection();
-      return; // Prevent adding the duplicate song
+      return;
     }
 
-    // If not a duplicate, update the selection and the top 13 list
+    // Update locally without saving to backend
     this.selectedSong = song;
     this.updateAlbumTheme();
-    this.updateTopThirteen();
+    this.updateLocalTopThirteen(song);
   }
 
-  updateTopThirteen() {
-    if (this.selectedSong) {
-      this.topThirteenService.updateSong(
-        this.slotIndex,
-        this.selectedSong.album,
-        this.selectedSong._id!,
-        this.selectedSong.title,
-        this.selectedSong.albumImageSource
-      ).subscribe(
-        (updatedList) => {
-          console.log('Top 13 list updated successfully', updatedList);
-          this.topThirteenStateService.updateTopThirteen(updatedList);
-          this.toastr.success('Song added to your top 13 list!', 'Success');
-        },
-        (error) => {
-          console.error('Error updating top 13 list:', error);
-          this.toastr.error('Error updating top 13 list', 'Error');
-          this.resetSelection();
-        }
-      );
+  updateLocalTopThirteen(song: Song) {
+    // Update the local state only
+    const updatedList = [...this.topThirteen];
+    const existingItemIndex = updatedList.findIndex(item => item.slot === this.slotIndex);
+    
+    const newItem: TopThirteenItem = {
+      slot: this.slotIndex,
+      albumName: song.album,
+      songId: song._id!,
+      songTitle: song.title,
+      albumCover: song.albumImageSource
+    };
+
+    if (existingItemIndex !== -1) {
+      updatedList[existingItemIndex] = newItem;
+    } else {
+      updatedList.push(newItem);
     }
+
+    console.log('Updating local top thirteen:', updatedList);
+    this.topThirteenStateService.updateTopThirteen(updatedList);
+    this.toastr.success('Song added to slot ' + this.slotIndex + '! Remember to save your changes.', 'Success');
+    this.songUpdated.emit();
+    this.resetSelection();
   }
 
   resetSelection() {
-    this.selectedSong = null;
     this.searchQuery = '';
     this.searchResults = [];
   }
 
   handleImageError(event: any) {
-    event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg'; // Set a fallback image
+    event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg';
     console.error('Failed to load album image');
   }
 
   handleAudioPlay(event: Event) {
     const audioElement = event.target as HTMLAudioElement;
-  
+    
     // Pause all other audio elements
     document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
       if (audio !== audioElement && !audio.paused) {
         audio.pause();
       }
     });
-  
+    
     // Play the clicked audio
     if (audioElement.paused) {
       audioElement.play();
@@ -253,17 +234,26 @@ ngOnDestroy() {
   }
 
   resetSong() {
-    this.topThirteenService.removeSong(this.slotIndex).subscribe(
-      (updatedList) => {
-        console.log('Song removed from top 13 list');
-        this.topThirteenStateService.updateTopThirteen(updatedList);
-        this.toastr.success('Song removed from your top 13 list', 'Success');
-        this.resetSelection();
-      },
-      error => {
-        console.error('Error removing song from top 13 list:', error);
-        this.toastr.error('Error removing song from top 13 list', 'Error');
+    // Remove from local state only
+    const updatedList = this.topThirteen.map(item => {
+      if (item.slot === this.slotIndex) {
+        return {
+          slot: this.slotIndex,
+          albumName: '',
+          songId: '',
+          songTitle: '',
+          albumCover: ''
+        };
       }
-    );
+      return item;
+    });
+
+    console.log('Removing song from local state:', updatedList);
+    this.topThirteenStateService.updateTopThirteen(updatedList);
+    this.selectedSong = null;
+    this.updateAlbumTheme();
+    this.resetSelection();
+    this.toastr.success('Song removed from slot ' + this.slotIndex + '! Remember to save your changes.', 'Success');
+    this.songRemoved.emit();
   }
 }

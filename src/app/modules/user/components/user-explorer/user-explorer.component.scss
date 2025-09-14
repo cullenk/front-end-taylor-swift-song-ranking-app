@@ -76,6 +76,107 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .country-stats-section {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .stats-title {
+    text-align: center;
+    color: #ffd78c;
+    font-size: 1.5rem;
+    margin: 10px auto;
+    font-weight: bold;
+  }
+
+  .stats-note {
+    text-align: center;
+    color: #ccc;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    
+    .fa-info-circle {
+      margin-right: 5px;
+      color: #ffd78c;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    color: #ccc;
+    padding: 20px;
+  }
+
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .country-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    transition: background-color 0.2s, transform 0.2s;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+  }
+
+  .country-flag {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    min-width: 30px;
+  }
+
+  .country-info {
+    flex: 1;
+  }
+
+  .country-name {
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+  }
+
+  .country-count {
+    color: #ccc;
+    font-size: 0.85rem;
+  }
+
+  .country-percentage {
+    color: #ffd78c;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
+  .total-stats {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    p {
+      color: #ffd78c;
+      font-size: 0.95rem;
+      margin: 0;
+      
+      strong {
+        color: #fff;
+      }
+    }
+  }
+}
   
   .user-grid {
     display: grid;
@@ -172,4 +273,18 @@
       width: 100%;
       padding: 0 10px;
     }
+
+      .country-stats-section {
+    padding: 15px;
+    margin: 0 10px 20px 10px;
+    
+    .country-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    
+    .stats-title {
+      font-size: 1.2rem;
+    }
+  }
   }

@@ -5,7 +5,7 @@ import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { Album } from '../interfaces/Album';
 import { Song } from '../interfaces/Song';
 import { TrackRankingItem } from '../interfaces/TrackRankingItem';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

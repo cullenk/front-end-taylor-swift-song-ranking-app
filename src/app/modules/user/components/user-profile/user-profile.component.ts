@@ -100,7 +100,7 @@ export class UserProfileComponent implements OnInit {
     'Speak Now': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.webp',
     'Red': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/red-profile-bg.webp',
     '1989': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.webp',
-    'Reputation': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/rep-profile-bg.webp',
+    'Reputation': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.webp',
     'Lover': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.webp',
     'Folklore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.webp',
     'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
@@ -128,6 +128,8 @@ export class UserProfileComponent implements OnInit {
   showProfileImageDialog: boolean = false;
   topFiveAlbums: AlbumRanking[] = [];
   hasErasTour: boolean = false;
+  countries: string[] = [];
+  selectedCountry: string | null = null;
 
   constructor(
     private userProfileService: UserProfileService,
@@ -143,6 +145,7 @@ export class UserProfileComponent implements OnInit {
     this.disableAudioRightClick();
     this.loadTopFiveAlbums();   
     this.checkErasTour();
+    this.loadCountries();
   }
   
   loadUserProfile() {
@@ -161,6 +164,24 @@ export class UserProfileComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+   private loadCountries(): void {
+    this.userProfileService.getCountries().subscribe({
+      next: (countries) => {
+        this.countries = countries;
+      },
+      error: (error) => {
+        console.error('Error loading countries:', error);
+      }
+    });
+  }
+
+    getLoginCountDisplay(): string {
+    if (!this.userProfile.loginCount || this.userProfile.loginCount === 0) {
+      return 'First time here!';
+    }
+    return `${this.userProfile.loginCount}`;
   }
 
   loadTopFiveAlbums() {
@@ -407,4 +428,28 @@ export class UserProfileComponent implements OnInit {
       });
     });
   }
+
+onCountryChange(country: string): void {
+  // Don't update if user selected the placeholder option
+  if (country === '') {
+    return;
+  }
+
+  this.userProfileService.updateCountry(country).subscribe({
+    next: (updatedProfile) => {
+      this.userProfile = {
+        ...this.userProfile,  // Keep all existing data
+        country: updatedProfile.country,  // Update only the country
+        loginCount: updatedProfile.loginCount,
+      };
+      this.selectedCountry = country;
+      console.log('Country updated successfully');
+    },
+    error: (error) => {
+      console.error('Error updating country:', error);
+      // Reset the dropdown on error
+      this.selectedCountry = this.userProfile.country || null;
+    }
+  });
+}
 }

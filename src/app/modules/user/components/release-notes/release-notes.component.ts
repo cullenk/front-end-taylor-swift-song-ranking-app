@@ -16,12 +16,24 @@ interface ReleaseNote {
 })
 export class ReleaseNotesComponent {
   releaseNotes: ReleaseNote[] = [
+      {
+      version: '2.0.1',
+      date: 'September 14th, 2025',
+      features: [
+        'New profile image options',
+        'Added login count data to user profile',
+        "Added country option to user profile and a global stats card in the User Explorer",
+        "Image refactoring to webp files",
+        "Top 13 List redesign to allow drag and drop functionality",
+      ]
+    },
     {
       version: '2.0.0',
-      date: 'August 10th, 2025',
+      date: 'August 13th, 2025',
       features: [
         'Replaced Sendgrid email service with MailerSend',
-        "Added 'Users' Favorite Songs' page"
+        "Added 'Users' Favorite Songs' page",
+        "Created countdown to 'The Life of a Showgirl' album release!"
       ]
     },
      {

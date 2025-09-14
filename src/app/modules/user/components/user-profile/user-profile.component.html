@@ -22,8 +22,34 @@
           <h1>{{ userProfile.username || "New Swiftie" }}!</h1>
         </div>
       </div>
-      <div class="theme-selector">
-        <label for="theme">Choose your profile theme:</label>
+
+      <!-- Profile Stats -->
+      <div class="profile-stats">
+        <div class="stat-item">
+          <i class="fas fa-house" style="color: #266dd3"></i>
+          <span class="stat-label">Logins:</span>
+          <span class="stat-value">{{ getLoginCountDisplay() }}</span>
+        </div>
+        <!-- <div class="stat-item">
+          <i class="fas fa-heart" style="color: red"></i>
+          <span class="stat-label">Profile Likes:</span>
+          <span class="stat-value">{{ getLikeCountDisplay() }}</span>
+        </div> -->
+      </div>
+
+      <!-- Country & Theme Selector -->
+      <div class="country-selector">
+        <label for="country">Your country:</label>
+        <select
+          id="country"
+          [ngModel]="userProfile.country || ''"
+          (ngModelChange)="onCountryChange($event)"
+        >
+          <option *ngFor="let country of countries" [value]="country">
+            {{ country }}
+          </option>
+        </select>
+          <label for="theme">Choose your profile theme:</label>
         <select
           id="theme"
           [(ngModel)]="userProfile.theme"
@@ -38,23 +64,8 @@
           </option>
         </select>
       </div>
-      <div class="share-profile-section">
-        <button
-          class="share-btn"
-          (click)="shareProfile()"
-          [disabled]="!isProfileShareable()"
-        >
-          Share My Profile
-        </button>
-        <div *ngIf="!isProfileShareable()" class="share-helper-text">
-          <p>To share your profile, please complete the following:</p>
-          <ul>
-            <li *ngFor="let reason of getProfileShareReasons()">
-              {{ reason }}
-            </li>
-          </ul>
-        </div>
-      </div>
+
+  
 
       <!-- Top 5 Albums -->
       <div class="top-albums-section">
@@ -75,8 +86,11 @@
           </div>
         </div>
         <ng-template #noTopAlbums>
+          <div class="profile-stats">
           <p>
-            <a class="link-styling" [routerLink]="['/user/rankings/allAlbums']">Rank your albums</a>
+            <a class="link-styling" [routerLink]="['/user/rankings/allAlbums']"
+              >Rank your albums</a
+            >
             on the Rankings page to see your top 5 here!
           </p>
           <div class="empty-albums">
@@ -87,9 +101,11 @@
               ?
             </div>
           </div>
+        </div>
         </ng-template>
       </div>
 
+      <!-- Eras Tour -->
       <button
         *ngIf="hasErasTour"
         (click)="navigateToErasTour()"
@@ -97,6 +113,25 @@
       >
         View My Dream Eras Tour
       </button>
+
+          <!-- Share Profile -->
+      <div class="share-profile-section">
+        <button
+          class="share-btn"
+          (click)="shareProfile()"
+          [disabled]="!isProfileShareable()"
+        >
+          Share My Profile
+        </button>
+        <div *ngIf="!isProfileShareable()" class="profile-stats">
+          <p>To share your profile and have it appear in the user explorer, please complete the following:</p>
+          <ul>
+            <li *ngFor="let reason of getProfileShareReasons()">
+              {{ reason }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Middle column: Top 13 list -->
@@ -139,8 +174,10 @@
         <ng-template #noTopThirteen>
           <p>
             You haven't chosen your Top 13 songs yet! Visit the
-            <a class="link-styling" [routerLink]="['/user/top13list']">Top 13 page</a> to create your
-            list.
+            <a class="link-styling" [routerLink]="['/user/top13list']"
+              >Top 13 page</a
+            >
+            to create your list.
           </p>
         </ng-template>
       </section>
@@ -178,10 +215,10 @@
           >
             <p class="question">{{ questionObj.question }}</p>
             <div
-            class="answer"
-            [contentEditable]="isEditing"
-            (blur)="updateQuestionAnswer(i, $event)"
-            [innerHTML]="sanitizeInput(questionObj.answer)"
+              class="answer"
+              [contentEditable]="isEditing"
+              (blur)="updateQuestionAnswer(i, $event)"
+              [innerHTML]="sanitizeInput(questionObj.answer)"
             ></div>
           </div>
         </div>
@@ -190,7 +227,7 @@
   </div>
 
   <!-- Profile Image Selection Dialog -->
-  <div *ngIf="showProfileImageDialog" class="profile-image-dialog-overlay">
+  <div *ngIf="showProfileImageDialog" class="profile-image-dialog-overlay" (click)="closeProfileImageDialog()">
     <div class="profile-image-dialog">
       <h2>Choose a Profile Image</h2>
       <div class="image-grid">

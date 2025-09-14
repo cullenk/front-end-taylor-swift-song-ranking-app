@@ -23,7 +23,6 @@ export class AlbumPopularityComponent implements OnInit {
     this.rankingsService.getAlbumPopularity().subscribe(
       (albums) => {
         this.albums = albums;
-        console.log(albums)
       },
       (error) => {
         console.error('Error loading album popularity:', error);

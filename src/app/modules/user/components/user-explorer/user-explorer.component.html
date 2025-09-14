@@ -16,6 +16,34 @@
      >
   </div>
 
+  <!-- Add Country Statistics Section -->
+<div class="country-stats-section" *ngIf="countryStats && countryStats.countries.length > 0">
+  <h3 class="stats-title">Swifties Around the World</h3>
+  <p class="stats-note">
+    <i class="fas fa-info-circle"></i>
+    This feature was newly added, not all users may have set their country yet
+  </p>
+  
+  <div class="loading" *ngIf="isLoadingCountryStats">Loading country statistics...</div>
+  
+  <div class="country-grid" *ngIf="!isLoadingCountryStats">
+    <div class="country-item" *ngFor="let countryStat of countryStats.countries">
+      <div class="country-flag">{{ getCountryFlag(countryStat.country) }}</div>
+      <div class="country-info">
+        <div class="country-name">{{ countryStat.country }}</div>
+        <div class="country-count">
+          {{ countryStat.count }} user{{ countryStat.count === 1 ? '' : 's' }}
+          <span class="country-percentage">({{ countryStat.percentage }}%)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="total-stats" *ngIf="!isLoadingCountryStats">
+    <p><strong>{{ countryStats.totalUsersWithCountry }}</strong> total users have set their country</p>
+  </div>
+</div>
+
  <div class="user-grid">
      <a 
         *ngFor="let user of filteredUsers" 

@@ -36,7 +36,7 @@ export class ContactComponent {
     // Open Graph
     this.meta.updateTag({ property: 'og:title', content: 'Contact - Swiftie Ranking Hub' });
     this.meta.updateTag({ property: 'og:description', content: 'Contact form for any questions about the Swiftie Ranking Hub.'});
-    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp' });
     this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/contact' });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     
@@ -44,7 +44,7 @@ export class ContactComponent {
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: 'Contact - Swiftie Ranking Hub' });
     this.meta.updateTag({ name: 'twitter:description', content: 'Contact form for any questions about the Swiftie Ranking Hub.' });
-    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp' });
   }
 
   onSubmit() {

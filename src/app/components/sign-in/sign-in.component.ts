@@ -123,7 +123,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.meta.updateTag({
       property: 'og:image',
       content:
-        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png',
+        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp',
     });
     this.meta.updateTag({
       property: 'og:url',
@@ -148,7 +148,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
     this.meta.updateTag({
       name: 'twitter:image',
       content:
-        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png',
+        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp',
     });
   }
 

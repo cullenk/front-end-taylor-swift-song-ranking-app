@@ -82,7 +82,7 @@ export class RankingsComponent implements OnInit, OnDestroy {
     // Open Graph
     this.meta.updateTag({ property: 'og:title', content: 'Swiftie Ranking Hub' });
     this.meta.updateTag({ property: 'og:description', content: 'Rank your favorite Taylor Swift songs by album.' });
-    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp' });
     this.meta.updateTag({ property: 'og:url', content: 'https://swiftierankinghub.com/user/rankings' });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     
@@ -90,7 +90,7 @@ export class RankingsComponent implements OnInit, OnDestroy {
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: 'Album Rankings - Swiftie Ranking Hub' });
     this.meta.updateTag({ name: 'twitter:description', content: 'Rank your favorite Taylor Swift songs by album.' });
-    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.png' });
+    this.meta.updateTag({ name: 'twitter:image', content: 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp' });
   }
 
   private stopAllAudio() {

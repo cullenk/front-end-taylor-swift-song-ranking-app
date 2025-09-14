@@ -141,18 +141,18 @@ export class EraWidgetComponent implements OnInit {
 
   getAlbumCover(era: string): string {
     const albumCovers: { [key: string]: string } = {
-      'Debut': 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.jpg',
-      'Fearless': 'https://d3e29z0m37b0un.cloudfront.net/fearless_taylors_version_album.jpg',
-      'Speak Now': 'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.jpg',
-      'Red': 'https://d3e29z0m37b0un.cloudfront.net/red-tv.jpeg',
-      '1989': 'https://d3e29z0m37b0un.cloudfront.net/1989.jpeg',
-      'Reputation': 'https://d3e29z0m37b0un.cloudfront.net/reputation.jpg',
-      'Lover': 'https://d3e29z0m37b0un.cloudfront.net/lover.jpg',
-      'Folklore': 'https://d3e29z0m37b0un.cloudfront.net/folklore.jpg',
-      'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/evermore.jpeg',
-      'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/MidnightsNoText.png',
-      'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/ttpd.jpg',
-      'Surprise Songs': 'https://d3e29z0m37b0un.cloudfront.net/surpriseSongs.png'
+      'Debut': 'https://d3e29z0m37b0un.cloudfront.net/Taylor+Swift.webp',
+      'Fearless': 'https://d3e29z0m37b0un.cloudfront.net/fearless_taylors_version_album.webp',
+      'Speak Now': 'https://d3e29z0m37b0un.cloudfront.net/speak-now-tv.webp',
+      'Red': 'https://d3e29z0m37b0un.cloudfront.net/red-tv.webp',
+      '1989': 'https://d3e29z0m37b0un.cloudfront.net/1989.webp',
+      'Reputation': 'https://d3e29z0m37b0un.cloudfront.net/reputation.webp',
+      'Lover': 'https://d3e29z0m37b0un.cloudfront.net/lover.webp',
+      'Folklore': 'https://d3e29z0m37b0un.cloudfront.net/folklore.webp',
+      'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/evermore.webp',
+      'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/MidnightsNoText.webp',
+      'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/ttpd.webp',
+      'Surprise Songs': 'https://d3e29z0m37b0un.cloudfront.net/surpriseSongs.webp'
     };
     return albumCovers[era] || '';
   }
