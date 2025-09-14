@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserProfile } from '../interfaces/userProfile';
 import { EraSetList } from '../interfaces/EraSetList';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 interface CountryStats {
   totalUsersWithCountry: number;

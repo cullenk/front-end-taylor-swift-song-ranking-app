@@ -8,7 +8,7 @@ import { Rankings, Ranking } from '../interfaces/Rankings';
 import { EraSetList } from "../interfaces/EraSetList";
 import { AlbumRanking } from "../interfaces/AlbumRanking";
 import { SurpriseSong } from "../interfaces/SurpriseSong";
-import { environment } from "../../environments/environment";
+import { environment } from "../../environments/environment.prod";
 import { HomePageAlbumRanking } from "../interfaces/HomePageAlbumRanking";
 
 @Injectable({
