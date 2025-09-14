@@ -41,57 +41,57 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   themeBackgrounds: { [key: string]: string } = {
     Debut:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.webp',
     Fearless:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.webp',
     'Speak Now':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.jpeg',
-    Red: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/red-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.webp',
+    Red: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/red-profile-bg.webp',
     '1989':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.webp',
     Reputation:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.webp',
     Lover:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.webp',
     Folklore:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.webp',
     Evermore:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
     Midnights:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
     'The Tortured Poets Department':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.jpeg',
+      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
   };
 
   profileImages: string[] = [
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989-2.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/benjaminButton.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/cats.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/chiefs.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/evermore.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fearless.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/folklore.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fortnite.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/london.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/lover.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/meredithGrey.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights2.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/oliviaBenson.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red2.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/reputation.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/silly.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/speakNow.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/travis.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/ttpd.png',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/youBelong.png',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989-2.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/benjaminButton.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/cats.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/chiefs.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/evermore.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fearless.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/folklore.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fortnite.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/london.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/lover.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/meredithGrey.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights2.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/oliviaBenson.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red2.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/reputation.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/silly.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/speakNow.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/travis.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/ttpd.webp',
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/youBelong.webp',
   ];
   defaultProfileImage =
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.png';
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
 
   themeClassMap: { [key: string]: string } = {
     Debut: 'Debut',
