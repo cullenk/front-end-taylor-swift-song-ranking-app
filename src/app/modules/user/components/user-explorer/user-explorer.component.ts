@@ -22,7 +22,7 @@ interface CountryStats {
   imports: [CommonModule, FormsModule, RouterModule],
   selector: 'app-user-explorer',
   templateUrl: './user-explorer.component.html',
-  styleUrls: ['./user-explorer.component.scss']
+  styleUrls: ['./user-explorer.component.scss'],
 })
 export class UserExplorerComponent implements OnInit, OnDestroy {
   users: UserProfile[] = [];
@@ -32,22 +32,22 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   totalPages: number = 0;
   limit: number = 20; // Number of users per page
-   countryStats: CountryStats | null = null;
+  countryStats: CountryStats | null = null;
   isLoadingCountryStats: boolean = false;
 
   private themeColors: { [key: string]: string } = {
-    'Debut': 'rgba(82, 253, 164, 0.7)',
-    'Fearless': 'rgba(255, 249, 196, 0.7)',
+    Debut: 'rgba(82, 253, 164, 0.7)',
+    Fearless: 'rgba(255, 249, 196, 0.7)',
     'Speak Now': 'rgba(190, 53, 214, 0.7)',
-    'Red': 'rgba(150, 12, 12, 0.7)',
+    Red: 'rgba(150, 12, 12, 0.7)',
     '1989': 'rgba(179, 229, 252, 0.7)',
-    'Reputation': 'rgba(42, 42, 42, 0.7)',
-    'Lover': 'rgba(255, 186, 249, 0.7)',
-    'Folklore': 'rgba(245, 245, 245, 0.7)',
-    'Evermore': 'rgba(219, 134, 30, 0.7)',
-    'Midnights': 'rgba(25, 25, 112, 0.7)',
-    'The Tortured Poets Department': '#E3E0C8'
-};
+    Reputation: 'rgba(42, 42, 42, 0.7)',
+    Lover: 'rgba(255, 186, 249, 0.7)',
+    Folklore: 'rgba(245, 245, 245, 0.7)',
+    Evermore: 'rgba(219, 134, 30, 0.7)',
+    Midnights: 'rgba(25, 25, 112, 0.7)',
+    'The Tortured Poets Department': '#E3E0C8',
+  };
 
   private searchTermSubject = new Subject<string>();
   private searchTermSubscription!: Subscription;
@@ -60,12 +60,14 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadUsers();
     this.loadCountryStats();
-    this.searchTermSubscription = this.searchTermSubject.pipe(
-      debounceTime(500), // wait 300ms after each keystroke before considering the term
-      distinctUntilChanged() // ignore if next search term is same as previous
-    ).subscribe(searchTerm => {
-      this.filterUsers(searchTerm);
-    });
+    this.searchTermSubscription = this.searchTermSubject
+      .pipe(
+        debounceTime(500), // wait 300ms after each keystroke before considering the term
+        distinctUntilChanged() // ignore if next search term is same as previous
+      )
+      .subscribe((searchTerm) => {
+        this.filterUsers(searchTerm);
+      });
   }
 
   ngOnDestroy(): void {
@@ -76,26 +78,44 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
     this.isLoadingCountryStats = true;
     this.userProfileService.getCountryStats().subscribe({
       next: (stats) => {
-        this.countryStats = stats;
+        // Filter out invalid countries on frontend as well
+        const validCountries = stats.countries.filter(
+          (countryStat) =>
+            countryStat.country &&
+            countryStat.country.trim() !== '' &&
+            countryStat.country !== 'Select your country' &&
+            countryStat.country !== 'undefined' &&
+            countryStat.country !== 'null'
+        );
+
+        this.countryStats = {
+          ...stats,
+          countries: validCountries,
+          totalUsersWithCountry: validCountries.reduce(
+            (sum, country) => sum + country.count,
+            0
+          ),
+        };
+
         this.isLoadingCountryStats = false;
       },
       error: (error) => {
         console.error('Error fetching country stats:', error);
         this.isLoadingCountryStats = false;
-      }
+      },
     });
   }
 
   loadUsers(page: number = this.currentPage): void {
     this.userProfileService.getAllPublicProfiles(page, this.limit).subscribe(
-      response => {
-        this.users = response.users; 
+      (response) => {
+        this.users = response.users;
         this.totalCount = response.totalCount;
         this.currentPage = page;
         this.totalPages = Math.ceil(this.totalCount / this.limit);
         this.filteredUsers = this.users; // Initialize filteredUsers with all users initially
       },
-      error => {
+      (error) => {
         console.error('Error fetching user profiles:', error);
       }
     );
@@ -107,12 +127,14 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
       this.filteredUsers = this.users;
     } else {
       // Fetch all users for searching
-      this.userProfileService.getAllPublicProfilesWithoutPagination().subscribe(allUsers => {
-        // Filter through all users based on the search term
-        this.filteredUsers = allUsers.filter(user =>
-          user.username.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      });
+      this.userProfileService
+        .getAllPublicProfilesWithoutPagination()
+        .subscribe((allUsers) => {
+          // Filter through all users based on the search term
+          this.filteredUsers = allUsers.filter((user) =>
+            user.username.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        });
     }
   }
 
@@ -137,104 +159,104 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   }
 
   getCountryFlag(countryName: string): string {
-  const countryFlags: { [key: string]: string } = {
-    'Afghanistan': '🇦🇫',
-    'Albania': '🇦🇱',
-    'Algeria': '🇩🇿',
-    'Argentina': '🇦🇷',
-    'Armenia': '🇦🇲',
-    'Australia': '🇦🇺',
-    'Austria': '🇦🇹',
-    'Azerbaijan': '🇦🇿',
-    'Bahrain': '🇧🇭',
-    'Bangladesh': '🇧🇩',
-    'Belarus': '🇧🇾',
-    'Belgium': '🇧🇪',
-    'Bolivia': '🇧🇴',
-    'Bosnia and Herzegovina': '🇧🇦',
-    'Brazil': '🇧🇷',
-    'Bulgaria': '🇧🇬',
-    'Cambodia': '🇰🇭',
-    'Canada': '🇨🇦',
-    'Chile': '🇨🇱',
-    'China': '🇨🇳',
-    'Colombia': '🇨🇴',
-    'Costa Rica': '🇨🇷',
-    'Croatia': '🇭🇷',
-    'Cyprus': '🇨🇾',
-    'Czech Republic': '🇨🇿',
-    'Denmark': '🇩🇰',
-    'Dominican Republic': '🇩🇴',
-    'Ecuador': '🇪🇨',
-    'Egypt': '🇪🇬',
-    'Estonia': '🇪🇪',
-    'Finland': '🇫🇮',
-    'France': '🇫🇷',
-    'Georgia': '🇬🇪',
-    'Germany': '🇩🇪',
-    'Ghana': '🇬🇭',
-    'Greece': '🇬🇷',
-    'Guatemala': '🇬🇹',
-    'Honduras': '🇭🇳',
-    'Hong Kong': '🇭🇰',
-    'Hungary': '🇭🇺',
-    'Iceland': '🇮🇸',
-    'India': '🇮🇳',
-    'Indonesia': '🇮🇩',
-    'Iran': '🇮🇷',
-    'Iraq': '🇮🇶',
-    'Ireland': '🇮🇪',
-    'Israel': '🇮🇱',
-    'Italy': '🇮🇹',
-    'Japan': '🇯🇵',
-    'Jordan': '🇯🇴',
-    'Kazakhstan': '🇰🇿',
-    'Kenya': '🇰🇪',
-    'Kuwait': '🇰🇼',
-    'Latvia': '🇱🇻',
-    'Lebanon': '🇱🇧',
-    'Lithuania': '🇱🇹',
-    'Luxembourg': '🇱🇺',
-    'Malaysia': '🇲🇾',
-    'Malta': '🇲🇹',
-    'Mexico': '🇲🇽',
-    'Morocco': '🇲🇦',
-    'Netherlands': '🇳🇱',
-    'New Zealand': '🇳🇿',
-    'Nigeria': '🇳🇬',
-    'Norway': '🇳🇴',
-    'Pakistan': '🇵🇰',
-    'Panama': '🇵🇦',
-    'Peru': '🇵🇪',
-    'Philippines': '🇵🇭',
-    'Poland': '🇵🇱',
-    'Portugal': '🇵🇹',
-    'Qatar': '🇶🇦',
-    'Romania': '🇷🇴',
-    'Russia': '🇷🇺',
-    'Saudi Arabia': '🇸🇦',
-    'Serbia': '🇷🇸',
-    'Singapore': '🇸🇬',
-    'Slovakia': '🇸🇰',
-    'Slovenia': '🇸🇮',
-    'South Africa': '🇿🇦',
-    'South Korea': '🇰🇷',
-    'Spain': '🇪🇸',
-    'Sri Lanka': '🇱🇰',
-    'Sweden': '🇸🇪',
-    'Switzerland': '🇨🇭',
-    'Taiwan': '🇹🇼',
-    'Thailand': '🇹🇭',
-    'Turkey': '🇹🇷',
-    'Ukraine': '🇺🇦',
-    'United Arab Emirates': '🇦🇪',
-    'United Kingdom': '🇬🇧',
-    'United States': '🇺🇸',
-    'Uruguay': '🇺🇾',
-    'Venezuela': '🇻🇪',
-    'Vietnam': '🇻🇳'
-  };
-  
-  return countryFlags[countryName] || '🌍'; // Default globe emoji
-}
+    const countryFlags: { [key: string]: string } = {
+      Afghanistan: '🇦🇫',
+      Albania: '🇦🇱',
+      Algeria: '🇩🇿',
+      Argentina: '🇦🇷',
+      Armenia: '🇦🇲',
+      Australia: '🇦🇺',
+      Austria: '🇦🇹',
+      Azerbaijan: '🇦🇿',
+      Bahrain: '🇧🇭',
+      Bangladesh: '🇧🇩',
+      Belarus: '🇧🇾',
+      Belgium: '🇧🇪',
+      Bolivia: '🇧🇴',
+      'Bosnia and Herzegovina': '🇧🇦',
+      Brazil: '🇧🇷',
+      Bulgaria: '🇧🇬',
+      Cambodia: '🇰🇭',
+      Canada: '🇨🇦',
+      Chile: '🇨🇱',
+      China: '🇨🇳',
+      Colombia: '🇨🇴',
+      'Costa Rica': '🇨🇷',
+      Croatia: '🇭🇷',
+      Cyprus: '🇨🇾',
+      'Czech Republic': '🇨🇿',
+      Denmark: '🇩🇰',
+      'Dominican Republic': '🇩🇴',
+      Ecuador: '🇪🇨',
+      Egypt: '🇪🇬',
+      Estonia: '🇪🇪',
+      Finland: '🇫🇮',
+      France: '🇫🇷',
+      Georgia: '🇬🇪',
+      Germany: '🇩🇪',
+      Ghana: '🇬🇭',
+      Greece: '🇬🇷',
+      Guatemala: '🇬🇹',
+      Honduras: '🇭🇳',
+      'Hong Kong': '🇭🇰',
+      Hungary: '🇭🇺',
+      Iceland: '🇮🇸',
+      India: '🇮🇳',
+      Indonesia: '🇮🇩',
+      Iran: '🇮🇷',
+      Iraq: '🇮🇶',
+      Ireland: '🇮🇪',
+      Israel: '🇮🇱',
+      Italy: '🇮🇹',
+      Japan: '🇯🇵',
+      Jordan: '🇯🇴',
+      Kazakhstan: '🇰🇿',
+      Kenya: '🇰🇪',
+      Kuwait: '🇰🇼',
+      Latvia: '🇱🇻',
+      Lebanon: '🇱🇧',
+      Lithuania: '🇱🇹',
+      Luxembourg: '🇱🇺',
+      Malaysia: '🇲🇾',
+      Malta: '🇲🇹',
+      Mexico: '🇲🇽',
+      Morocco: '🇲🇦',
+      Netherlands: '🇳🇱',
+      'New Zealand': '🇳🇿',
+      Nigeria: '🇳🇬',
+      Norway: '🇳🇴',
+      Pakistan: '🇵🇰',
+      Panama: '🇵🇦',
+      Peru: '🇵🇪',
+      Philippines: '🇵🇭',
+      Poland: '🇵🇱',
+      Portugal: '🇵🇹',
+      Qatar: '🇶🇦',
+      Romania: '🇷🇴',
+      Russia: '🇷🇺',
+      'Saudi Arabia': '🇸🇦',
+      Serbia: '🇷🇸',
+      Singapore: '🇸🇬',
+      Slovakia: '🇸🇰',
+      Slovenia: '🇸🇮',
+      'South Africa': '🇿🇦',
+      'South Korea': '🇰🇷',
+      Spain: '🇪🇸',
+      'Sri Lanka': '🇱🇰',
+      Sweden: '🇸🇪',
+      Switzerland: '🇨🇭',
+      Taiwan: '🇹🇼',
+      Thailand: '🇹🇭',
+      Turkey: '🇹🇷',
+      Ukraine: '🇺🇦',
+      'United Arab Emirates': '🇦🇪',
+      'United Kingdom': '🇬🇧',
+      'United States': '🇺🇸',
+      Uruguay: '🇺🇾',
+      Venezuela: '🇻🇪',
+      Vietnam: '🇻🇳',
+    };
+
+    return countryFlags[countryName] || '🌍'; // Default globe emoji
+  }
 }
