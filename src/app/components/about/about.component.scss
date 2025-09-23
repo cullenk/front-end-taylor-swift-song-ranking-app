@@ -1,0 +1,308 @@
+.navigation {
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.widgets {
+  display: flex;
+  gap: 2rem;
+}
+
+.about-widget, .info-widget {
+  flex: 1;
+  padding: 2rem;
+  color: white;
+}
+
+.info-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Establish a positioning context for the pseudo-element */
+  color: black;
+  border-radius: 1rem;
+  background-image: url('https://d3e29z0m37b0un.cloudfront.net/graphics/About+Photos/about-sky-graphic.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
+.about-widget h2 {
+  font-size: 2.5rem;
+  margin-top: 0px;
+  margin-bottom: 1rem;
+  color: rgb(92, 179, 255);
+}
+
+.about-widget p, .info-widget p {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.coffee-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  gap: 1rem; /* Space between items */
+}
+
+.message-text {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  font-style: italic;
+  line-height: 24px;
+}
+
+.pay-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Space between payment options */
+}
+.coffee-icon {
+  margin-right: 15px;
+  width: 50px;
+  transition: .2 ease-in-out;
+}
+
+.coffee-icon:hover {
+  transform: scale(1.02);
+  rotate: 6deg;
+}
+
+.pay-category {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    font-weight: 600;
+    margin: 0px;
+  }
+
+  .creds {
+    color: #344055;
+    margin: 0px;
+  }
+}
+
+.my-profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* Space between items */
+}
+
+.my-profile-section a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 10px;
+  background-color:var(--secondary-color);
+  color: #fff; /* Button text color */
+  text-decoration: none; /* Remove underline */
+  border-radius: 0.5rem; /* Rounded corners */
+  transition: background-color 0.3s; /* Transition effects */
+  font-size: 1rem; /* Font size for buttons */
+  text-align: center;
+}
+
+.my-profile-section a:hover {
+  background-color: rgb(42, 74, 156); /* Change color on hover */
+}
+
+.photos {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.photos-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.photo-item {
+  width: auto;
+  height: 300px;
+  border-radius: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.photo-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Lightbox Styles */
+.lightbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox-content {
+  margin: 0;
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.caption {
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: auto;
+  margin-top: 0.5rem;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.3s;
+  user-select: none;
+}
+
+.next {
+  right: 35px;
+}
+
+.prev {
+  left: 35px;
+}
+
+.prev:hover, .next:hover {
+  color: #bbb;
+}
+
+@media (max-width: 1200px) {
+  .widgets {
+    flex-direction: column;
+  }
+
+.info-widget {
+  min-height: 500px;
+  width: 100%;
+  padding: 10px;
+}
+
+.message-text {
+  max-width: 350px;
+  text-align: center;
+}
+  .pay-div {
+    align-items: flex-start;
+  }
+
+  .btn-div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
+.about-widget {
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+.about-container {
+  padding: 1rem;
+}
+
+.info-widget {
+  min-height: 350px;
+  width: 100%;
+}
+
+.message-text {
+  max-width: 310px;
+  font-size: .8rem !important;
+  text-align: center;
+}
+
+.photos-row {
+flex-direction: column;
+justify-content: center;
+}
+
+.photo-item {
+  margin: 0px auto;
+  width: 80%;
+  height: auto;
+}
+
+}
+
+}

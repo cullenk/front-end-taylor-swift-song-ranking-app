@@ -1,0 +1,80 @@
+<div class="public-home">
+  <!-- Background elements -->
+  <div class="background-elements">
+    <div #randomSquares class="random-squares"></div>
+    <div class="album-covers-background" #albumCovers>
+      <div
+        class="floating-album"
+        *ngFor="let cover of floatingAlbums"
+        [style.top]="cover.top"
+        [style.left]="cover.left"
+        [style.animation-delay]="cover.delay"
+      >
+        <img [src]="cover.src" [alt]="'Album cover'" />
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>The Swiftie Ranking Hub</h1>
+      <p class="subtitle">
+        The ultimate destination for Taylor Swift fans to rank their favorite
+        songs and albums.
+      </p>
+      <a routerLink="/login" class="cta-button">Join the Community</a>
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="feature">
+      <h3>👥 Custom Profile</h3>
+      <p>
+        Design your personal Swiftie profile with custom themes and music
+        statistics
+      </p>
+    </div>
+    <div class="feature">
+      <h3>🎵 Top 13 Songs</h3>
+      <p>Create your personal ranking of Taylor Swift's greatest hits</p>
+    </div>
+    <div class="feature">
+      <h3>💿 Album Rankings</h3>
+      <p>Rank every song from your favorite Taylor Swift albums</p>
+    </div>
+    <div class="feature">
+      <h3>🎤 Eras Tour Builder</h3>
+      <p>Build your dream Eras Tour setlist and share with friends</p>
+    </div>
+    <div class="feature">
+      <h3>📊 Stats</h3>
+      <p>Nerd out over the most popular song and album statistics</p>
+    </div>
+    <div class="feature">
+      <h3>🫶🏻 Connect with Swifties</h3>
+      <p>Discover other fans and compare your music taste</p>
+    </div>
+  </section>
+
+  <!-- AdSense ad will be placed here after approval -->
+  <!-- <div class="ad-container">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-6456691232007370"
+       data-ad-slot="YOUR_HOMEPAGE_SLOT_ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div> -->
+
+  <!-- Footer Links -->
+  <footer class="public-footer">
+    <div class="footer-links">
+      <a routerLink="/about">About</a>
+      <span class="separator">•</span>
+      <a routerLink="/login">Login</a>
+      <span class="separator">•</span>
+      <a routerLink="/privacy">Privacy Policy</a>
+    </div>
+    <p class="copyright">© 2025 Swiftie Ranking Hub. All rights reserved.</p>
+  </footer>
+</div>
