@@ -1,15 +1,24 @@
-<div class="container">
-    <div class="header-container">
-      <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
-      <div class="header-div">
-        <h1 class="header-title">Rank Songs By Track #</h1>
-        <h1 class="header-sub-title">Build Your Perfect Album</h1>
-      </div>
-    </div>
-  
-    <div class="steps-container">
-    <button class="back-btn" (click)="goBackToAlbumRankings()"><i class="fas fa-arrow-left"></i>Back</button>
+<div class="rank-by-track-container">
+  <!-- Background overlay for consistency -->
+  <div class="background-overlay"></div>
 
+  <!-- Header Section -->
+  <div class="header-container">
+    <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png" alt="Background Graphic">
+    <div class="header-div">
+      <h1 class="header-title">Rank Songs By Track #</h1>
+      <h1 class="header-sub-title">Build Your Perfect Album</h1>
+    </div>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="controls-section">
+    <button class="back-btn" (click)="goBackToAlbumRankings()">
+      <i class="fas fa-arrow-left"></i>Back
+    </button>
+
+    <!-- Steps Cards -->
+    <div class="steps-container">
       <div class="steps-row">
         <div class="step-card">
           <span class="step-number">1</span>
@@ -28,54 +37,140 @@
         </div>
       </div>
     </div>
-  
+
+    <!-- Tabs Navigation -->
     <div class="tabs">
-      <button (click)="activeTab = 'rankings'" [class.active]="activeTab === 'rankings'">Track Rankings</button>
-      <button (click)="activeTab = 'perfectAlbum'" [class.active]="activeTab === 'perfectAlbum'">Your Album</button>
-    </div>
-  
-    <div *ngIf="activeTab === 'rankings'" class="tab-content">
-        <div class="save-button-container">
-          <button (click)="saveRankings()" class="save-button">Save Rankings</button>
-        </div>
-        <div class="track-rankings-grid">
-          <div *ngFor="let trackList of trackRankings; let i = index" class="track-ranking-widget">
-            <div class="track-number-div">
-              <span class="track-label">Track</span>
-              <span class="track-number">{{ i + 1 }}'s</span>
-            </div>
-            <div cdkDropList (cdkDropListDropped)="drop(i, $event)" class="song-list">
-              <div *ngFor="let song of trackList" cdkDrag class="song-item">
-                <img [src]="song.albumImageSource" alt="{{ song.albumName }} cover" class="album-cover">
-                <div class="song-info">
-                  <span class="song-title">{{ song.songTitle }}</span>
-                  <span class="album-name">{{ song.albumName }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-    <div *ngIf="activeTab === 'perfectAlbum'" class="tab-content">
-      <div class="perfect-album">
-        <div *ngIf="perfectAlbum.length > 0; else noRankings">
-          <div *ngFor="let song of perfectAlbum; let i = index" class="song-item">
-            <div class="track-number">{{ i + 1 }}</div>
-            <img [src]="song.albumImageSource" alt="{{ song.albumName }} cover" class="album-cover">
-            <div class="song-info">
-              <span class="song-title">{{ song.songTitle }}</span>
-              <span class="album-name">{{ song.albumName }}</span>
-            </div>
-            <audio controls *ngIf="song.audioSource" class="audio-player" (error)="handleAudioError($event)" (play)="handleAudioPlay($event)" controlsList="nodownload">
-              <source [src]="song.audioSource" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-        <ng-template #noRankings>
-          <p>You haven't ranked any songs yet. Start ranking to build your perfect album!</p>
-        </ng-template>
-      </div>
+      <button 
+        (click)="activeTab = 'rankings'" 
+        [class.active]="activeTab === 'rankings'"
+        class="tab-button"
+      >
+        <i class="fas fa-list-ol"></i>Track Rankings
+      </button>
+      <button 
+        (click)="activeTab = 'perfectAlbum'" 
+        [class.active]="activeTab === 'perfectAlbum'"
+        class="tab-button"
+      >
+        <i class="fas fa-compact-disc"></i>Your Album
+      </button>
     </div>
   </div>
+
+  <!-- Content Section -->
+  <div class="content-section">
+    <!-- Track Rankings Tab -->
+    <div *ngIf="activeTab === 'rankings'" class="tab-content">
+      <div class="save-button-container">
+        <button 
+          (click)="saveRankings()" 
+          class="save-button"
+          [disabled]="isLoading"
+        >
+          <i class="fas fa-save"></i>
+          {{ isLoading ? 'Saving...' : 'Save Rankings' }}
+        </button>
+      </div>
+
+      <div class="track-rankings-grid" *ngIf="!isLoading">
+        <div 
+          *ngFor="let trackList of trackRankings; let i = index" 
+          class="track-ranking-widget"
+        >
+          <div class="track-number-div">
+            <span class="track-label">Track</span>
+            <span class="track-number">{{ i + 1 }}'s</span>
+          </div>
+          
+          <div 
+            cdkDropList 
+            (cdkDropListDropped)="drop(i, $event)" 
+            class="song-list"
+            [attr.data-track]="i + 1"
+          >
+            <div 
+              *ngFor="let song of trackList; trackBy: trackBySongId" 
+              cdkDrag 
+              class="song-item"
+            >
+              <div cdkDragHandle class="drag-handle">
+                <i class="fas fa-grip-vertical"></i>
+              </div>
+              <img 
+                [src]="song.albumImageSource" 
+                [alt]="song.albumName + ' cover'" 
+                class="album-cover"
+                loading="lazy"
+              >
+              <div class="song-info">
+                <span class="song-title">{{ song.songTitle }}</span>
+                <span class="album-name">{{ song.albumName }}</span>
+              </div>
+              <span class="rank-indicator">#{{ song.rank }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        <i class="fas fa-spinner fa-spin"></i>
+        Loading track rankings...
+      </div>
+    </div>
+
+    <!-- Perfect Album Tab -->
+    <div *ngIf="activeTab === 'perfectAlbum'" class="tab-content">
+      <div class="perfect-album-header">
+        <h2><i class="fas fa-star"></i>Your Perfect Taylor Swift Album</h2>
+        <p class="album-description">
+          Based on your #1 ranked songs from each track position
+        </p>
+      </div>
+
+      <div class="perfect-album" *ngIf="perfectAlbum.length > 0; else noRankings">
+        <div 
+          *ngFor="let song of perfectAlbum; let i = index; trackBy: trackBySongId" 
+          class="perfect-song-item"
+        >
+          <div class="track-number">{{ i + 1 }}</div>
+          <img 
+            [src]="song.albumImageSource" 
+            [alt]="song.albumName + ' cover'" 
+            class="album-cover"
+            loading="lazy"
+          >
+          <div class="song-info">
+            <span class="song-title">{{ song.songTitle }}</span>
+            <span class="album-name">{{ song.albumName }}</span>
+          </div>
+          <audio 
+            *ngIf="song.audioSource" 
+            controls 
+            class="audio-player" 
+            (error)="handleAudioError($event)" 
+            (play)="handleAudioPlay($event)" 
+            controlsList="nodownload"
+          >
+            <source [src]="song.audioSource" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+
+      <ng-template #noRankings>
+        <div class="no-rankings-message">
+          <i class="fas fa-music"></i>
+          <h3>No Rankings Yet</h3>
+          <p>You haven't ranked any songs yet. Start ranking to build your perfect album!</p>
+          <button 
+            (click)="activeTab = 'rankings'" 
+            class="start-ranking-btn"
+          >
+            <i class="fas fa-play"></i>Start Ranking
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

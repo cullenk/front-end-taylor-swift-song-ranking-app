@@ -10,6 +10,7 @@ import { AlbumRanking } from "../interfaces/AlbumRanking";
 import { SurpriseSong } from "../interfaces/SurpriseSong";
 import { environment } from "../../environments/environment.prod";
 import { HomePageAlbumRanking } from "../interfaces/HomePageAlbumRanking";
+import { TrackRankingSummary } from '../interfaces/userProfile'; 
 
 @Injectable({
   providedIn: 'root'
@@ -140,4 +141,39 @@ getSurpriseSongs(): Observable<SurpriseSong[]> {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+
+
+getPerfectAlbum(): Observable<TrackRankingSummary[]> {
+  return this.http.get<TrackRankingSummary[]>(`${this.apiUrl}/rankings/user/perfect-album`, { headers: this.getHeaders() })
+    .pipe(
+      catchError(this.handleError)
+    );
+}
+
+getAllSongsSummary(page: number = 1, limit: number = 20, username?: string): Observable<{
+  songs: TrackRankingSummary[];
+  currentPage: number;
+  totalSongs: number;
+  hasMore: boolean;
+  totalPages: number;
+}> {
+  const url = username 
+    ? `${this.apiUrl}/rankings/user/${username}/all-songs-summary`
+    : `${this.apiUrl}/rankings/user/all-songs-summary`;
+    
+  const params = { page: page.toString(), limit: limit.toString() };
+  
+  return this.http.get<{
+    songs: TrackRankingSummary[];
+    currentPage: number;
+    totalSongs: number;
+    hasMore: boolean;
+    totalPages: number;
+  }>(url, { 
+    headers: this.getHeaders(),
+    params 
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
 }

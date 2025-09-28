@@ -1,79 +1,357 @@
-<div class="era-widget" [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}">
-  <div class="overlay"></div>
-  <h2>{{ era.era }}</h2>
-  <div class="song-slots">
-    <ng-container *ngIf="era.era === 'Surprise Songs'; else normalSlots">
-      <div class="song-slot">
-        <label for="guitarSong">
-          <i class="fas fa-guitar"></i> On guitar:
-        </label>
-        <span *ngIf="guitarSong.title">{{ guitarSong.title }} <button class="remove-button" (click)="removeSurpriseSong('guitar')">x</button></span>
-        <button *ngIf="!guitarSong.title" (click)="openAddSongDialog('guitar')">Add Song</button>
+<div 
+  class="era-widget" 
+  [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}"
+  [attr.data-era]="era.era"
+>
+  <!-- Background Overlay -->
+  <div class="era-overlay" aria-hidden="true"></div>
+  
+  <!-- Era Header -->
+  <header class="era-header">
+    <h2 class="era-title">{{ era.era }}</h2>
+    <div class="era-stats">
+      <div class="song-count">
+        <i class="fas fa-music" aria-hidden="true"></i>
+        <span class="count">{{ era.songs.length }}</span>
+        <span class="max">/{{ era.era === 'Surprise Songs' ? 2 : 6 }}</span>
       </div>
-      <div class="song-slot">
-        <label for="pianoSong">
-          <img class="piano-icon" src="https://d3e29z0m37b0un.cloudfront.net/graphics/pianoIcon.svg"> On piano:
-        </label>
-        <span *ngIf="pianoSong.title">{{ pianoSong.title }} <button class="remove-button" (click)="removeSurpriseSong('piano')">x</button></span>
-        <button *ngIf="!pianoSong.title" (click)="openAddSongDialog('piano')">Add Song</button>
+      <div class="progress-indicator" [class.complete]="hasMinimumSongs()">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="getEraProgress()"
+          [attr.aria-valuenow]="getEraProgress()"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Song Slots -->
+  <div class="song-slots" role="list" [attr.aria-label]="era.era + ' songs'">
+    
+    <!-- Surprise Songs Layout -->
+    <ng-container *ngIf="era.era === 'Surprise Songs'; else normalSlots">
+      <!-- Guitar Song Slot -->
+      <div class="surprise-song-slot" role="listitem">
+        <div class="surprise-slot-header">
+          <div class="slot-icon">
+            <i class="fas fa-guitar" aria-hidden="true"></i>
+          </div>
+          <div class="slot-info">
+            <span class="slot-label">Acoustic Guitar</span>
+            <span class="slot-subtitle">Surprise Song #1</span>
+          </div>
+        </div>
+        <div class="slot-content">
+          <div *ngIf="hasSurpriseSong('guitar')" class="selected-song">
+            <span class="song-title">{{ getSurpriseSong('guitar').title }}</span>
+            <button 
+              type="button"
+              class="remove-button" 
+              (click)="removeSurpriseSong('guitar')"
+              [attr.aria-label]="'Remove ' + getSurpriseSong('guitar').title"
+            >
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button 
+            *ngIf="!hasSurpriseSong('guitar')" 
+            type="button"
+            class="add-song-button" 
+            (click)="openAddSongDialog('guitar')"
+            aria-label="Add acoustic guitar surprise song"
+          >
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span>Add Song</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Piano Song Slot -->
+      <div class="surprise-song-slot" role="listitem">
+        <div class="surprise-slot-header">
+          <div class="slot-icon">
+            <img 
+              class="piano-icon" 
+              src="https://d3e29z0m37b0un.cloudfront.net/graphics/pianoIcon.svg"
+              alt="Piano icon"
+              loading="lazy"
+            >
+          </div>
+          <div class="slot-info">
+            <span class="slot-label">Piano</span>
+            <span class="slot-subtitle">Surprise Song #2</span>
+          </div>
+        </div>
+        <div class="slot-content">
+          <div *ngIf="hasSurpriseSong('piano')" class="selected-song">
+            <span class="song-title">{{ getSurpriseSong('piano').title }}</span>
+            <button 
+              type="button"
+              class="remove-button" 
+              (click)="removeSurpriseSong('piano')"
+              [attr.aria-label]="'Remove ' + getSurpriseSong('piano').title"
+            >
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button 
+            *ngIf="!hasSurpriseSong('piano')" 
+            type="button"
+            class="add-song-button" 
+            (click)="openAddSongDialog('piano')"
+            aria-label="Add piano surprise song"
+          >
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span>Add Song</span>
+          </button>
+        </div>
       </div>
     </ng-container>
+
+    <!-- Regular Era Songs Layout -->
     <ng-template #normalSlots>
-      <div *ngFor="let song of era.songs; let i = index" class="song-slot">
-        <p>{{ song.title }}</p>
-        <button class="remove-button" (click)="removeSong(i)">x</button>
+      <!-- Existing Songs -->
+      <div 
+        *ngFor="let song of era.songs; let i = index; trackBy: trackByEraSong" 
+        class="song-slot" 
+        role="listitem"
+        [class.mashup]="song.isMashup"
+      >
+        <div class="song-info">
+          <div class="song-icon">
+            <i 
+              class="fas" 
+              [class.fa-layer-group]="song.isMashup"
+              [class.fa-music]="!song.isMashup"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div class="song-details">
+            <span class="song-title">{{ song.title }}</span>
+            <span *ngIf="song.isMashup" class="song-type">Mashup</span>
+          </div>
+        </div>
+        <button 
+          type="button"
+          class="remove-button" 
+          (click)="removeSong(i)"
+          [attr.aria-label]="'Remove ' + song.title"
+        >
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
       </div>
-      <button 
-        (click)="openAddSongDialog()" 
-        [disabled]="era.songs.length >= 6" 
-        [title]="era.songs.length >= 6 ? 'Only 6 songs allowed in an era set!' : ''">
-        Add Song
-      </button>
+
+      <!-- Add Song Button -->
+      <div class="add-song-slot">
+        <button 
+          type="button"
+          class="add-song-button large" 
+          (click)="openAddSongDialog()" 
+          [disabled]="!canAddMoreSongs()" 
+          [title]="getButtonTooltip()"
+          [attr.aria-label]="'Add song to ' + era.era + ' era'"
+        >
+          <i class="fas fa-plus" aria-hidden="true"></i>
+          <span>Add Song</span>
+          <small class="slots-remaining">{{ getRemainingSlots() }} slots remaining</small>
+        </button>
+      </div>
     </ng-template>
   </div>
 </div>
 
 <!-- Add Song Dialog -->
-<div *ngIf="showAddSongDialog" class="add-song-dialog">
-  <div class="dialog-content">
-    <h3>Add Song</h3>
-    <ng-container *ngIf="era.era === 'Surprise Songs'; else albumSongs">
-      <input [(ngModel)]="selectedSongTitle" placeholder="Enter song or mashup" />
-    </ng-container>
-    <ng-template #albumSongs>
-      <div class="mashup-option">
-        <label>
-          <input type="checkbox" [(ngModel)]="isMashup" (change)="onMashupToggle()"/> Is this number a mashup?
-        </label>
-      </div>
-      <ng-container *ngIf="!isMashup">
-        <div class="song-selection">
-          <select [(ngModel)]="selectedSongTitle">
-            <option value="">Select a song</option>
-            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-          </select>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="isMashup">
-        <div class="mashup-selection">
-          <select [(ngModel)]="firstSongId">
-            <option value="">Select first song</option>
-            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-          </select>
-          <span>/</span>
-          <select [(ngModel)]="secondSongId">
-            <option value="">Select second song</option>
-            <option *ngFor="let song of allSongs" [value]="song._id">{{ song.title }}</option>
-          </select>
-        </div>
-      </ng-container>
-    </ng-template>
-    <div class="dialog-actions">
-      <button (click)="songType ? saveSurpriseSong() : saveSong()" 
-              [disabled]="!canSaveSong()">
-        Save
+<div 
+  *ngIf="showAddSongDialog" 
+  class="dialog-overlay"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'dialog-title-' + era.era"
+  (click)="closeAddSongDialog()"
+>
+  <div class="dialog-container" (click)="$event.stopPropagation()">
+    
+    <!-- Dialog Header -->
+    <header class="dialog-header">
+      <h3 [id]="'dialog-title-' + era.era" class="dialog-title">
+        <i class="fas fa-plus-circle" aria-hidden="true"></i>
+        Add Song to {{ era.era }}
+      </h3>
+      <button 
+        type="button"
+        class="dialog-close-button" 
+        (click)="closeAddSongDialog()"
+        aria-label="Close dialog"
+      >
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
-      <button (click)="closeAddSongDialog()">Cancel</button>
+    </header>
+
+    <!-- Dialog Content -->
+    <div class="dialog-content">
+      
+      <!-- Surprise Songs Form -->
+      <ng-container *ngIf="era.era === 'Surprise Songs'; else albumSongsForm">
+        <div class="form-group">
+          <label for="surprise-song-input" class="form-label">
+            <i 
+              class="fas" 
+              [class.fa-guitar]="songType === 'guitar'"
+              [class.fa-piano]="songType === 'piano'"
+              aria-hidden="true"
+            ></i>
+            Song Title or Mashup
+          </label>
+          <input 
+            id="surprise-song-input"
+            type="text"
+            class="form-input"
+            [(ngModel)]="selectedSongTitle" 
+            placeholder="Enter song title (e.g., 'All Too Well' or 'Love Story / You Belong With Me')"
+            maxlength="200"
+          />
+          <small class="form-help">
+            Use " / " to separate songs in a mashup
+          </small>
+        </div>
+      </ng-container>
+
+      <!-- Album Songs Form -->
+      <ng-template #albumSongsForm>
+        
+        <!-- Loading State -->
+        <div *ngIf="isLoadingSongs" class="loading-state">
+          <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+          <span>Loading songs...</span>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="loadingError" class="error-state">
+          <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+          <span>Failed to load songs. Please try again.</span>
+          <button type="button" class="retry-button" (click)="loadSongs()">
+            <i class="fas fa-redo" aria-hidden="true"></i>
+            Retry
+          </button>
+        </div>
+
+        <!-- Loaded Content -->
+        <ng-container *ngIf="!isLoadingSongs && !loadingError">
+          
+          <!-- Mashup Toggle -->
+          <div class="form-group">
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  class="checkbox-input"
+                  [(ngModel)]="isMashup" 
+                  (change)="onMashupToggle()"
+                  [id]="'mashup-toggle-' + era.era"
+                />
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">
+                  <i class="fas fa-layer-group" aria-hidden="true"></i>
+                  This is a mashup
+                </span>
+              </label>
+            </div>
+            <small class="form-help">
+              Mashups count as one song but use your mashup allocation ({{ totalMashups }}/3 used)
+            </small>
+          </div>
+
+          <!-- Single Song Selection -->
+          <div *ngIf="!isMashup" class="form-group">
+            <label [for]="'song-select-' + era.era" class="form-label">
+              <i class="fas fa-music" aria-hidden="true"></i>
+              Select Song
+            </label>
+            <select 
+              [id]="'song-select-' + era.era"
+              class="form-select"
+              [(ngModel)]="selectedSongTitle"
+            >
+              <option value="">Choose a song...</option>
+              <option 
+                *ngFor="let song of getAvailableSongs(); trackBy: trackBySongId" 
+                [value]="song._id"
+              >
+                {{ song.title }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Mashup Selection -->
+          <div *ngIf="isMashup" class="form-group">
+            <label class="form-label">
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
+              Select Mashup Songs
+            </label>
+            <div class="mashup-selects">
+              <div class="select-group">
+                <select 
+                  [id]="'first-song-' + era.era"
+                  class="form-select"
+                  [(ngModel)]="firstSongId"
+                >
+                  <option value="">First song...</option>
+                  <option 
+                    *ngFor="let song of getAvailableSongs(); trackBy: trackBySongId" 
+                    [value]="song._id"
+                  >
+                    {{ song.title }}
+                  </option>
+                </select>
+              </div>
+              <div class="mashup-divider">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+              </div>
+              <div class="select-group">
+                <select 
+                  [id]="'second-song-' + era.era"
+                  class="form-select"
+                  [(ngModel)]="secondSongId"
+                >
+                  <option value="">Second song...</option>
+                  <option 
+                    *ngFor="let song of getAvailableSongs(); trackBy: trackBySongId" 
+                    [value]="song._id"
+                    [disabled]="song._id === firstSongId"
+                  >
+                    {{ song.title }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+      </ng-template>
     </div>
+
+    <!-- Dialog Actions -->
+    <footer class="dialog-actions">
+      <button 
+        type="button"
+        class="cancel-button" 
+        (click)="closeAddSongDialog()"
+      >
+        <i class="fas fa-times" aria-hidden="true"></i>
+        Cancel
+      </button>
+      <button 
+        type="button"
+        class="save-button" 
+        (click)="songType ? saveSurpriseSong() : saveSong()" 
+        [disabled]="!canSaveSong()"
+        [attr.aria-label]="'Save song to ' + era.era"
+      >
+        <i class="fas fa-check" aria-hidden="true"></i>
+        Save Song
+      </button>
+    </footer>
   </div>
 </div>

@@ -10,51 +10,63 @@
 .header-container {
   position: relative;
   width: 100%;
-  margin-bottom: 30px;
+  margin: 25px auto;
   overflow: hidden;
   border-radius: 10px;
+  min-height: 200px; 
 }
 
 .background-graphic {
   position: absolute;
-  opacity: 50%;
+  opacity: 0.5; 
   top: 0;
   right: 0;
   width: 60%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; 
   z-index: 1;
+  pointer-events: none; 
 } 
 
 .header-div {
-  background-color: #ffd78c;
+  background: linear-gradient(135deg, #ffd78c 0%, #ffb347 100%);
+  width: 100%; // Ensure full width
   height: 100%;
+  min-height: 200px; // Match container min-height
   border-radius: 10px;
-  z-index: 10;
+  z-index: 0; // Change from 10 to 0 so graphic shows above background but below text
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; // Center content vertically
+  margin-top: 0; // Remove the margin-top that was causing overflow
   padding: 28px 20px 20px 20px;
+  position: relative; // Add relative positioning
+  box-sizing: border-box; // Ensure proper box model
 }
 
 .header-title {
   width: 100%;
   position: relative;
-  z-index: 2;
-  color: black;
+  z-index: 2; // Keep text above graphic
+  color: #333; // Change from black to #333 for better contrast
   text-align: left;
-  margin: 0px 0px 10px 0px;
+  margin: 0 0 10px 0; // Clean up margin values
   font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: bold; // Add font weight for better visibility
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); // Add text shadow for better readability
 }
 
 .header-sub-title {
   width: 100%;
   position: relative;
-  z-index: 2;
+  z-index: 2; // Keep text above graphic
   color: #266DD3;
   text-align: left;
-  margin: 0px;
+  margin: 0;
   font-size: clamp(2.5rem, 5vw, 3.6rem);
+  font-weight: bold; // Add font weight for better visibility
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); // Add text shadow for better readability
 }
 
 // Sticky Controls
@@ -287,6 +299,20 @@
   .top13-container {
     padding: 0 15px 15px;
   }
+
+    .header-container {
+    min-height: 150px; // Smaller minimum height on mobile
+  }
+  
+  .header-div {
+    min-height: 150px; // Match container
+    padding: 20px 15px 15px; // Adjust padding
+  }
+  
+  .background-graphic {
+    width: 70%; // Larger width on mobile for better visibility
+    opacity: 0.3; // Reduce opacity on mobile
+  }
   
   .controls-sticky {
     margin-bottom: 1.5rem;
@@ -318,6 +344,20 @@
 @media (max-width: 480px) {
   .top13-container {
     padding: 0 10px 10px;
+  }
+
+    .header-container {
+    min-height: 120px; // Even smaller on very small screens
+  }
+  
+  .header-div {
+    min-height: 120px;
+    padding: 15px 10px;
+  }
+  
+  .background-graphic {
+    width: 80%;
+    opacity: 0.2; // Further reduce opacity
   }
   
   .btn {

@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UserProfileService } from '../../../../services/user-profile.service';
+import { CountryFlagsService } from '../../../../services/country-flags.service';
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-// Add interface for country stats
 interface CountryStats {
   totalUsersWithCountry: number;
   countries: Array<{
@@ -47,6 +47,7 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
     Evermore: 'rgba(219, 134, 30, 0.7)',
     Midnights: 'rgba(25, 25, 112, 0.7)',
     'The Tortured Poets Department': '#E3E0C8',
+    'The Life of a Showgirl': 'rgba(255, 182, 193, 0.7)',
   };
 
   private searchTermSubject = new Subject<string>();
@@ -54,7 +55,8 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private userProfileService: UserProfileService
+    private userProfileService: UserProfileService,
+    private countryFlagsService: CountryFlagsService
   ) {}
 
   ngOnInit(): void {
@@ -159,104 +161,6 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   }
 
   getCountryFlag(countryName: string): string {
-    const countryFlags: { [key: string]: string } = {
-      Afghanistan: '🇦🇫',
-      Albania: '🇦🇱',
-      Algeria: '🇩🇿',
-      Argentina: '🇦🇷',
-      Armenia: '🇦🇲',
-      Australia: '🇦🇺',
-      Austria: '🇦🇹',
-      Azerbaijan: '🇦🇿',
-      Bahrain: '🇧🇭',
-      Bangladesh: '🇧🇩',
-      Belarus: '🇧🇾',
-      Belgium: '🇧🇪',
-      Bolivia: '🇧🇴',
-      'Bosnia and Herzegovina': '🇧🇦',
-      Brazil: '🇧🇷',
-      Bulgaria: '🇧🇬',
-      Cambodia: '🇰🇭',
-      Canada: '🇨🇦',
-      Chile: '🇨🇱',
-      China: '🇨🇳',
-      Colombia: '🇨🇴',
-      'Costa Rica': '🇨🇷',
-      Croatia: '🇭🇷',
-      Cyprus: '🇨🇾',
-      'Czech Republic': '🇨🇿',
-      Denmark: '🇩🇰',
-      'Dominican Republic': '🇩🇴',
-      Ecuador: '🇪🇨',
-      Egypt: '🇪🇬',
-      Estonia: '🇪🇪',
-      Finland: '🇫🇮',
-      France: '🇫🇷',
-      Georgia: '🇬🇪',
-      Germany: '🇩🇪',
-      Ghana: '🇬🇭',
-      Greece: '🇬🇷',
-      Guatemala: '🇬🇹',
-      Honduras: '🇭🇳',
-      'Hong Kong': '🇭🇰',
-      Hungary: '🇭🇺',
-      Iceland: '🇮🇸',
-      India: '🇮🇳',
-      Indonesia: '🇮🇩',
-      Iran: '🇮🇷',
-      Iraq: '🇮🇶',
-      Ireland: '🇮🇪',
-      Israel: '🇮🇱',
-      Italy: '🇮🇹',
-      Japan: '🇯🇵',
-      Jordan: '🇯🇴',
-      Kazakhstan: '🇰🇿',
-      Kenya: '🇰🇪',
-      Kuwait: '🇰🇼',
-      Latvia: '🇱🇻',
-      Lebanon: '🇱🇧',
-      Lithuania: '🇱🇹',
-      Luxembourg: '🇱🇺',
-      Malaysia: '🇲🇾',
-      Malta: '🇲🇹',
-      Mexico: '🇲🇽',
-      Morocco: '🇲🇦',
-      Netherlands: '🇳🇱',
-      'New Zealand': '🇳🇿',
-      Nigeria: '🇳🇬',
-      Norway: '🇳🇴',
-      Pakistan: '🇵🇰',
-      Panama: '🇵🇦',
-      Peru: '🇵🇪',
-      Philippines: '🇵🇭',
-      Poland: '🇵🇱',
-      Portugal: '🇵🇹',
-      Qatar: '🇶🇦',
-      Romania: '🇷🇴',
-      Russia: '🇷🇺',
-      'Saudi Arabia': '🇸🇦',
-      Serbia: '🇷🇸',
-      Singapore: '🇸🇬',
-      Slovakia: '🇸🇰',
-      Slovenia: '🇸🇮',
-      'South Africa': '🇿🇦',
-      'South Korea': '🇰🇷',
-      Spain: '🇪🇸',
-      'Sri Lanka': '🇱🇰',
-      Sweden: '🇸🇪',
-      Switzerland: '🇨🇭',
-      Taiwan: '🇹🇼',
-      Thailand: '🇹🇭',
-      Turkey: '🇹🇷',
-      Ukraine: '🇺🇦',
-      'United Arab Emirates': '🇦🇪',
-      'United Kingdom': '🇬🇧',
-      'United States': '🇺🇸',
-      Uruguay: '🇺🇾',
-      Venezuela: '🇻🇪',
-      Vietnam: '🇻🇳',
-    };
-
-    return countryFlags[countryName] || '🌍'; // Default globe emoji
+    return this.countryFlagsService.getCountryFlag(countryName);
   }
 }

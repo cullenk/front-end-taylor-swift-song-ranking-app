@@ -1,0 +1,737 @@
+// src/app/modules/user/components/tabbed-profile-base/tabbed-profile-base.component.scss
+@import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
+
+/* ========================================
+   MAIN CONTAINER & LAYOUT
+   ======================================== */
+.user-profile {
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: inherit, sans-serif;
+  transition: all 0.3s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-attachment: fixed;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.8;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ========================================
+   LAYOUT STRUCTURE
+   ======================================== */
+.profile-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.column {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  border: 0.5px solid white;
+}
+
+.welcome-column {
+  flex-basis: 300px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 280px;
+}
+
+.tabs-column {
+  flex: 1;
+  min-width: 500px;
+}
+
+/* ========================================
+   WELCOME SECTION
+   ======================================== */
+.welcome-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  h1 {
+    font-size: 1.5rem;
+    margin: 5px 0;
+  }
+
+  h2 {
+    color: #333;
+    margin: 5px 0;
+  }
+}
+
+/* ========================================
+   PROFILE IMAGE
+   ======================================== */
+.profile-image-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid white;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05) rotate(5deg);
+  }
+}
+
+.edit-image-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  i {
+    font-size: 16px;
+    color: #333;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
+}
+
+/* ========================================
+   PROFILE STATS
+   ======================================== */
+.profile-stats {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.645);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    i {
+      width: 20px;
+      font-size: 16px;
+    }
+
+    .stat-label {
+      font-weight: 600;
+      color: #2e2e2e;
+      min-width: 80px;
+    }
+
+    .stat-value {
+      color: #2c2c2b;
+      font-weight: 700;
+    }
+
+    .country-flag {
+      width: 20px;
+      font-size: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+/* ========================================
+   TOP 5 ALBUMS
+   ======================================== */
+.top-albums-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  h2 {
+    color: #333;
+    margin-bottom: 1rem;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.645);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .album-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .album-item-with-shelf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .album-cover-container {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -20px;
+  }
+
+  .album-item {
+    margin: 10px 0;
+  }
+
+  .top-5-album-cover {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      transform: scale(1.05) rotate(5deg);
+    }
+  }
+
+  .shelf-image {
+    width: 120px;
+    height: auto;
+    z-index: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+
+  .empty-albums {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .empty-album-item-with-shelf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .empty-album-placeholder {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #e0e0e045, #bebdbd);
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-bottom: -6px;
+    z-index: 2;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(171, 171, 171, 0.432) 0%,
+        rgba(118, 147, 152, 0.726) 50%,
+        rgba(36, 57, 247, 0.565) 100%
+      );
+      transform: rotate(45deg);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+/* ========================================
+   BUTTONS & ACTIONS
+   ======================================== */
+.share-btn {
+  display: block;
+  margin: 12px auto;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.profile-controls {
+  margin: 20px 0;
+}
+
+.public-actions {
+  text-align: center;
+  margin: 20px 0;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+/* ========================================
+   TAB SYSTEM
+   ======================================== */
+.tab-navigation {
+  display: flex;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  min-width: fit-content;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  &.active {
+    border-bottom-color: #667eea;
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(0, 0, 0, 1);
+    font-weight: 600;
+  }
+
+  i {
+    font-size: 1.2em;
+  }
+
+  .tab-label {
+    font-size: 1em;
+  }
+}
+
+.tab-content {
+  min-height: 400px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ========================================
+   THEME BACKGROUNDS
+   ======================================== */
+.user-profile {
+  &.Debut::before {
+    background-color: rgba(82, 253, 164, 0.7);
+  }
+  &.Fearless::before {
+    background-color: rgba(255, 249, 196, 0.7);
+  }
+  &.SpeakNow::before {
+    background-color: rgba(190, 53, 214, 0.7);
+  }
+  &.Red::before {
+    background-color: rgba(150, 12, 12, 0.7);
+  }
+  &._1989::before {
+    background-color: rgba(179, 229, 252, 0.7);
+  }
+  &.Reputation::before {
+    background-color: rgba(42, 42, 42, 0.7);
+  }
+  &.Lover::before {
+    background-color: rgba(255, 186, 249, 0.7);
+  }
+  &.Folklore::before {
+    background-color: rgba(245, 245, 245, 0.7);
+  }
+  &.Evermore::before {
+    background-color: rgba(219, 134, 30, 0.7);
+  }
+  &.Midnights::before {
+    background-color: rgba(25, 25, 112, 0.7);
+  }
+  &.TorturedPoets::before {
+    background-color: rgb(227, 224, 200);
+  }
+  &.LifeOfAShowgirl::before {
+    background-color: orange;
+  }
+}
+
+/* ========================================
+   THEME TEXT COLORS
+   ======================================== */
+.user-profile {
+  &.Debut {
+    color: #161c19;
+    .welcome-column {
+      background-color: rgba(36, 116, 165, 0.3);
+    }
+  }
+
+  &.Fearless {
+    color: #232323;
+    .welcome-column {
+      background-color: rgba(203, 181, 14, 0.3);
+    }
+  }
+
+  &.SpeakNow {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(94, 3, 159, 0.5);
+    }
+
+    .welcome-text,
+    .welcome-text h2 {
+      color: white;
+    }
+  }
+
+  &.Red {
+    color: #280909;
+    .welcome-column {
+      background-color: rgba(106, 29, 8, 0.428);
+    }
+
+    .welcome-text,
+    .welcome-text h2 {
+      color: white;
+    }
+  }
+
+  &._1989 {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(0, 206, 209, 0.3);
+    }
+  }
+
+  &.Reputation {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(50, 94, 52, 0.3);
+    }
+
+    .welcome-text,
+    .welcome-text h2 {
+      color: white;
+    }
+  }
+
+  &.Lover {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(255, 105, 180, 0.3);
+    }
+  }
+
+  &.Folklore {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(112, 128, 144, 0.3);
+    }
+  }
+
+  &.Evermore {
+    color: #272727;
+    .welcome-column {
+      background-color: rgba(226, 171, 21, 0.432);
+    }
+  }
+
+  &.Midnights {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(63, 79, 253, 0.3);
+    }
+
+    .welcome-text,
+    .welcome-text h2 {
+      color: white;
+    }
+  }
+
+  &.TorturedPoets {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(104, 104, 104, 0.3);
+    }
+  }
+
+  &.LifeOfAShowgirl {
+    color: #202020;
+    .welcome-column {
+      background-color: rgba(227, 103, 42, 0.3);
+    }
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 1024px) {
+  .user-profile {
+    .profile-content {
+      flex-direction: column;
+    }
+
+    .welcome-column,
+    .tabs-column {
+      flex: 1 1 100%;
+      min-width: auto;
+      max-width: 100%;
+      margin: auto;
+    }
+
+    .welcome-div h1 {
+      font-size: 6vw;
+    }
+  }
+
+  .top-albums-section {
+    .album-list {
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
+    .top-5-album-cover {
+      width: 120px;
+      height: 120px;
+    }
+
+    .shelf-image {
+      width: 140px;
+    }
+
+    .empty-albums {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .user-profile {
+    padding: 10px;
+
+    .welcome-div h1 {
+      font-size: 7vw;
+    }
+
+    .column {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+  }
+
+  .tab-button {
+    padding: 10px 15px;
+
+    .tab-label {
+      display: none;
+    }
+
+    i {
+      font-size: 1.8em;
+    }
+
+    // Custom tooltip for mobile
+    &:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      animation: tooltipFadeIn 0.3s ease forwards;
+    }
+
+    // Tooltip arrow
+    &:hover::before {
+      content: '';
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-bottom-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      animation: tooltipFadeIn 0.3s ease forwards;
+    }
+  }
+
+  .top-albums-section {
+    .album-list {
+      gap: 15px;
+    }
+
+    .top-5-album-cover {
+      width: 100px;
+      height: 100px;
+    }
+
+    .shelf-image {
+      width: 120px;
+    }
+
+    .empty-albums {
+      gap: 15px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .top-albums-section {
+    padding: 15px;
+
+    .album-list {
+      flex-direction: row;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .top-5-album-cover {
+      width: 80px;
+      height: 80px;
+    }
+
+    .shelf-image {
+      width: 100px;
+    }
+
+    .empty-album-placeholder {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+
+    .empty-albums {
+      gap: 10px;
+    }
+  }
+}

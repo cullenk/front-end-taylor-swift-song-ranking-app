@@ -6,21 +6,9 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { HomeComponent } from './components/home/home.component';
 import { DashboardNotFoundComponent } from './components/dashboard-not-found/dashboard-not-found.component';
 import { RankingsComponent } from './components/rankings/rankings.component';
-import { DebutRankingComponent } from './components/ranking-lists/debut-ranking/debut-ranking.component';
-import { TorturedPoetsDepartmentRankingComponent } from './components/ranking-lists/tortured-poets-department-ranking/tortured-poets-department-ranking.component';
-import { FearlessRankingComponent } from './components/ranking-lists/fearless-ranking/fearless-ranking.component';
-import { SpeakNowRankingComponent } from './components/ranking-lists/speak-now-ranking/speak-now-ranking.component';
-import { RedRankingComponent } from './components/ranking-lists/red-ranking/red-ranking.component';
-import { NineteenEightyNineRankingComponent } from './components/ranking-lists/nineteen-eighty-nine-ranking/nineteen-eighty-nine-ranking.component';
-import { ReputationRankingComponent } from './components/ranking-lists/reputation-ranking/reputation-ranking.component';
-import { LoverRankingComponent } from './components/ranking-lists/lover-ranking/lover-ranking.component';
-import { FolkloreRankingComponent } from './components/ranking-lists/folklore-ranking/folklore-ranking.component';
-import { EvermoreRankingComponent } from './components/ranking-lists/evermore-ranking/evermore-ranking.component';
-import { MidnightsRankingComponent } from './components/ranking-lists/midnights-ranking/midnights-ranking.component';
+import { AlbumRankingComponent } from './components/ranking-lists/album-ranking/album-ranking.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
-import { ErasTourBuilderComponent } from './eras-tour-builder/eras-tour-builder.component';
-import { TheLifeOfAShowgirlRankingComponent } from './components/ranking-lists/the-life-of-a-showgirl-ranking/the-life-of-a-showgirl-ranking.component';
-import { SinglesComponent } from './components/ranking-lists/singles/singles.component';
+import { ErasTourBuilderComponent } from './components/eras-tour-builder/eras-tour-builder.component';
 import { AboutComponent } from './components/about/about.component';
 import { AllAlbumsRankingComponent } from './components/ranking-lists/all-albums-ranking/all-albums-ranking.component';
 import { ContactComponent } from './components/contact/contact.component';
@@ -36,38 +24,24 @@ const routes: Routes = [
     component: UserDashboardComponent,
     children: [
       { path: 'userHome', component: HomeComponent },
-      { path: 'all-favorite-songs', component: AllFavoriteSongsComponent },
+      { path: 'topRankedSongs', component: AllFavoriteSongsComponent },
       { path: 'about', component: AboutComponent },
       { path: 'userProfile', component: UserProfileComponent },
       { path: 'top13list', component: Top13SongSlotListComponent },
       { path: 'erasTourBuilder', component: ErasTourBuilderComponent },
       { path: 'userExplorer', component: UserExplorerComponent },
-      { path: 'rankings', component: RankingsComponent },
-      { path: 'rankings/debut', component: DebutRankingComponent },
-      { path: 'rankings/fearless', component: FearlessRankingComponent },
-      { path: 'rankings/speak-now', component: SpeakNowRankingComponent },
-      { path: 'rankings/red', component: RedRankingComponent },
-      {
-        path: 'rankings/nineteen-eighty-nine',
-        component: NineteenEightyNineRankingComponent,
-      },
-      { path: 'rankings/reputation', component: ReputationRankingComponent },
-      { path: 'rankings/lover', component: LoverRankingComponent },
-      { path: 'rankings/folklore', component: FolkloreRankingComponent },
-      { path: 'rankings/evermore', component: EvermoreRankingComponent },
-      { path: 'rankings/midnights', component: MidnightsRankingComponent },
-      {
-        path: 'rankings/tortured-poets-department',
-        component: TorturedPoetsDepartmentRankingComponent,
-      },
-      {
-        path: 'rankings/the-life-of-a-showgirl',
-        component: TheLifeOfAShowgirlRankingComponent,
-      },
-      { path: 'rankings/singles', component: SinglesComponent },
+      
+      // Individual album routes - full page experience
+      { path: 'rankings/album/:albumId', component: AlbumRankingComponent },
+      
+      // Special ranking routes - full page experience
       { path: 'rankings/allAlbums', component: AllAlbumsRankingComponent },
-      { path: 'rankings/byTrackNumber', component: RankByTrackComponent },
       { path: 'rankings/allSongs', component: AllSongsRankingComponent },
+      { path: 'rankings/byTrackNumber', component: RankByTrackComponent },
+      
+      // Rankings overview page (album grid)
+      { path: 'rankings', component: RankingsComponent },
+      
       { path: 'contact', component: ContactComponent },
       { path: 'releaseNotes', component: ReleaseNotesComponent },
       { path: '', redirectTo: '/user/userProfile', pathMatch: 'full' },

@@ -1,0 +1,254 @@
+<div class="album-rankings-tab">
+  <!-- Album Selection Grid - no changes needed -->
+  <div class="album-selector">
+    <h3>Select an Album to View Rankings</h3>
+    <div class="album-grid">
+      <div
+        *ngFor="let album of albums"
+        class="album-item"
+        [class.selected]="selectedView === album.id"
+        [class.has-rankings]="hasRankings(album.id)"
+        (click)="selectAlbum(album.id)"
+      >
+        <div class="album-cover-container">
+          <img
+            [src]="album.coverImage"
+            [alt]="album.name"
+            class="album-cover"
+          />
+          <div class="ranking-indicator" *ngIf="hasRankings(album.id)">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="no-ranking-indicator" *ngIf="!hasRankings(album.id)">
+            <i class="fas fa-question-circle"></i>
+          </div>
+        </div>
+        <span class="album-name">{{ album.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rankings Display -->
+  <div class="rankings-display">
+    <!-- All Albums View -->
+    <div *ngIf="selectedView === 'allAlbums'" class="all-albums-view">
+      <div class="section-header">
+        <h3>All Album Rankings</h3>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking('allAlbums')"
+          class="edit-link"
+        >
+          <i class="fas fa-edit"></i> Edit Rankings
+        </a>
+      </div>
+
+      <div *ngIf="isLoadingAllAlbums" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading album rankings...
+      </div>
+
+      <div
+        *ngIf="!isLoadingAllAlbums && allAlbumRankings.length > 0"
+        class="album-rankings-list"
+      >
+        <div
+          *ngFor="let album of allAlbumRankings; let i = index"
+          class="album-ranking-item"
+        >
+          <div class="rank-number">{{ album.rank }}</div>
+          <img
+            [src]="album.albumCover"
+            [alt]="album.albumName"
+            class="album-cover-small"
+          />
+          <div class="album-info">
+            <span class="album-title">{{ album.albumName }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isLoadingAllAlbums && allAlbumRankings.length === 0"
+        class="no-rankings"
+      >
+        <p *ngIf="isOwner">You haven't ranked your albums yet!</p>
+        <p *ngIf="!isOwner">This user hasn't ranked their albums yet.</p>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking('allAlbums')"
+          class="rank-button"
+        >
+          Start Ranking Albums
+        </a>
+      </div>
+    </div>
+
+    <!-- Track Rankings View (for byTrackNumber and allSongs) -->
+    <div *ngIf="isTrackRankingsView" class="track-rankings-view">
+      <div
+        class="section-header"
+        [class.flex-column]="selectedView === 'byTrackNumber'"
+      >
+        <div class="header-content">
+          <h3>{{ getSelectedAlbumInfo()?.name }}</h3>
+          <!-- Show pagination info for allSongs -->
+          <p *ngIf="selectedView === 'allSongs' && paginationInfo">
+            {{ paginationInfo }}
+          </p>
+          <p *ngIf="selectedView === 'allSongs' && !paginationInfo">
+            Top-ranked songs across Taylor's entire discography.
+          </p>
+          <p *ngIf="selectedView === 'byTrackNumber'">
+            Favorite song for each track position, creating the ultimate Taylor
+            Swift album.
+          </p>
+        </div>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking(selectedView)"
+          class="edit-link"
+        >
+          <i class="fas fa-edit"></i> Edit Rankings
+        </a>
+      </div>
+
+      <div *ngIf="isLoading" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading rankings...
+      </div>
+
+      <div
+        *ngIf="!isLoading && selectedTrackRankings.length > 0"
+        class="song-rankings-list"
+      >
+        <div
+          *ngFor="let song of selectedTrackRankings; let i = index"
+          class="song-ranking-item"
+        >
+          <div
+            class="rank-number"
+            [class.track-number]="selectedView === 'byTrackNumber'"
+          >
+            <span *ngIf="selectedView === 'byTrackNumber'" class="track-label"
+              >Best Track {{ i + 1 }}</span
+            >
+            <span *ngIf="selectedView !== 'byTrackNumber'">{{
+              song.rank
+            }}</span>
+          </div>
+          <img
+            [src]="song.albumImageSource"
+            [alt]="song.albumName"
+            class="album-cover-tiny"
+          />
+          <div class="song-info">
+            <span class="song-title">{{ song.songTitle }}</span>
+            <span class="album-name-small">{{ song.albumName }}</span>
+          </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div *ngIf="shouldShowLoadMore" class="load-more-container">
+          <button
+            class="load-more-btn"
+            (click)="loadMoreSongs()"
+            [disabled]="allSongsPagination.isLoadingMore"
+          >
+            <i
+              *ngIf="allSongsPagination.isLoadingMore"
+              class="fas fa-spinner fa-spin"
+            ></i>
+            <i
+              *ngIf="!allSongsPagination.isLoadingMore"
+              class="fas fa-chevron-down"
+            ></i>
+            {{
+              allSongsPagination.isLoadingMore
+                ? "Loading..."
+                : "Load More Songs"
+            }}
+          </button>
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isLoading && selectedTrackRankings.length === 0"
+        class="no-rankings"
+      >
+        <p *ngIf="isOwner">
+          You haven't created {{ getSelectedAlbumInfo()?.name }} yet!
+        </p>
+        <p *ngIf="!isOwner">
+          This user hasn't created {{ getSelectedAlbumInfo()?.name }} yet!
+        </p>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking(selectedView)"
+          class="rank-button"
+        >
+          Start Ranking
+        </a>
+      </div>
+    </div>
+
+    <!-- Individual Album View (for regular albums) -->
+    <div
+      *ngIf="selectedView !== 'allAlbums' && !isTrackRankingsView"
+      class="individual-album-view"
+    >
+      <div class="section-header">
+        <h3>{{ getSelectedAlbumInfo()?.name }} Rankings</h3>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking(selectedView)"
+          class="edit-link"
+        >
+          <i class="fas fa-edit"></i> Edit Rankings
+        </a>
+      </div>
+
+      <div *ngIf="isLoading" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading rankings...
+      </div>
+
+      <div
+        *ngIf="!isLoading && selectedAlbumRankings.length > 0"
+        class="song-rankings-list"
+      >
+        <div
+          *ngFor="let song of selectedAlbumRankings; let i = index"
+          class="song-ranking-item"
+        >
+          <div class="rank-number">{{ song.rank }}</div>
+          <img
+            [src]="song.albumCover"
+            [alt]="song.albumName"
+            class="album-cover-tiny"
+          />
+          <div class="song-info">
+            <span class="song-title">{{ song.songTitle }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isLoading && selectedAlbumRankings.length === 0"
+        class="no-rankings"
+      >
+        <p *ngIf="isOwner">
+          You haven't ranked songs from {{ getSelectedAlbumInfo()?.name }} yet!
+        </p>
+        <p *ngIf="!isOwner">
+          This user hasn't ranked songs from
+          {{ getSelectedAlbumInfo()?.name }} yet!
+        </p>
+        <a
+          *ngIf="isEditable && isOwner"
+          [routerLink]="navigateToRanking(selectedView)"
+          class="rank-button"
+        >
+          Start Ranking Songs
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

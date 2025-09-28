@@ -16,7 +16,7 @@ interface CountryStats {
   }>;
 }
 
-
+ 
 @Injectable({
   providedIn: 'root'
 })

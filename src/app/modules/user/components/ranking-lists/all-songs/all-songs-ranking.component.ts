@@ -26,11 +26,15 @@ export class AllSongsRankingComponent implements OnInit {
     private allSongsRankingService: AllSongsRankingService,
     private toastr: ToastrService,
     private router: Router
-
   ) {}
 
   ngOnInit() {
     this.loadRankings();
+  }
+
+  // Add trackBy function for better performance
+  trackBySongId(index: number, song: AllSongsRankingItem): string {
+    return song.songId;
   }
 
   loadRankings() {
@@ -38,17 +42,18 @@ export class AllSongsRankingComponent implements OnInit {
     forkJoin({
       userRanking: this.allSongsRankingService.getAllSongsRanking(),
       allSongs: this.allSongsRankingService.getAllSongs()
-    }).subscribe(
-      ({ userRanking, allSongs }) => {
+    }).subscribe({
+      next: ({ userRanking, allSongs }) => {
         this.allSongs = allSongs;
         this.mergeNewSongs(userRanking);
         this.isLoading = false;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching songs:', error);
+        this.toastr.error('Failed to load songs. Please try again.');
         this.isLoading = false;
       }
-    );
+    });
   }
 
   mergeNewSongs(userRanking: AllSongsRankingItem[]) {
@@ -69,7 +74,8 @@ export class AllSongsRankingComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<AllSongsRankingItem[]>) {
-    const item = this.allSongsRanking[event.previousIndex];
+    if (event.previousIndex === event.currentIndex) return;
+
     moveItemInArray(this.allSongsRanking, event.previousIndex, event.currentIndex);
     
     // Update ranks based on new positions
@@ -77,20 +83,20 @@ export class AllSongsRankingComponent implements OnInit {
       song.rank = index + 1;
     });
   
-    this.hasInvalidRanks = this.checkForInvalidRanks();
-    this.hasDuplicateRanks = this.checkForDuplicateRanks();
+    this.validateRankings();
   }
 
   updateRanks() {
     this.allSongsRanking.sort((a, b) => a.rank - b.rank);
     this.allSongsRanking.forEach((item, index) => item.rank = index + 1);
-    this.checkForDuplicateRanks();
+    this.validateRankings();
   }
 
   onRankChange(changedSong: AllSongsRankingItem, newRank: number) {
-    if (newRank < 1 || newRank > this.allSongsRanking.length || !Number.isInteger(newRank)) {
+    // Validate input
+    if (!this.isValidRank(newRank)) {
       this.toastr.error(`Invalid rank. Please enter a whole number between 1 and ${this.allSongsRanking.length}`);
-      this.hasInvalidRanks = true;
+      changedSong.rank = this.allSongsRanking.findIndex(s => s.songId === changedSong.songId) + 1;
       return;
     }
   
@@ -113,11 +119,19 @@ export class AllSongsRankingComponent implements OnInit {
     // Sort the array based on the new ranks
     this.allSongsRanking.sort((a, b) => a.rank - b.rank);
   
+    this.validateRankings();
+  }
+
+  private isValidRank(rank: number): boolean {
+    return Number.isInteger(rank) && rank >= 1 && rank <= this.allSongsRanking.length;
+  }
+
+  private validateRankings() {
     this.hasInvalidRanks = this.checkForInvalidRanks();
     this.hasDuplicateRanks = this.checkForDuplicateRanks();
   }
 
-  checkForDuplicateRanks(): boolean {
+  private checkForDuplicateRanks(): boolean {
     const rankCounts = new Map<number, number>();
     this.allSongsRanking.forEach(song => {
       rankCounts.set(song.rank, (rankCounts.get(song.rank) || 0) + 1);
@@ -130,31 +144,33 @@ export class AllSongsRankingComponent implements OnInit {
     return this.duplicateRanks.length > 0;
   }
 
-  checkForInvalidRanks(): boolean {
-    return this.allSongsRanking.some(song => 
-      song.rank < 1 || song.rank > this.allSongsRanking.length || !Number.isInteger(song.rank)
-    );
+  private checkForInvalidRanks(): boolean {
+    return this.allSongsRanking.some(song => !this.isValidRank(song.rank));
   }
 
-  saveRanking() {
-    if (this.hasDuplicateRanks || this.hasInvalidRanks) {
-      this.toastr.error('Cannot save. Please resolve all ranking issues before saving.');
-      return;
-    }
-    this.isLoading = true;
-    this.allSongsRankingService.saveAllSongsRanking(this.allSongsRanking).subscribe(
-      updatedRanking => {
-        this.allSongsRanking = updatedRanking;
-        this.isLoading = false;
-        this.toastr.success('All songs ranking saved successfully');
-      },
-      error => {
-        console.error('Error saving all songs ranking:', error);
-        this.isLoading = false;
-        this.toastr.error('Error saving ranking');
-      }
-    );
+saveRanking() {
+  if (this.hasDuplicateRanks || this.hasInvalidRanks) {
+    this.toastr.error('Cannot save. Please resolve all ranking issues before saving.');
+    return;
   }
+  
+  this.isLoading = true;
+  
+  this.allSongsRankingService.saveAllSongsRanking(this.allSongsRanking).subscribe({
+    next: (response) => {
+      // Don't replace the array - keep the current state since it's already correct
+      // Just update the loading state and show success message
+      this.isLoading = false;
+      this.toastr.success('All songs ranking saved successfully!');
+      
+    },
+    error: (error) => {
+      console.error('Error saving all songs ranking:', error);
+      this.isLoading = false;
+      this.toastr.error('Failed to save ranking. Please try again.');
+    }
+  });
+}
 
   goBackToAlbumRankings() {
     this.router.navigate(['user/rankings']); 

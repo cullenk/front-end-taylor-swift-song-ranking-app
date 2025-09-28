@@ -1,0 +1,60 @@
+<section class="questionnaire" [ngClass]="getThemeClass()">
+  <div class="btn-container">
+    <h2>Swiftie Questionnaire</h2>
+    <!-- Only show edit/save buttons if user is the owner -->
+    <div *ngIf="isEditable && isOwner">
+      <button
+        *ngIf="!isEditing"
+        (click)="startEditing()"
+        class="edit-button"
+      >
+        Edit Answers
+      </button>
+      <button
+        *ngIf="isEditing"
+        (click)="onSaveAnswers()"
+        class="save-button"
+      >
+        Save Answers
+      </button>
+    </div>
+  </div>
+  
+  <div class="question-list">
+    <div
+      *ngFor="let questionObj of profileQuestions; let i = index"
+      class="question-item"
+    >
+      <p class="question">{{ questionObj.question }}</p>
+      
+      <!-- Show editable div when editing -->
+      <div
+        *ngIf="isEditing && isEditable && isOwner"
+        class="answer editable"
+        [contentEditable]="true"
+        (blur)="updateQuestionAnswer(i, $event)"
+        [innerHTML]="sanitizeInput(questionObj.answer)"
+      ></div>
+      
+      <!-- Show read-only content when not editing -->
+      <div
+        *ngIf="!(isEditing && isEditable && isOwner)"
+        class="answer readonly"
+      >
+        <!-- Show answer if it exists and is not empty -->
+        <span 
+          *ngIf="hasAnswer(questionObj.answer)" 
+          [innerHTML]="sanitizeInput(questionObj.answer)"
+        ></span>
+        
+        <!-- Show unanswered message if no answer -->
+        <span 
+          *ngIf="!hasAnswer(questionObj.answer)" 
+          class="unanswered-text"
+        >
+          {{ getUnansweredText() }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

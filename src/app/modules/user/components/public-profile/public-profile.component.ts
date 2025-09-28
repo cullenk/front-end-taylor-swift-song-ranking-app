@@ -15,11 +15,13 @@ import { Song } from '../../../../interfaces/Song';
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { RankingsService } from '../../../../services/rankings.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
+import { TabbedProfileBaseComponent } from '../tabbed-profile-base/tabbed-profile-base.component';
 
 @Component({
   selector: 'app-public-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TabbedProfileBaseComponent],
   templateUrl: './public-profile.component.html',
   styleUrls: ['./public-profile.component.scss'],
 })
@@ -31,80 +33,27 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     rankings: { topThirteen: [] },
     profileQuestions: [],
   };
+  
   isLoading = true;
   error: string | null = null;
-
   isAuthenticated = false;
   currentUsername: string | null = null;
-  topFiveAlbums: any[] = [];
+  topFiveAlbums: AlbumRanking[] = [];
   hasErasTourSetlist: boolean = false;
+  defaultProfileImage = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
 
   themeBackgrounds: { [key: string]: string } = {
-    Debut:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.webp',
-    Fearless:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.webp',
-    'Speak Now':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.webp',
+    Debut: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.webp',
+    Fearless: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.webp',
+    'Speak Now': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/speak-now-profile-bg.webp',
     Red: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/red-profile-bg.webp',
-    '1989':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.webp',
-    Reputation:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.webp',
-    Lover:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.webp',
-    Folklore:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.webp',
-    Evermore:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
-    Midnights:
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
-    'The Tortured Poets Department':
-      'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
-  };
-
-  profileImages: string[] = [
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989-2.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/benjaminButton.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/cats.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/chiefs.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/evermore.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fearless.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/folklore.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/fortnite.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/london.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/lover.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/meredithGrey.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/midnights2.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/oliviaBenson.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/red2.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/reputation.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/silly.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/speakNow.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/travis.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/ttpd.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/youBelong.webp',
-  ];
-  defaultProfileImage =
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
-
-  themeClassMap: { [key: string]: string } = {
-    Debut: 'Debut',
-    Fearless: 'Fearless',
-    'Speak Now': 'SpeakNow',
-    Red: 'Red',
-    '1989': '_1989',
-    Reputation: 'Reputation',
-    Lover: 'Lover',
-    Folklore: 'Folklore',
-    Evermore: 'Evermore',
-    Midnights: 'Midnights',
-    'The Tortured Poets Department': 'TorturedPoets',
+    '1989': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/1989-profile-bg.webp',
+    Reputation: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/reputation-profile-bg.webp',
+    Lover: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/lover-profile-bg.webp',
+    Folklore: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.webp',
+    Evermore: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
+    Midnights: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
+    'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
   };
 
   orderedQuestions = [
@@ -138,7 +87,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     if (username) {
       this.userProfileService.getPublicProfile(username).subscribe(
         (data: UserProfile) => {
-          
           this.userProfile = this.setDefaultsIfNeeded(data);
           this.sortProfileQuestions();
           this.loadTopThirteenDetails();
@@ -157,81 +105,19 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
 
-    // Only call disableAudioRightClick if we're in the browser
     if (isPlatformBrowser(this.platformId)) {
       this.disableAudioRightClick();
     }
   }
 
-  // Check if user is authenticated
-  private checkAuthentication(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
-      this.isAuthenticated = !!token;
-
-      if (this.isAuthenticated) {
-        // Get current user's profile to determine their username
-        this.userProfileService.getUserProfile().subscribe({
-          next: (profile) => {
-            this.currentUsername = profile.username;
-          },
-          error: (error) => {
-            console.error('Error getting current user profile:', error);
-            this.isAuthenticated = false;
-          },
-        });
-      }
-    }
-  }
-
-
-  // Get display text for login count
- getLoginCountDisplay(): string {
-    if (!this.userProfile.loginCount || this.userProfile.loginCount === 0) {
-      return 'First time here!';
-    }
-    return `${this.userProfile.loginCount}`;
-  }
-
-
-    // Check if country should be displayed
-  shouldShowCountry(): boolean {
-    return !!(this.userProfile.country && 
-              this.userProfile.country !== 'Select your country' && 
-              this.userProfile.country.trim() !== '');
-  }
-
   ngOnDestroy() {
-    // Only access document if we're in the browser
     if (isPlatformBrowser(this.platformId)) {
-      // Pause all audio elements when the component is destroyed
       document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
         if (!audio.paused) {
           audio.pause();
         }
       });
     }
-  }
-
-  updateMetaTags(username: string) {
-    const title = `${username}'s Profile - Swiftie Ranking Hub`;
-    const description = `Check out ${username}'s Taylor Swift rankings and profile on Swiftie Ranking Hub!`;
-    const imageUrl =
-      this.userProfile.profileImage ||
-      'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp';
-
-    this.title.setTitle(title);
-    this.meta.updateTag({ name: 'description', content: description });
-    this.meta.updateTag({ property: 'og:title', content: title });
-    this.meta.updateTag({ property: 'og:description', content: description });
-    this.meta.updateTag({ property: 'og:image', content: imageUrl });
-    this.meta.updateTag({
-      property: 'og:url',
-      content: `https://swiftierankinghub.com/public-profile/${username}`,
-    });
-    this.meta.updateTag({ name: 'twitter:title', content: title });
-    this.meta.updateTag({ name: 'twitter:description', content: description });
-    this.meta.updateTag({ name: 'twitter:image', content: imageUrl });
   }
 
   loadTopFiveAlbums(username: string) {
@@ -262,8 +148,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       theme: profile.theme || 'Fearless',
       profileImage: profile.profileImage || this.defaultProfileImage,
       rankings: profile.rankings || { topThirteen: [] },
-      profileQuestions:
-        profile.profileQuestions || this.getDefaultProfileQuestions(),
+      profileQuestions: profile.profileQuestions || this.getDefaultProfileQuestions(),
     };
   }
 
@@ -279,27 +164,19 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
       forkJoin(songRequests).subscribe(
         (songs: (Song | null)[]) => {
-          if (
-            this.userProfile &&
-            this.userProfile.rankings &&
-            this.userProfile.rankings.topThirteen
-          ) {
-            this.userProfile.rankings.topThirteen =
-              this.userProfile.rankings.topThirteen.map((song, index) => {
-                const songDetails = songs[index];
-                if (songDetails) {
-                  return {
-                    ...song,
-                    albumImage: songDetails.albumImageSource,
-                    audioSource: songDetails.audioSource,
-                  };
-                }
-                return song; // Return the original song if no details were found
-              });
-            // Ensure the list is sorted by slot
-            this.userProfile.rankings.topThirteen.sort(
-              (a, b) => a.slot - b.slot
-            );
+          if (this.userProfile?.rankings?.topThirteen) {
+            this.userProfile.rankings.topThirteen = this.userProfile.rankings.topThirteen.map((song, index) => {
+              const songDetails = songs[index];
+              if (songDetails) {
+                return {
+                  ...song,
+                  albumImage: songDetails.albumImageSource,
+                  audioSource: songDetails.audioSource,
+                };
+              }
+              return song;
+            });
+            this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
           }
           this.isLoading = false;
         },
@@ -310,35 +187,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      console.log('No top thirteen songs found, setting defaults');
-      this.userProfile.rankings = {
-        topThirteen: Array(13)
-          .fill(null)
-          .map((_, index) => ({
-            slot: index + 1,
-            songId: '',
-            songTitle: 'Not selected',
-            albumImage: 'path/to/default/album/image.jpg',
-            audioSource: '',
-            albumName: 'Unknown Album',
-          })),
-      };
       this.isLoading = false;
     }
   }
 
-  getThemeClass(): string {
-    return this.userProfile?.theme
-      ? this.themeClassMap[this.userProfile.theme] || 'Fearless'
-      : 'Fearless';
-  }
-
-  getProfileImage(): string {
-    return this.userProfile.profileImage || this.defaultProfileImage;
-  }
-
   private sortProfileQuestions() {
-    if (this.userProfile && this.userProfile.profileQuestions) {
+    if (this.userProfile?.profileQuestions) {
       this.userProfile.profileQuestions.sort((a, b) => {
         const indexA = this.orderedQuestions.indexOf(a.question);
         const indexB = this.orderedQuestions.indexOf(b.question);
@@ -352,26 +206,26 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     return this.themeBackgrounds[theme] || this.themeBackgrounds['Fearless'];
   }
 
-  handleAudioPlay(event: Event) {
-    if (isPlatformBrowser(this.platformId)) {
-      const audioElement = event.target as HTMLAudioElement;
+  updateMetaTags(username: string) {
+    const title = `${username}'s Profile - Swiftie Ranking Hub`;
+    const description = `Check out ${username}'s Taylor Swift rankings and profile on Swiftie Ranking Hub!`;
+    const imageUrl = this.userProfile.profileImage || 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp';
 
-      // Pause all other audio elements
-      document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
-        if (audio !== audioElement && !audio.paused) {
-          audio.pause();
-        }
-      });
-
-      // Play the clicked audio
-      if (audioElement.paused) {
-        audioElement.play();
-      }
-    }
+    this.title.setTitle(title);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: title });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: imageUrl });
+    this.meta.updateTag({
+      property: 'og:url',
+      content: `https://swiftierankinghub.com/public-profile/${username}`,
+    });
+    this.meta.updateTag({ name: 'twitter:title', content: title });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
+    this.meta.updateTag({ name: 'twitter:image', content: imageUrl });
   }
 
   disableAudioRightClick() {
-    // Only add event listener if we're in the browser
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener(
         'contextmenu',

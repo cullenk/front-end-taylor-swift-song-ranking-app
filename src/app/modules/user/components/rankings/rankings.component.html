@@ -1,14 +1,27 @@
 <div class="rankings-container">
   <div class="albums-grid">
-    <div *ngFor="let album of albums" class="album-container">
+    <div *ngFor="let album of albums; trackBy: trackByAlbumId" class="album-container">
       <a [routerLink]="album.routerLink" class="album-link">
-        <img [src]="album.coverImage" [alt]="album.title" class="album-cover"
-             (mouseenter)="playSample(album, $event)" 
-             (mouseleave)="stopSample(album)">
-        <img [src]="shelfImage" alt="Shelf" class="shelf-image">
+        <img 
+          [ngSrc]="album.coverImage" 
+          [alt]="album.displayTitle + ' album cover'" 
+          class="album-cover"
+          width="300"
+          height="300"
+          priority="false"
+          (mouseenter)="playSample(album, $event)" 
+          (mouseleave)="stopSample(album)"
+        >
+        <img 
+          [ngSrc]="shelfImage" 
+          alt="" 
+          class="shelf-image"
+          width="300"
+          height="90"
+          priority="false"
+          aria-hidden="true"
+        >
       </a>
     </div>
   </div>
 </div>
-
-<router-outlet></router-outlet>

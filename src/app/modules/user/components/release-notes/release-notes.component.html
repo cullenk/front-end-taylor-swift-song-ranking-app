@@ -1,14 +1,49 @@
 <div class="release-notes-container">
-    <h2>Release Notes</h2>
-    <div class="timeline">
-      <div *ngFor="let release of releaseNotes" class="release-item">
-        <div class="release-header">
-          <h3>Version {{ release.version }}</h3>
-          <span class="release-date">{{ release.date }}</span>
+  <!-- Header Section -->
+  <header class="page-header">
+    <h1 class="page-title">Release Notes</h1>
+    <p class="page-subtitle">
+      Track the evolution of Swiftie Ranking Hub with detailed updates and improvements
+    </p>
+  </header>
+
+  <!-- Timeline Section -->
+  <section class="timeline" role="region" aria-label="Release timeline">
+    <article 
+      *ngFor="let release of releaseNotes; trackBy: trackByVersion" 
+      class="release-item"
+      [class]="getReleaseTypeClass(release.type)"
+      [attr.aria-labelledby]="'release-' + release.version"
+    >
+      <!-- Release Header -->
+      <header class="release-header">
+        <div class="version-info">
+          <h2 [id]="'release-' + release.version" class="version-title">
+            Version {{ release.version }}
+          </h2>
+          <span class="release-type-badge" [class]="getReleaseTypeClass(release.type)">
+            {{ getReleaseTypeLabel(release.type) }}
+          </span>
         </div>
-        <ul class="feature-list">
-          <li *ngFor="let feature of release.features">{{ feature }}</li>
+        <time class="release-date" [dateTime]="release.date">
+          {{ release.date }}
+        </time>
+      </header>
+
+      <!-- Features List -->
+      <div class="release-content">
+        <h3 class="features-title">What's New:</h3>
+        <ul class="feature-list" role="list">
+          <li 
+            *ngFor="let feature of release.features; trackBy: trackByFeature" 
+            class="feature-item"
+            role="listitem"
+          >
+            <span class="feature-icon" aria-hidden="true">•</span>
+            <span class="feature-text">{{ feature }}</span>
+          </li>
         </ul>
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
+</div>

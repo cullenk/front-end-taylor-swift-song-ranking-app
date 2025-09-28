@@ -1,0 +1,178 @@
+<div class="user-profile" [ngClass]="getThemeClass()" [ngStyle]="{ 'background-image': 'url(' + getThemeBackground() + ')' }">
+  <div class="profile-content">
+    
+    <!-- Profile Header Column -->
+    <div class="column welcome-column">
+      <div class="welcome-div">
+        <div class="profile-image-container">
+          <img [src]="userProfile.profileImage || defaultImage" alt="Profile Image" class="profile-image">
+          <button *ngIf="isEditable" class="edit-image-btn" (click)="onEditImage()">
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
+        <div class="welcome-text">
+          <h2 *ngIf="isEditable">Welcome</h2>
+          <h1>{{ userProfile.username }}{{ isEditable ? '!' : '' }}</h1>
+        </div>
+      </div>
+      
+      <!-- Profile Stats -->
+      <div class="profile-stats">
+        <div class="stat-item">
+          <i class="fas fa-house" style="color: #266dd3"></i>
+          <span class="stat-label">Logins:</span>
+          <span class="stat-value">{{ getLoginCountDisplay() }}</span>
+        </div>
+        <div class="stat-item" *ngIf="shouldShowCountry()">
+          <span class="country-flag">{{ getCountryFlag() }}</span>
+          <span class="stat-label">Country:</span>
+          <span class="stat-value">{{ userProfile.country }}</span>
+        </div>
+      </div>
+
+      <!-- Editable Controls Slot (for user profile specific controls) -->
+      <div *ngIf="isEditable" class="profile-controls">
+        <ng-content select="[slot=profile-controls]"></ng-content>
+      </div>
+
+        <!-- Sidebar content -->
+  <div slot="sidebar-content">
+    <!-- Top 5 Albums -->
+    <div class="top-albums-section">
+      <h2>Top 5 Albums</h2>
+      <div
+        class="album-list"
+        *ngIf="topFiveAlbums.length > 0; else noTopAlbums"
+      >
+        <div
+          *ngFor="let album of topFiveAlbums; let i = index"
+          class="album-item-with-shelf"
+        >
+          <div class="album-cover-container">
+            <img
+              [src]="album.albumCover"
+              [alt]="album.albumName + ' cover'"
+              class="top-5-album-cover"
+            />
+          </div>
+          <img
+            [src]="shelfImage"
+            alt="Shelf"
+            class="shelf-image"
+          />
+        </div>
+      </div>
+      <ng-template #noTopAlbums>
+        <div class="profile-stats">
+          <p>
+            <a class="link-styling" [routerLink]="['/user/rankings/allAlbums']"
+              >Rank your albums</a
+            >
+            on the Rankings page to see your top 5 here!
+          </p>
+          <div class="empty-albums">
+            <div
+              *ngFor="let i of [1, 2, 3, 4, 5]"
+              class="empty-album-item-with-shelf"
+            >
+              <div class="empty-album-placeholder">
+                ?
+              </div>
+              <img
+                [src]="shelfImage"
+                alt="Shelf"
+                class="shelf-image"
+              />
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Share Profile -->
+    <div *ngIf="isEditable" class="share-profile-section">
+      <button
+        class="share-btn"
+        (click)="shareProfile()"
+        [disabled]="!isProfileShareable()"
+      >
+        <i class="fas fa-clipboard" aria-hidden="true"></i>
+        Share My Profile
+      </button>
+      <div *ngIf="!isProfileShareable()" class="profile-stats">
+        <p>
+          To share your profile and have it appear in the user explorer, please
+          complete the following:
+        </p>
+        <ul>
+          <li *ngFor="let reason of getProfileShareReasons()">
+            {{ reason }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+       <!-- Public Profile Actions -->
+      <div *ngIf="!isEditable" class="public-actions">
+        <a href="https://www.swiftierankinghub.com" target="_blank">
+          <button class="share-btn">Create Your Own Profile</button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tabs Column -->
+    <div class="column tabs-column">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button 
+          *ngFor="let tab of availableTabs" 
+          class="tab-button"
+          [class.active]="activeTab === tab.key"
+          [title]="tab.label"
+          (click)="setActiveTab(tab.key)">
+          <i [class]="tab.icon" [title]="tab.label"></i>
+          <span class="tab-label">{{ tab.label }}</span>
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <app-top-13-tab 
+          *ngIf="activeTab === 'top13'"
+          [userProfile]="userProfile"
+          [isEditable]="isEditable"
+          [isOwner]="isOwner">
+        </app-top-13-tab>
+
+        <app-album-rankings-tab 
+          *ngIf="activeTab === 'albums'"
+          [userProfile]="userProfile"
+          [topFiveAlbums]="topFiveAlbums"
+          [isEditable]="isEditable"
+          [isOwner]="isOwner">
+        </app-album-rankings-tab>
+
+        <app-questionnaire-tab 
+          *ngIf="activeTab === 'questionnaire'"
+          [userProfile]="userProfile"
+          [isEditable]="isEditable"
+          [isOwner]="isOwner"
+          [isEditing]="isEditing"
+          [theme]="userProfile?.theme || 'Fearless'"
+          (editingChange)="onEditingChanged($event)"
+          (questionUpdated)="onQuestionUpdated($event)"
+          (saveAnswers)="onSaveAnswers()">
+        </app-questionnaire-tab>
+
+        <app-eras-tour-tab 
+          *ngIf="activeTab === 'eras'"
+          [userProfile]="userProfile"
+          [hasErasTour]="hasErasTour"
+          [isEditable]="isEditable"
+          [isOwner]="isOwner">
+        </app-eras-tour-tab>
+      </div>
+    </div>
+  </div>
+</div>

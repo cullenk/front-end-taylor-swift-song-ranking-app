@@ -1,0 +1,549 @@
+/* ================================
+   MAIN COMPONENT STYLES
+   ================================ */
+.album-rankings-tab {
+  padding: 1rem;
+}
+
+/* ================================
+   ALBUM SELECTOR SECTION
+   ================================ */
+.album-selector {
+  margin-bottom: 2rem;
+
+  h3 {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+  }
+
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .album-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+      border-radius: 8px;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      &.selected {
+        background: rgba(102, 126, 234, 0.1);
+        border: 2px solid #667eea;
+      }
+
+      .album-cover-container {
+        position: relative;
+        margin-bottom: 0.5rem;
+
+        .album-cover {
+          width: 80px;
+          height: 80px;
+          border-radius: 8px;
+          object-fit: cover;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .ranking-indicator,
+        .no-ranking-indicator {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+        }
+
+        .ranking-indicator {
+          background: #28a745;
+          color: white;
+        }
+
+        .no-ranking-indicator {
+          background: #6c757d;
+          color: white;
+        }
+      }
+
+      .album-name {
+        font-size: 0.8rem;
+        text-align: center;
+        color: #666;
+        line-height: 1.2;
+      }
+    }
+  }
+}
+
+/* ================================
+   RANKINGS DISPLAY SECTION
+   ================================ */
+.rankings-display {
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+
+    /* Flex column layout for byTrackNumber view */
+    &.flex-column {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .header-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .edit-link {
+        align-self: flex-end;
+      }
+    }
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.3rem;
+    }
+
+    p {
+      margin: 0;
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .edit-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #5a6fd8;
+      }
+    }
+  }
+
+  /* Loading State */
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+
+  /* No Rankings State */
+  .no-rankings {
+    text-align: center;
+    padding: 2rem;
+
+    p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .rank-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+    }
+  }
+}
+
+/* ================================
+   RANKINGS LISTS (SHARED STYLES)
+   ================================ */
+.album-rankings-list,
+.song-rankings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .album-ranking-item,
+  .song-ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateX(4px);
+    }
+
+    /* Rank Number Bubble */
+    .rank-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 1rem;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+
+      /* Special styling for track numbers */
+      &.track-number {
+        width: auto;
+        min-width: 80px;
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 12px;
+
+        .track-label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-align: center;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    /* Album Cover Images */
+    .album-cover-small {
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+      margin-right: 1rem;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .album-cover-tiny {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      margin-right: 1rem;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* Content Info */
+    .album-info,
+    .song-info {
+      flex: 1;
+      min-width: 0; // Prevents overflow
+
+      .album-title,
+      .song-title {
+        font-weight: 600;
+        color: #333;
+        font-size: 1rem;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+
+/* ================================
+   TRACK RANKINGS SPECIFIC STYLES
+   ================================ */
+.track-rankings-view {
+  .song-info {
+    display: flex;
+    flex-direction: column;
+
+    .song-title {
+      font-weight: 600;
+      color: #333;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .album-name-small {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.2;
+    }
+  }
+}
+
+/* ================================
+   LOAD MORE FUNCTIONALITY
+   ================================ */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+}
+
+.load-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+
+  .fa-spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+@media (max-width: 768px) {
+  .load-more-container {
+    padding: 1rem 0;
+  }
+
+  .load-more-btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  .album-rankings-tab {
+    padding: 0.75rem;
+
+    /* Album Selector Responsive */
+    .album-selector {
+      margin-bottom: 1.5rem;
+
+      .album-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.75rem;
+
+        .album-item {
+          padding: 0.25rem;
+
+          .album-cover-container .album-cover {
+            width: 60px;
+            height: 60px;
+          }
+
+          .album-name {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+
+    /* Rankings Display Responsive */
+    .rankings-display {
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        &.flex-column {
+          gap: 0.5rem;
+
+          .header-content {
+            gap: 0.25rem;
+          }
+        }
+
+        h3 {
+          font-size: 1.1rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    /* Rankings Lists Responsive */
+    .album-rankings-list,
+    .song-rankings-list {
+      gap: 0.5rem;
+
+      .album-ranking-item,
+      .song-ranking-item {
+        padding: 0.75rem;
+
+        .rank-number {
+          width: 35px;
+          height: 35px;
+          font-size: 1rem;
+          margin-right: 0.75rem;
+
+          &.track-number {
+            min-width: 70px;
+            height: 35px;
+            padding: 0 8px;
+
+            .track-label {
+              font-size: 0.75rem;
+            }
+          }
+        }
+
+        .album-cover-small {
+          width: 40px;
+          height: 40px;
+          margin-right: 0.75rem;
+        }
+
+        .album-cover-tiny {
+          width: 35px;
+          height: 35px;
+          margin-right: 0.75rem;
+        }
+
+        .album-info,
+        .song-info {
+          .album-title,
+          .song-title {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    /* Track Rankings Mobile */
+    .track-rankings-view {
+      .song-info {
+        .song-title {
+          font-size: 0.9rem;
+        }
+
+        .album-name-small {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .album-rankings-tab {
+    padding: 0.5rem;
+
+    .album-selector {
+      .album-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 0.5rem;
+
+        .album-item {
+          .album-cover-container .album-cover {
+            width: 50px;
+            height: 50px;
+          }
+
+          .album-name {
+            font-size: 0.65rem;
+          }
+        }
+      }
+    }
+
+    .rankings-display {
+      .section-header {
+        h3 {
+          font-size: 1rem;
+        }
+
+        p {
+          font-size: 0.85rem;
+        }
+      }
+    }
+
+    .album-rankings-list,
+    .song-rankings-list {
+      .album-ranking-item,
+      .song-ranking-item {
+        padding: 0.5rem;
+
+        .rank-number {
+          width: 30px;
+          height: 30px;
+          font-size: 0.9rem;
+          margin-right: 0.5rem;
+
+          &.track-number {
+            min-width: 60px;
+            height: 30px;
+            padding: 0 6px;
+
+            .track-label {
+              font-size: 0.5rem;
+            }
+          }
+        }
+
+        .album-cover-small,
+        .album-cover-tiny {
+          width: 30px;
+          height: 30px;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}

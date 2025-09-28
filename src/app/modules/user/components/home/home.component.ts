@@ -15,6 +15,13 @@ interface Song {
   overlay: string;
 }
 
+interface TimeRemaining {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -268,14 +275,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   displayedSongs: Song[] = [];
-  private intervalId: any;
+  private songRotationInterval: any;
 
-  timeRemaining = {
+  timeRemaining: TimeRemaining = {
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   };
+
   private countdownInterval: any;
   private releaseDate = new Date('2025-10-03T00:00:00');
 
@@ -285,130 +293,124 @@ export class HomeComponent implements OnInit, OnDestroy {
     private title: Title
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initializeSongs();
-    this.startRotation();
+    this.startSongRotation();
     this.updateMetaTags();
     this.startCountdown();
   }
 
-  ngOnDestroy() {
-    this.stopRotation();
+  ngOnDestroy(): void {
+    this.stopSongRotation();
     this.stopCountdown();
   }
 
-  updateMetaTags() {
-    this.title.setTitle('Home - Swiftie Ranking Hub');
+  private updateMetaTags(): void {
+    const pageTitle = 'Home - Swiftie Ranking Hub';
+    const description = 'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!';
+    const imageUrl = 'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp';
+    const pageUrl = 'https://swiftierankinghub.com/user/userHome';
 
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!',
-    });
+    this.title.setTitle(pageTitle);
+    this.meta.updateTag({ name: 'description', content: description });
 
-    // Open Graph
-    this.meta.updateTag({
-      property: 'og:title',
-      content: 'Swiftie Ranking Hub',
-    });
-    this.meta.updateTag({
-      property: 'og:description',
-      content:
-        'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!',
-    });
-    this.meta.updateTag({
-      property: 'og:image',
-      content:
-        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp',
-    });
-    this.meta.updateTag({
-      property: 'og:url',
-      content: 'https://swiftierankinghub.com/user/userHome',
-    });
+    // Open Graph tags
+    this.meta.updateTag({ property: 'og:title', content: 'Swiftie Ranking Hub' });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: imageUrl });
+    this.meta.updateTag({ property: 'og:url', content: pageUrl });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
 
-    // Twitter Card
-    this.meta.updateTag({
-      name: 'twitter:card',
-      content: 'summary_large_image',
-    });
-    this.meta.updateTag({
-      name: 'twitter:title',
-      content: 'Home - Swiftie Ranking Hub',
-    });
-    this.meta.updateTag({
-      name: 'twitter:description',
-      content:
-        'Rank your favorite Taylor Swift songs, build your own Eras Tour and share your profile with friends!',
-    });
-    this.meta.updateTag({
-      name: 'twitter:image',
-      content:
-        'https://d3e29z0m37b0un.cloudfront.net/graphics/link-preview-image-min.webp',
-    });
+    // Twitter Card tags
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
+    this.meta.updateTag({ name: 'twitter:image', content: imageUrl });
   }
 
-  private initializeSongs() {
+  /**
+   * Initializes the song display with random songs
+   */
+  private initializeSongs(): void {
     this.displayedSongs = this.getRandomSongs(5);
   }
 
-  private startRotation() {
-    this.intervalId = setInterval(() => {
+  /**
+   * Starts the song rotation animation
+   */
+  private startSongRotation(): void {
+    this.songRotationInterval = setInterval(() => {
       this.rotateSongs();
-    }, 3000); // Change songs every 3 seconds
+    }, 3000);
   }
 
-  private stopRotation() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
+  /**
+   * Stops the song rotation animation
+   */
+  private stopSongRotation(): void {
+    if (this.songRotationInterval) {
+      clearInterval(this.songRotationInterval);
+      this.songRotationInterval = null;
     }
   }
 
-  private rotateSongs() {
+  /**
+   * Rotates songs by replacing a random song with a new one
+   */
+  private rotateSongs(): void {
     const newSong = this.getRandomSongs(1, this.displayedSongs)[0];
-    const removeIndex = Math.floor(Math.random() * this.displayedSongs.length);
-    this.displayedSongs.splice(removeIndex, 1, newSong);
+    if (newSong) {
+      const removeIndex = Math.floor(Math.random() * this.displayedSongs.length);
+      this.displayedSongs.splice(removeIndex, 1, newSong);
+    }
   }
 
-  private getRandomSongs(count: number, exclude: any[] = []): any[] {
-    const availableSongs = this.allSongs.filter(
-      (song) => !exclude.includes(song)
-    );
-    const randomSongs = [];
+  /**
+   * Gets random songs from the collection
+   */
+  private getRandomSongs(count: number, exclude: Song[] = []): Song[] {
+    const availableSongs = this.allSongs.filter(song => !exclude.includes(song));
+    const randomSongs: Song[] = [];
+    
     while (randomSongs.length < count && availableSongs.length > 0) {
       const randomIndex = Math.floor(Math.random() * availableSongs.length);
       randomSongs.push(availableSongs.splice(randomIndex, 1)[0]);
     }
+    
     return randomSongs;
   }
 
-  navigateTo(page: string): void {
-    this.router.navigate([`${page}`]);
-  }
-
-  private startCountdown() {
-    this.updateCountdown(); 
+  /**
+   * Starts the countdown timer
+   */
+  private startCountdown(): void {
+    this.updateCountdown();
     this.countdownInterval = setInterval(() => {
       this.updateCountdown();
     }, 1000);
   }
 
-  private stopCountdown() {
+  /**
+   * Stops the countdown timer
+   */
+  private stopCountdown(): void {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
     }
   }
 
-  private updateCountdown() {
+  /**
+   * Updates the countdown display
+   */
+  private updateCountdown(): void {
     const now = new Date().getTime();
     const distance = this.releaseDate.getTime() - now;
 
     if (distance > 0) {
       this.timeRemaining = {
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
         minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
         seconds: Math.floor((distance % (1000 * 60)) / 1000),
       };
@@ -417,5 +419,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.timeRemaining = { days: 0, hours: 0, minutes: 0, seconds: 0 };
       this.stopCountdown();
     }
+  }
+
+  /**
+   * Navigates to the specified route
+   */
+  navigateTo(route: string): void {
+    this.router.navigate([route]);
+  }
+
+  /**
+   * TrackBy function for ngFor performance optimization
+   */
+  trackBySong(index: number, song: Song): string {
+    return `${song.title}-${song.albumName}`;
   }
 }

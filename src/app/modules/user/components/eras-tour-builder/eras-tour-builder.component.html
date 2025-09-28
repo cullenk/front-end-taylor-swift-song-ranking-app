@@ -1,0 +1,320 @@
+<div class="eras-tour-builder" [class.loading]="isLoading">
+  <!-- Background -->
+  <div class="background-overlay" aria-hidden="true"></div>
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading your setlist...</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading" class="main-content">
+    <!-- Header Section -->
+    <header class="header-container">
+      <img 
+        class="background-graphic" 
+        src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" 
+        alt="Friendship bracelets decoration"
+        loading="lazy"
+      >
+      <div class="header-div">
+        <h1 class="header-title">Eras Tour Setlist Builder</h1>
+        <h2 class="header-subtitle">Build Your Dream Show</h2>
+        <p class="header-description">
+          Create your perfect Taylor Swift concert experience with 45 songs across all eras!
+        </p>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-section" *ngIf="getProgressPercentage() > 0">
+      <div class="progress-bar">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="getProgressPercentage()"
+          [attr.aria-valuenow]="getProgressPercentage()"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+      <p class="progress-text">{{ getProgressPercentage() }}% Complete</p>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+      <!-- Left Column: Rules & Controls -->
+      <aside class="sidebar">
+        <!-- Rules Section -->
+        <section class="rules-section" role="region" aria-labelledby="rules-title">
+          <h3 id="rules-title">
+            <i class="fas fa-list-check" aria-hidden="true"></i>
+            Builder Rules
+          </h3>
+          <ul class="rules-list">
+            <li>
+              <i class="fas fa-arrows-alt" aria-hidden="true"></i>
+              Drag and drop eras to reorder them
+            </li>
+            <li>
+              <i class="fas fa-music" aria-hidden="true"></i>
+              Select exactly <strong>45 songs</strong> for the main setlist
+            </li>
+            <li>
+              <i class="fas fa-surprise" aria-hidden="true"></i>
+              Choose <strong>2 surprise songs</strong>
+            </li>
+            <li>
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
+              Include <strong>3 mashups</strong> (each counts as 1 song)
+            </li>
+            <li>
+              <i class="fas fa-check-circle" aria-hidden="true"></i>
+              Every era must have <strong>at least 1 song</strong>
+            </li>
+            <li>
+              <i class="fas fa-hand" aria-hidden="true"></i>
+              Maximum <strong>6 songs per era</strong>
+            </li>
+            <li>
+              <i class="fas fa-times-circle" aria-hidden="true"></i>
+              Click the 'x' to remove a song
+            </li>
+            <li>
+              <i class="fas fa-save" aria-hidden="true"></i>
+              Save progress to continue later
+            </li>
+          </ul>
+          <div class="rules-credit">
+            <p>
+              <i class="fas fa-heart" aria-hidden="true"></i>
+              Ruleset by <strong>&#64;kristenacarey</strong> on TikTok
+            </p>
+          </div>
+        </section>
+
+        <!-- Counter & Controls -->
+        <section class="counter-section" role="region" aria-labelledby="progress-title">
+          <h3 id="progress-title">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>
+            Progress Tracker
+          </h3>
+          
+          <div class="counters-grid">
+            <div class="counter-item" [class]="getRequirementClass('totalSongs')">
+              <div class="counter-icon">
+                <i class="fas fa-music" aria-hidden="true"></i>
+              </div>
+              <div class="counter-info">
+                <span class="counter-value">{{ counters.totalSongs }}/45</span>
+                <span class="counter-label">Songs</span>
+              </div>
+              <div class="counter-status">
+                <i 
+                  class="fas" 
+                  [class.fa-check-circle]="isRequirementComplete('totalSongs')"
+                  [class.fa-clock]="!isRequirementComplete('totalSongs')"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            </div>
+
+            <div class="counter-item" [class]="getRequirementClass('totalMashups')">
+              <div class="counter-icon">
+                <i class="fas fa-layer-group" aria-hidden="true"></i>
+              </div>
+              <div class="counter-info">
+                <span class="counter-value">{{ counters.totalMashups }}/3</span>
+                <span class="counter-label">Mashups</span>
+              </div>
+              <div class="counter-status">
+                <i 
+                  class="fas" 
+                  [class.fa-check-circle]="isRequirementComplete('totalMashups')"
+                  [class.fa-clock]="!isRequirementComplete('totalMashups')"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            </div>
+
+            <div class="counter-item" [class]="getRequirementClass('erasAccountedFor')">
+              <div class="counter-icon">
+                <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+              </div>
+              <div class="counter-info">
+                <span class="counter-value">{{ counters.erasAccountedFor }}/11</span>
+                <span class="counter-label">Eras</span>
+              </div>
+              <div class="counter-status">
+                <i 
+                  class="fas" 
+                  [class.fa-check-circle]="isRequirementComplete('erasAccountedFor')"
+                  [class.fa-clock]="!isRequirementComplete('erasAccountedFor')"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            </div>
+
+            <div class="counter-item" [class]="getRequirementClass('totalSurpriseSongs')">
+              <div class="counter-icon">
+                <i class="fas fa-surprise" aria-hidden="true"></i>
+              </div>
+              <div class="counter-info">
+                <span class="counter-value">{{ counters.totalSurpriseSongs }}/2</span>
+                <span class="counter-label">Surprise Songs</span>
+              </div>
+              <div class="counter-status">
+                <i 
+                  class="fas" 
+                  [class.fa-check-circle]="isRequirementComplete('totalSurpriseSongs')"
+                  [class.fa-clock]="!isRequirementComplete('totalSurpriseSongs')"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button 
+              type="button"
+              class="save-button"
+              (click)="saveProgress()"
+              [disabled]="isSaving"
+              [attr.aria-label]="isSaving ? 'Saving progress...' : 'Save current progress'"
+            >
+              <i 
+                class="fas" 
+                [class.fa-save]="!isSaving"
+                [class.fa-spinner]="isSaving"
+                [class.fa-spin]="isSaving"
+                aria-hidden="true"
+              ></i>
+              <span>{{ isSaving ? 'Saving...' : 'Save Progress' }}</span>
+            </button>
+
+            <!-- <button 
+              type="button"
+              class="verify-button"
+              [disabled]="!allChoicesMade"
+              (click)="verifySetList()"
+              [attr.aria-label]="allChoicesMade ? 'Verify completed setlist' : 'Complete all requirements to verify'"
+            >
+              <i class="fas fa-check-double" aria-hidden="true"></i>
+              <span>Verify Setlist</span>
+            </button> -->
+
+            <button 
+              type="button"
+              class="reset-button"
+              (click)="openResetDialog()"
+              [disabled]="isResetting"
+              [attr.aria-label]="isResetting ? 'Resetting...' : 'Reset all selections'"
+            >
+              <i 
+                class="fas" 
+                [class.fa-undo-alt]="!isResetting"
+                [class.fa-spinner]="isResetting"
+                [class.fa-spin]="isResetting"
+                aria-hidden="true"
+              ></i>
+              <span>{{ isResetting ? 'Resetting...' : 'Reset All' }}</span>
+            </button>
+          </div>
+
+          <!-- Completion Status -->
+          <div *ngIf="allChoicesMade" class="completion-status">
+            <div class="status-icon">
+              <i class="fas fa-trophy" aria-hidden="true"></i>
+            </div>
+            <p>
+              <strong>Congratulations!</strong><br>
+              Your setlist is complete, don't forget to save!
+            </p>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Right Column: Era Widgets -->
+      <main class="era-section">
+        <div 
+          cdkDropList 
+          class="era-list" 
+          (cdkDropListDropped)="onDrop($event)"
+          [attr.aria-label]="'Reorderable list of ' + setList.length + ' eras'"
+        >
+          <div 
+            *ngFor="let era of setList; let i = index; trackBy: trackByEra" 
+            cdkDrag 
+            class="era-item"
+            [attr.aria-label]="'Era ' + (i + 1) + ' of ' + setList.length + ': ' + era.era"
+          >
+            <!-- <div class="drag-handle" cdkDragHandle>
+              <i class="fas fa-grip-vertical" aria-hidden="true"></i>
+            </div> -->
+            <app-era-widget 
+              [era]="era" 
+              [totalSongs]="counters.totalSongs"
+              [totalMashups]="counters.totalMashups"
+              (eraUpdated)="updateEra($event)">
+            </app-era-widget>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Reset Confirmation Dialog -->
+  <div 
+    *ngIf="showResetDialog" 
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reset-title"
+    (click)="closeResetDialog()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="reset-title">
+          <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+          Confirm Reset
+        </h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to reset <strong>all selections</strong>? 
+          This action cannot be undone and will clear your entire setlist.
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button 
+          type="button"
+          class="cancel-button" 
+          (click)="closeResetDialog()"
+          [attr.aria-label]="'Cancel reset operation'"
+        >
+          <i class="fas fa-times" aria-hidden="true"></i>
+          Cancel
+        </button>
+        <button 
+          type="button"
+          class="confirm-button" 
+          (click)="confirmReset()"
+          [disabled]="isResetting"
+          [attr.aria-label]="'Confirm reset operation'"
+        >
+          <i 
+            class="fas" 
+            [class.fa-trash-alt]="!isResetting"
+            [class.fa-spinner]="isResetting"
+            [class.fa-spin]="isResetting"
+            aria-hidden="true"
+          ></i>
+          <span>{{ isResetting ? 'Resetting...' : 'Reset All' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

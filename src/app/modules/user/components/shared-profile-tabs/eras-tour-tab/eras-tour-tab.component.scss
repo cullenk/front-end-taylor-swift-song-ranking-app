@@ -1,0 +1,383 @@
+.eras-tour-tab {
+  padding: 1.5rem;
+
+  .tab-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+
+      &.edit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+      }
+
+      &.share-btn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+        }
+      }
+    }
+  }
+
+  .loading-container,
+  .error-container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+
+    .loading,
+    .error-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: #666;
+
+      i {
+        font-size: 2rem;
+        color: #667eea;
+      }
+
+      .retry-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: #5a6fd8;
+        }
+      }
+    }
+  }
+
+  .no-setlist-container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+
+    .no-setlist {
+      text-align: center;
+      max-width: 500px;
+
+      .microphone-icon {
+        margin-bottom: 1.5rem;
+
+        i {
+          font-size: 4rem;
+          color: #667eea;
+          opacity: 0.7;
+        }
+      }
+
+      h3 {
+        color: #333;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .create-setlist-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+      }
+
+      &.public-view {
+        .microphone-icon {
+          i {
+            color: #999; // Dimmed color for public view
+            opacity: 0.7;
+          }
+        }
+
+        h3 {
+          color: #666; // Slightly muted title
+        }
+
+        p {
+          color: #777; // Muted description text
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .setlist-container {
+    .era-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .era-card {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      min-height: 350px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+
+        .era-overlay {
+          background: rgba(0, 0, 0, 0.4);
+        }
+      }
+
+      .era-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        transition: background 0.3s ease;
+      }
+
+      .era-content {
+        position: relative;
+        z-index: 1;
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .era-title {
+          color: white;
+          font-size: 1.5rem;
+          font-weight: bold;
+          margin-bottom: 1rem;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .song-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          flex: 1;
+
+          .song-item {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 1rem;
+
+            &::before {
+              content: "♪";
+              position: absolute;
+              left: 0;
+              color: #667eea;
+              font-weight: bold;
+            }
+
+            .mashup-badge {
+              background: rgba(102, 126, 234, 0.8);
+              color: white;
+              font-size: 0.7rem;
+              padding: 0.2rem 0.5rem;
+              border-radius: 10px;
+              margin-left: 0.5rem;
+            }
+          }
+        }
+
+        .surprise-songs {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .surprise-song-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .surprise-icon {
+              width: 30px;
+              height: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              background: rgba(255, 255, 255, 0.2);
+
+              &.guitar-icon i {
+                color: #f39c12;
+                font-size: 1.2rem;
+              }
+
+              &.piano-icon img {
+                width: 18px;
+                height: 18px;
+                filter: brightness(0) invert(1);
+              }
+            }
+
+            .song-title {
+              color: rgba(255, 255, 255, 0.9);
+              font-size: 1rem;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .eras-tour-tab {
+    padding: 1rem;
+
+    .tab-header {
+      margin-bottom: 1.5rem;
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+      }
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      align-items: center;
+
+      .action-btn {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+
+    .setlist-container {
+      .era-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .era-card {
+        min-height: 300px;
+
+        .era-content {
+          padding: 1rem;
+
+          .era-title {
+            font-size: 1.3rem;
+          }
+
+          .song-list .song-item {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    .no-setlist-container .no-setlist {
+      padding: 0 1rem;
+
+      .microphone-icon i {
+        font-size: 3rem;
+      }
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      .create-setlist-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .eras-tour-tab {
+    .era-card .era-content {
+      .era-title {
+        font-size: 1.2rem;
+      }
+
+      .song-list .song-item {
+        font-size: 0.85rem;
+      }
+
+      .surprise-songs .surprise-song-item .song-title {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

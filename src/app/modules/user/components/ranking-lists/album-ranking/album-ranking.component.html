@@ -1,0 +1,55 @@
+<div
+  class="album-ranking-container"
+  *ngIf="albumConfig"
+  [ngStyle]="{
+    'background-image': 'url(' + albumConfig.backgroundImage + ')',
+    'background-size': 'cover',
+    'background-position': 'center',
+    'background-repeat': 'no-repeat'
+  }"
+>
+  <div class="background-overlay"></div>
+
+  <div class="media-column">
+    
+    <img
+      [src]="albumConfig.coverImage"
+      [alt]="albumConfig.displayName + ' Cover'"
+      class="album-cover"
+    />
+  </div>
+
+  <div class="ranking-column">
+    <div class="content-div">
+    <button class="back-btn" (click)="goBackToAlbumRankings()">
+      <i class="fas fa-arrow-left"></i>Back
+    </button>
+      <p>My Rankings For:</p>
+      <h1>{{ albumConfig.displayName }}</h1>
+      <p>Released: {{ albumConfig.releaseDate }}</p>
+      <p class="helper-text">Click and drag a song to reorder your list!</p>
+    </div>
+
+    <div class="song-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+      <div class="song-item" *ngFor="let song of songs; let i = index" cdkDrag>
+        <span class="rank-number">{{ i + 1 }}.</span>
+        <div class="song-info">
+          <strong class="song-title">{{ song.title }}</strong>
+          <span class="album-name">{{ song.album }}</span>
+        </div>
+        <audio
+          #audioPlayer
+          controls
+          *ngIf="song.audioSource"
+          class="audio-player"
+          (error)="handleAudioError($event)"
+          (play)="handleAudioPlay($event)"
+          controlsList="nodownload"
+        >
+          <source [src]="song.audioSource" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+  </div>
+</div>

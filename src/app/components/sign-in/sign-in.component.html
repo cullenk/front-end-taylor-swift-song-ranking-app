@@ -2,11 +2,17 @@
   <div class="album-covers-container">
     <div #randomSquares class="random-squares"></div>
     <div class="album-columns" #albumColumns>
-      <div class="column" *ngFor="let column of shuffledColumns; let columnIndex = index">
-        <img *ngFor="let cover of column" 
-             [src]="cover" 
-             [alt]="'Album cover'"
-             class="album-cover">
+      <div 
+        class="column" 
+        *ngFor="let column of shuffledColumns; trackBy: trackByIndex; let columnIndex = index"
+      >
+        <img 
+          *ngFor="let cover of column; trackBy: trackByCover" 
+          [src]="cover" 
+          [alt]="'Taylor Swift album cover'"
+          class="album-cover"
+          loading="lazy"
+        >
       </div>
     </div>
   </div>
@@ -17,24 +23,54 @@
     
     <ng-container *ngIf="!isForgotPasswordMode; else forgotPasswordTemplate">
       <ng-container *ngIf="isLoginMode; else signupTemplate">
+        <!-- Login Form -->
         <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
-          <input type="text" formControlName="username" placeholder="Username or Email" name="username" required>
+          <input 
+            type="text" 
+            formControlName="username" 
+            placeholder="Username or Email" 
+            name="username" 
+            autocomplete="username"
+            required
+          >
           <div class="password-input-container">
-            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password" name="password" required>
-            <i class="fa password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePasswordVisibility()"></i>
+            <input 
+              [type]="showPassword ? 'text' : 'password'" 
+              formControlName="password" 
+              placeholder="Password" 
+              name="password" 
+              autocomplete="current-password"
+              required
+            >
+            <i 
+              class="fa password-toggle" 
+              [class.fa-eye]="!showPassword" 
+              [class.fa-eye-slash]="showPassword" 
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            ></i>
           </div>
-          <button type="submit">Sign In</button>
+          <button type="submit" [disabled]="loginForm.invalid">Sign In</button>
         </form>
+        
         <div class="sub-links">
-          <a (click)="toggleMode()">Create Account</a>
-          <a (click)="toggleForgotPasswordMode()">Forgot Password</a>
+          <a (click)="toggleMode()" role="button" tabindex="0">Create Account</a>
+          <a (click)="toggleForgotPasswordMode()" role="button" tabindex="0">Forgot Password</a>
         </div>
       </ng-container>
 
       <ng-template #signupTemplate>
+        <!-- Signup Form -->
         <form [formGroup]="signupForm" class="login-form" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <input type="text" formControlName="username" placeholder="Username" name="username" required>
+            <input 
+              type="text" 
+              formControlName="username" 
+              placeholder="Username" 
+              name="username" 
+              autocomplete="username"
+              required
+            >
             <div *ngIf="signupForm.get('username')?.invalid && (signupForm.get('username')?.dirty || signupForm.get('username')?.touched)" class="error-message">
               <div *ngIf="signupForm.get('username')?.errors?.['required']">Username is required.</div>
               <div *ngIf="signupForm.get('username')?.errors?.['minlength']">Username must be at least 3 characters long.</div>
@@ -43,56 +79,83 @@
               <div *ngIf="signupForm.get('username')?.errors?.['taken']">This username is already taken. Please choose a different one.</div>
             </div>
           </div>
+
           <div class="form-group">
-            <input type="email" formControlName="email" placeholder="Email" name="email" required>
+            <input 
+              type="email" 
+              formControlName="email" 
+              placeholder="Email" 
+              name="email" 
+              autocomplete="email"
+              required
+            >
             <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="error-message">
               <div *ngIf="signupForm.get('email')?.errors?.['required']">Email is required.</div>
               <div *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
               <div *ngIf="signupForm.get('email')?.errors?.['taken']">An account with this email already exists. Please use a different email or try logging in.</div>
             </div>
           </div>
+
           <div class="form-group">
             <div class="password-input-container">
-              <input [type]="showPassword ? 'text' : 'password'" 
-                     formControlName="password" 
-                     placeholder="Password" 
-                     name="password" 
-                     required
-                     (input)="onPasswordInput()">
-              <i class="fa password-toggle" 
-                 [class.fa-eye]="!showPassword" 
-                 [class.fa-eye-slash]="showPassword" 
-                 (click)="togglePasswordVisibility()"></i>
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                formControlName="password" 
+                placeholder="Password" 
+                name="password" 
+                autocomplete="new-password"
+                required
+                (input)="onPasswordInput()"
+              >
+              <i 
+                class="fa password-toggle" 
+                [class.fa-eye]="!showPassword" 
+                [class.fa-eye-slash]="showPassword" 
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              ></i>
             </div>
+            
             <div class="password-strength-meter">
-              <div class="meter" [style.width]="passwordStrength + '%'"></div>
+              <div class="meter" [style.width.%]="passwordStrength.strength"></div>
             </div>
+            
             <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="error-message">
               <div *ngIf="signupForm.get('password')?.errors?.['required']">Password is required.</div>
               <div *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
               <div *ngIf="signupForm.get('password')?.errors?.['pattern']">Password must contain at least one uppercase letter and one number.</div>
             </div>
           </div>
+
           <button type="submit" [disabled]="signupForm.invalid">Create Account</button>
           <p>Only one account per email allowed.</p>
         </form>
+        
         <div class="sub-links">
-          <a (click)="toggleMode()">Back to Login</a>
+          <a (click)="toggleMode()" role="button" tabindex="0">Back to Login</a>
         </div>
       </ng-template>
     </ng-container>
 
     <ng-template #forgotPasswordTemplate>
+      <!-- Forgot Password Form -->
       <form [formGroup]="forgotPasswordForm" class="forgot-password-form" (ngSubmit)="onForgotPassword()">
-        <input type="email" formControlName="email" placeholder="Enter your email" required>
+        <input 
+          type="email" 
+          formControlName="email" 
+          placeholder="Enter your email" 
+          autocomplete="email"
+          required
+        >
         <div *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)" class="error-message">
           <div *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">Email is required.</div>
           <div *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
         </div>
         <button type="submit" [disabled]="!forgotPasswordForm.valid">Reset Password</button>
       </form>
+      
       <div class="sub-links">
-        <a (click)="toggleForgotPasswordMode()">Back to Login</a>
+        <a (click)="toggleForgotPasswordMode()" role="button" tabindex="0">Back to Login</a>
       </div>
     </ng-template>
   </div>

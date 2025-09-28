@@ -1,6 +1,53 @@
 <div class="not-found-container">
-    <div class="not-found-div">
-        <h1>Sorry, can't find this page!</h1>
-        <a routerLink="/login">Login page</a>
-    </div>    
+  <div class="not-found-content">
+    <!-- Error Icon -->
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+    </div>
+    
+    <!-- Error Message -->
+    <h1 class="error-title">I Forgot That You Existed</h1>
+    <p class="error-subtitle">
+      The page you're looking for hopped in a getaway car and can't be found.
+    </p>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="goToHome()"
+        aria-label="Go to home page"
+      >
+        <i class="fas fa-home" aria-hidden="true"></i>
+        Go Home
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="goBack()"
+        aria-label="Go back to previous page"
+      >
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        Go Back
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-outline" 
+        (click)="goToLogin()"
+        aria-label="Go to login page"
+      >
+        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+        Sign In
+      </button>
+    </div>
+    
+    <!-- Additional Help Text -->
+    <p class="help-text">
+      <i class="fas fa-lightbulb" aria-hidden="true"></i>
+      Try checking the URL or return to the main page to continue your Taylor Swift song ranking journey!
+    </p>
+  </div>
 </div>

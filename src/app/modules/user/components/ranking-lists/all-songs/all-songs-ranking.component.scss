@@ -1,222 +1,442 @@
-.all-songs-ranking-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+/* ================================
+   CONTAINER & LAYOUT
+================================ */
+.album-ranking-container {
+  display: flex;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
 
-  .back-btn {
-    padding: calc(var(--padding-base) * 0.5) var(--padding-base);
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    font-size: 1rem;
-
-    i {
-      margin-right: 5px;
-    }
-  
-    &:hover {
-      background-color: var(--hover-color);
-    }
-  }
-
-  .header-container {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-  
-  .background-graphic {
+  // Background image with blur
+  &::before {
+    content: '';
     position: absolute;
-    opacity: 50%;
     top: 0;
+    left: 0;
     right: 0;
-    width: 60%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-  } 
-  
-  .header-div {
-    background-color: #ffd78c;
-    height: 100%;
-    border-radius: 10px;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 20px 20px 20px;
-  }
-  
-  .header-title {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    color: black;
-    text-align: left;
-    margin: 0px 0px 10px 0px;
-    font-size: 3rem;
-  }
-  
-  .header-sub-title {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    color: #266DD3;
-    text-align: left;
-    margin: 0px;
-    font-size: 3.6rem;
+    bottom: 0;
+    background-image: url('https://d3e29z0m37b0un.cloudfront.net/graphics/eras-tour-background.webp');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    z-index: -2;
   }
 
-  .intro-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+  // Overlay
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
   }
-  
-  .intro-container h2 {
+}
+
+.media-column, .ranking-column {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.media-column {
+  align-self: flex-start;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 400px;
+}
+
+.ranking-column {
+  flex: 1;
+}
+
+/* ================================
+   BUTTONS & CONTROLS
+================================ */
+.back-btn {
+  position: absolute;
+  align-items: center;
+  top: -12px;
+  left: 0;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+  margin-bottom: 20px;
+
+  i {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: #5a6fd8;
+  }
+}
+
+.save-button-container {
+  text-align: center;
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+  i {
+    margin-right: 5px;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+/* ================================
+   HEADER & CONTENT
+================================ */
+.header-container {
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.header-div {
+  background: linear-gradient(135deg, #ffd78c 0%, #ffb347 100%);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.header-title {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.header-sub-title {
+  color: #266DD3;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.intro-container {
+  background-color: rgba(249, 249, 249, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+
+  h3 {
     color: #333;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
   }
-  
-  .intro-container p {
-    color: #555;
-  }
-  
-  .intro-container ul {
+
+  ul {
     list-style-type: disc;
     padding-left: 20px;
+    margin: 0;
+    word-wrap: break-word;
+
+    li {
+      color: #555;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
   }
-  
-  .save-button-container {
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: #ffffff97;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .save-button {
-    display: block;
-    width: 100%;
-    max-width: 200px;
-    margin: 10px auto;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+}
+
+.content-div {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 10px 0;
+    color: #333;
   }
 
-  .save-button.disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
-    opacity: 0.7;
-  }
-
-  .warning {
-    color: red;
-    margin-bottom: 10px auto;
-  }
-
-  .duplicate-rank {
-    background-color: #ff8c8c !important;
-  }
-  
-  .song-list {
-    margin-top: 20px;
-  }
-  
-  .song-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f8f8f8;
-    border-radius: 4px;
-  }
-  
-  .album-cover {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-    border-radius: 4px;
-  }
-  
-  .song-info {
-    flex-grow: 1;
-  }
-  
-  .song-title {
-    font-weight: bold;
-    display: block;
-  }
-  
-  .album-name {
-    font-size: 0.9em;
+  p {
+    margin: 5px 0;
     color: #666;
   }
-  
-  .rank {
-    font-weight: bold;
-    margin-left: 10px;
+
+  .helper-text {
+    font-style: italic;
+    color: #888;
+  }
+}
+
+/* ================================
+   SONGS LIST & ITEMS
+================================ */
+.song-list {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  cursor: move;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.duplicate-rank {
+    background-color: #ffebee !important;
+    border: 2px solid #f44336;
+  }
+}
+
+.drag-handle {
+  cursor: move;
+  padding: 0 10px 0 0;
+  color: #666;
+  font-size: 1.2rem;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.rank-number {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-right: 10px;
+  min-width: 35px;
+  text-align: right;
+}
+
+.album-cover-small {
+  width: 50px;
+  height: 50px;
+  margin-right: 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+.song-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+
+  .song-title {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+
+  .album-name {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.2;
+  }
+}
+
+.rank-input {
+  width: 60px;
+  height: 35px;
+  font-size: 16px;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 0;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+  }
+}
+
+/* ================================
+   STATUS & FEEDBACK
+================================ */
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  border-left: 4px solid #f44336;
+
+  i {
+    flex-shrink: 0;
+  }
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px;
+  color: #667eea;
+  font-size: 1.1rem;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+/* ================================
+   CDK DRAG & DROP STYLES
+================================ */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.song-list.cdk-drop-list-dragging .song-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+================================ */
+@media (max-width: 768px) {
+  .album-ranking-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .media-column {
+    margin: 0 0 20px 0;
+    margin-right: 0;
+    max-width: none;
+    align-items: center;
+    width: 100%; 
+    box-sizing: border-box;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-sub-title {
+    font-size: 1.2rem;
+  }
+
+  .content-div h1 {
+    font-size: 2rem;
+  }
+
+  .song-item {
+    padding: 8px;
+  }
+
+  .album-cover-small {
+    width: 40px;
+    height: 40px;
   }
 
   .rank-input {
     width: 50px;
     height: 30px;
-    font-size: 18px;
-    margin-left: 10px;
-    text-align: center;
+    font-size: 14px;
   }
-  
-  .drag-handle {
-    cursor: move;
-    padding: 0 10px;
+}
+
+@media (max-width: 480px) {
+  .intro-container {
+    padding: 10px; 
+    
+    ul {
+      padding-left: 15px; 
+    }
+    
+    li {
+      font-size: 0.85rem; 
+    }
   }
 
-  .cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  .cdk-drag-placeholder {
-    opacity: 0;
-  }
-  
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .song-list.cdk-drop-list-dragging .song-item:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  .song-item {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  @media (max-width: 768px) {
-    .header-container {
-      height: auto;
-      min-height: 150px;
-    }
-  
-    .header-title {
-      font-size: 1.5rem;
-    }
-  
-    .header-sub-title {
-      font-size: 2rem;
-    }
+  .song-info {
+    margin-right: 0;
+    flex: 100%;
+  }
+
+  .rank-input {
+    margin-top: 5px;
+  }
 }

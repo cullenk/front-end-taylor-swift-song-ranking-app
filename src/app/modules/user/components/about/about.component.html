@@ -1,48 +1,135 @@
 <div class="about-container">
-  <div class="widgets">
+  <!-- Main Content Widgets -->
+  <div class="widgets-section">
+    <!-- About Widget -->
     <div class="about-widget">
       <h2>It's me, hi.</h2>
-      <p>I’m Cullen, and I’m enchanted to have you here! By day, I’m a software engineer and web developer, but when I’m not coding, I’m a dedicated Swiftie of course.</p>
+      <p>I'm Cullen, and I'm enchanted to have you here! By day, I'm a software engineer and web developer, but when I'm not coding, I'm a dedicated Swiftie of course.</p>
       <p>For a long time, I searched for a way to easily rank my favorite songs and organize tracks by album, but never really found something I liked. So, I decided to create my own solution!</p>
-      <p>The Swiftie Ranking Hub let's you rank your top 13 songs, categorize tracks by album, and much more. The best part? Everything you do will be saved, so you can return and indulge in your rankings over and over (especially when Taylor drops new music).</p> 
-      <p>One of my favorite things about being a Swiftie is the supportive community that surrounds us. To celebrate this, I’ve added the ability to share your top 13 songs list, custom profile page and dream Eras Tour with friends. I hope this helps us connect and share our love for Taylor even more 🫶</p>
-      <div class="my-profile-section">
-        <p>In case you're curious, check out my profile to see my favorite songs and dream Eras Tour. Can't wait to see what all of you come up with too!</p>
-        <div class="btn-div">
-          <a href="http://www.swiftierankinghub.com/public-profile/CullensVersion1994" target="_blank">Cullen's Profile</a>
-        </div>
+      <p>The Swiftie Ranking Hub lets you rank your top 13 songs, categorize tracks by album, and much more. The best part? Everything you do will be saved, so you can return and indulge in your rankings over and over (especially when Taylor drops new music).</p> 
+      <p>One of my favorite things about being a Swiftie is the supportive community that surrounds us. To celebrate this, I've added the ability to share your top 13 songs list, custom profile page and dream Eras Tour with friends. I hope this helps us connect and share our love for Taylor even more 🫶</p>
+      
+      <div class="profile-section">
+        <p>In case you're curious, check out my profile to see my favorite songs and dream Eras Tour. You can also explore other user profiles as well. Can't wait to see what all of you come up with!</p>
+        <div class="button-container">
+        <a 
+          href="http://www.swiftierankinghub.com/public-profile/CullensVersion1994" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="profile-btn"
+          aria-label="View Cullen's Profile"
+        >
+          <i class="fas fa-user"></i>
+          Cullen's Profile
+        </a>
+            <a 
+          href="http://www.swiftierankinghub.com/user/userExplorer" 
+          rel="noopener noreferrer"
+          class="profile-btn"
+          aria-label="View All User Profiles"
+        >
+          <i class="fas fa-users"></i>
+          All Users
+        </a>
+      </div>
       </div>
     </div>
-    <div class="info-widget">
-      <div class="coffee-section">
-        <p class="message-text">This project is a true labor of love, and I’m excited to share it with you. It’s completely free, but if you’d like to buy me a coffee as a token of appreciation, I’d be incredibly grateful!</p>
-        <div class="pay-div">
-          <img src="https://d3e29z0m37b0un.cloudfront.net/graphics/coffee.svg" alt="Buy Me a Coffee" class="coffee-icon">
-          <div class="pay-category">
-            <p class="title">Venmo</p>
-            <p class="creds">cullenk13</p>
-          </div>
-          <div class="pay-category">
-            <p class="title">CashApp</p>
-            <p class="creds">cullenk13 (1313)</p>
+
+    <!-- Coffee Support Widget -->
+    <div class="support-widget">
+      <div class="support-content">
+        <p class="support-message">
+          This project is a true labor of love, and I'm excited to share it with you. 
+          It's completely free, but if you'd like to buy me a coffee as a token of appreciation, 
+          I'd be incredibly grateful!
+        </p>
+        
+        <div class="payment-options">
+          <img 
+            src="https://d3e29z0m37b0un.cloudfront.net/graphics/coffee.svg" 
+            alt="Coffee Icon" 
+            class="coffee-icon"
+            loading="lazy"
+          >
+          <div class="payment-methods">
+            <div class="payment-method">
+              <p class="method-title">Venmo</p>
+              <p class="method-handle">cullenk13</p>
+            </div>
+            <div class="payment-method">
+              <p class="method-title">CashApp</p>
+              <p class="method-handle">cullenk13 (1313)</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="photos">
-    <div class="photos-row">
-      <img *ngFor="let image of images; let i = index" [src]="image.src" [alt]="image.caption" (click)="openLightbox(i)" class="photo-item">
+
+  <!-- Photo Gallery -->
+  <div class="gallery-section">
+    <h3 class="gallery-title">
+      <i class="fas fa-camera"></i>
+      Swiftie Memories
+    </h3>
+    <div class="photo-grid">
+      <img 
+        *ngFor="let image of images; let i = index; trackBy: trackByIndex"
+        [src]="image.src" 
+        [alt]="image.caption" 
+        (click)="openLightbox(i)" 
+        class="gallery-item"
+        loading="lazy"
+      >
     </div>
   </div>
 </div>
+
+<!-- Lightbox Modal -->
+<div 
+  *ngIf="lightboxVisible" 
+  class="lightbox-overlay" 
+  (click)="closeLightbox($event)"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="lightbox-caption"
+>
+  <button 
+    class="lightbox-close" 
+    (click)="closeLightboxDirect()"
+    aria-label="Close lightbox"
+  >
+    <i class="fas fa-times"></i>
+  </button>
   
-  <!-- Lightbox Modal -->
-  <div *ngIf="lightboxVisible" id="lightbox" class="lightbox" (click)="closeLightbox($event)">
-    <span class="close" (click)="closeLightbox($event)">&times;</span>
-    <img class="lightbox-content" [src]="lightboxImage" (click)="$event.stopPropagation()">
-    <div id="caption" class="caption">{{ lightboxCaption }}</div>
-    <a class="prev" (click)="navigate($event, -1)">&lt;</a>
-<a class="next" (click)="navigate($event, 1)">&gt;</a>
+  <img 
+    class="lightbox-image" 
+    [src]="lightboxImage" 
+    [alt]="lightboxCaption"
+    (click)="$event.stopPropagation()"
+  >
+  
+  <div id="lightbox-caption" class="lightbox-caption">
+    {{ lightboxCaption }}
   </div>
   
+  <button 
+    class="lightbox-nav lightbox-prev" 
+    (click)="navigate($event, -1)"
+    aria-label="Previous image"
+  >
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  
+  <button 
+    class="lightbox-nav lightbox-next" 
+    (click)="navigate($event, 1)"
+    aria-label="Next image"
+  >
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  
+  <div class="lightbox-counter">
+    {{ currentIndex + 1 }} / {{ images.length }}
+  </div>
+</div>

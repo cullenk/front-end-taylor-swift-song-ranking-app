@@ -1,44 +1,150 @@
-<div class="container">
-    <div class="header-container">
-      <img class="background-graphic" src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" alt="Background Graphic">
-      <div class="header-div">
-        <h1 class="header-title">Question...?</h1>
-        <h1 class="header-sub-title">Contact Me</h1>
-      </div>
+<div class="contact-container">
+  <!-- Header Section -->
+  <header class="header-container">
+    <img 
+      src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" 
+      alt="Friendship bracelets decoration" 
+      class="background-graphic"
+      loading="lazy"
+    >
+    <div class="header-div">
+      <h1 class="header-title">...Question?</h1>
+      <h2 class="header-subtitle">Let's Chat!</h2>
+      <p class="header-description">
+        Got feedback, suggestions, or just want to say hi? I'd love to hear from you!
+      </p>
     </div>
-  
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+  </header>
+
+  <!-- Contact Form -->
+  <section class="form-section">
+    <form 
+      [formGroup]="contactForm" 
+      (ngSubmit)="onSubmit()" 
+      class="contact-form"
+      novalidate
+    >
+      <!-- Name Field -->
       <div class="form-group">
-        <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name" class="form-input" placeholder="Your Name">
-        <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" class="error-message">
-          Name is required.
+        <label for="name" class="form-label">
+          <i class="fas fa-user" aria-hidden="true"></i>
+          Name <span class="required">*</span>
+        </label>
+        <input 
+          id="name" 
+          type="text" 
+          formControlName="name" 
+          class="form-input"
+          [class.error]="hasFieldError('name')"
+          placeholder="Enter your name"
+          maxlength="50"
+          autocomplete="name"
+        >
+        <div class="error-message" *ngIf="hasFieldError('name')">
+          {{ getFieldError('name') }}
         </div>
       </div>
+
+      <!-- Email Field -->
       <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" class="form-input" placeholder="Your Email">
-        <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error-message">
-          Valid email is required.
+        <label for="email" class="form-label">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          Email <span class="required">*</span>
+        </label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          class="form-input"
+          [class.error]="hasFieldError('email')"
+          placeholder="Enter your email address"
+          maxlength="100"
+          autocomplete="email"
+        >
+        <div class="error-message" *ngIf="hasFieldError('email')">
+          {{ getFieldError('email') }}
         </div>
       </div>
+
+      <!-- Message Field -->
       <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" formControlName="message" class="form-textarea" placeholder="Your Message"></textarea>
-        <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" class="error-message">
-          Message is required.
+        <label for="message" class="form-label">
+          <i class="fas fa-comment" aria-hidden="true"></i>
+          Message <span class="required">*</span>
+        </label>
+        <textarea 
+          id="message" 
+          formControlName="message" 
+          class="form-textarea"
+          [class.error]="hasFieldError('message')"
+          placeholder="Tell me what's on your mind..."
+          maxlength="1000"
+          rows="5"
+        ></textarea>
+        <div class="form-help">
+          <div class="error-message" *ngIf="hasFieldError('message')">
+            {{ getFieldError('message') }}
+          </div>
+          <div class="char-count">
+            {{ getMessageCharCount() }}/1000 characters
+          </div>
         </div>
       </div>
-      <button type="submit" class="submit-button" [disabled]="!contactForm.valid || submitStatus === 'sending'">
-        {{ submitStatus === 'sending' ? 'Sending...' : 'Send' }}
-      </button>
-      
-      <div *ngIf="submitStatus === 'success'" class="success-message">
-        Your message has been sent successfully!
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="submit-button"
+          [class.loading]="submitStatus === 'sending'"
+          [disabled]="submitStatus === 'sending'"
+          [attr.aria-label]="submitStatus === 'sending' ? 'Sending message...' : 'Send message'"
+        >
+          <span *ngIf="submitStatus !== 'sending'" class="button-content">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+            Send Message
+          </span>
+          <span *ngIf="submitStatus === 'sending'" class="button-content">
+            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+            Sending...
+          </span>
+        </button>
       </div>
-      
-      <div *ngIf="submitStatus === 'error'" class="error-message">
-        There was an error sending your message. Please try again later.
+
+      <!-- Status Messages -->
+      <div class="status-messages">
+        <div 
+          *ngIf="submitStatus === 'success'" 
+          class="status-message success-message"
+          role="alert"
+          aria-live="polite"
+        >
+          <i class="fas fa-check-circle" aria-hidden="true"></i>
+          <div class="message-content">
+            <strong>Message sent successfully!</strong>
+            <p>Thanks for reaching out. I'll get back to you soon!</p>
+          </div>
+          <button type="button" class="close-btn" (click)="clearStatus()" aria-label="Close message">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div 
+          *ngIf="submitStatus === 'error'" 
+          class="status-message error-message"
+          role="alert"
+          aria-live="polite"
+        >
+          <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+          <div class="message-content">
+            <strong>Oops! Something went wrong.</strong>
+            <p>Please try again later or reach out through social media.</p>
+          </div>
+          <button type="button" class="close-btn" (click)="clearStatus()" aria-label="Close message">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </div>
     </form>
-  </div>
+  </section>
+</div>

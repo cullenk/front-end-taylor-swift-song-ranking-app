@@ -1,34 +1,127 @@
 <header class="header-main-div">
-      <a routerLink="./userHome"><img class="logo" src="https://d3e29z0m37b0un.cloudfront.net/graphics/Logo+New.svg"></a>
-      <div class="hamburger-icon" (click)="toggleMobileMenu()" (keydown.enter)="toggleMobileMenu()" tabindex="0" role="button" aria-label="Toggle menu" [attr.aria-expanded]="isMobileMenuOpen">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <nav [class.mobile-menu-open]="isMobileMenuOpen" [attr.aria-hidden]="!isMobileMenuOpen">
-        <ul class="header-menu-list">
-          <li class="nav-item">
-            <a routerLink="./userHome" (click)="closeMobileMenu()">Home</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="./about" (click)="closeMobileMenu()">About</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="./rankings" (click)="closeMobileMenu()">Album Rankings</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="./top13list" (click)="closeMobileMenu()">Top 13 List</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="./erasTourBuilder" (click)="closeMobileMenu()">Eras Tour Builder</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="./userProfile" (click)="closeMobileMenu()">My Profile</a>
-          </li>
-          <li class="nav-item" *ngIf="userAuthenticated">
-            <button type="button" class="logout-btn" (click)="logout(); closeMobileMenu()">Logout</button>
-          </li>
-        </ul>
-      </nav>
-  </header>
-  
+  <!-- Logo Section -->
+  <div class="logo-section">
+    <a 
+      routerLink="./userHome" 
+      class="logo-link"
+      aria-label="Swiftie Ranking Hub Home"
+      (click)="closeMobileMenu()"
+    >
+      <img 
+        class="logo" 
+        src="https://d3e29z0m37b0un.cloudfront.net/graphics/Logo+New.svg" 
+        alt="Swiftie Ranking Hub Logo"
+        loading="eager"
+      >
+    </a>
+  </div>
+
+  <!-- Mobile Hamburger Menu -->
+  <button
+    class="hamburger-btn"
+    (click)="toggleMobileMenu()"
+    [class.active]="isMobileMenuOpen"
+    [attr.aria-expanded]="isMobileMenuOpen"
+    [attr.aria-label]="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+    type="button"
+  >
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- Navigation Menu -->
+  <nav 
+    class="nav-menu"
+    [class.mobile-menu-open]="isMobileMenuOpen"
+    [attr.aria-hidden]="!isMobileMenuOpen"
+    role="navigation"
+    aria-label="Main navigation"
+  >
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a 
+          routerLink="./userHome" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a 
+          routerLink="./about" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          <span>About</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a 
+          routerLink="./rankings" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-list-ol" aria-hidden="true"></i>
+          <span>Album Rankings</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a 
+          routerLink="./top13list" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <span>Top 13 List</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a 
+          routerLink="./erasTourBuilder" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-music" aria-hidden="true"></i>
+          <span>Eras Tour Builder</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a 
+          routerLink="./userProfile" 
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMobileMenu()"
+        >
+          <i class="fas fa-user" aria-hidden="true"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      
+      <li class="nav-item logout-item" *ngIf="userAuthenticated">
+        <button 
+          type="button" 
+          class="logout-btn" 
+          (click)="logout()"
+          aria-label="Logout from account"
+        >
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+          <span>Logout</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,108 @@
+<div class="eras-tour-tab">
+  <!-- Header Section -->
+  <div class="tab-header">
+    <h2>Dream Eras Tour Setlist</h2>
+    <p *ngIf="!hasErasTour" class="subtitle">
+      Create your perfect Eras Tour setlist by selecting your favorite songs for each era!
+    </p>
+  </div>
+
+<!-- Action Buttons -->
+<div class="action-buttons" *ngIf="hasErasTour && isEditable">
+  <button class="action-btn edit-btn" (click)="navigateToCreateSetlist()">
+    <i class="fas fa-edit"></i>
+    Edit My Setlist
+  </button>
+</div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Loading your Dream Eras Tour...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="loadingError && !isLoading" class="error-container">
+    <div class="error-message">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ loadingError }}</span>
+      <button class="retry-btn" (click)="loadSetList()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- No Setlist State for Profile Owner (Editable) -->
+  <div *ngIf="!hasErasTour && !isLoading && isEditable" class="no-setlist-container">
+    <div class="no-setlist">
+      <div class="microphone-icon">
+        <i class="fas fa-microphone"></i>
+      </div>
+      <h3>Ready to Create Your Dream Show?</h3>
+      <p>
+        Design the perfect Eras Tour setlist with your favorite songs from each era. 
+        Choose the order, mashups, and surprise songs to create the ultimate Taylor Swift concert experience!
+      </p>
+      <button class="create-setlist-btn" (click)="navigateToCreateSetlist()">
+        <i class="fas fa-magic"></i>
+        Create My Dream Eras Tour
+      </button>
+    </div>
+  </div>
+
+  <!-- No Setlist State for Public View (Not Editable) -->
+  <div *ngIf="!hasErasTour && !isLoading && !isEditable" class="no-setlist-container">
+    <div class="no-setlist public-view">
+      <div class="microphone-icon">
+        <i class="fas fa-microphone-slash"></i>
+      </div>
+      <h3>No Dream Eras Tour Yet</h3>
+      <p>
+        {{ getNoSetlistMessage() }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Setlist Display -->
+  <div *ngIf="hasErasTour && setList.length > 0 && !isLoading" class="setlist-container">
+    <div class="era-grid">
+      <div 
+        *ngFor="let era of setList" 
+        class="era-card" 
+        [ngStyle]="{'background-image': 'url(' + getAlbumCover(era.era) + ')'}">
+        
+        <div class="era-overlay"></div>
+        
+        <div class="era-content">
+          <h3 class="era-title">{{ era.era }}</h3>
+          
+          <!-- Special handling for Surprise Songs -->
+          <div *ngIf="era.era === 'Surprise Songs'; else normalSongs" class="surprise-songs">
+            <div class="surprise-song-item">
+              <div class="surprise-icon guitar-icon">
+                <i class="fas fa-guitar"></i>
+              </div>
+              <span class="song-title">{{ getSurpriseSongs(era.songs).guitar.title }}</span>
+            </div>
+            <div class="surprise-song-item">
+              <div class="surprise-icon piano-icon">
+                <img src="https://d3e29z0m37b0un.cloudfront.net/graphics/pianoIcon.svg" alt="Piano">
+              </div>
+              <span class="song-title">{{ getSurpriseSongs(era.songs).piano.title }}</span>
+            </div>
+          </div>
+          
+          <!-- Regular era songs -->
+          <ng-template #normalSongs>
+            <ol class="song-list">
+              <li *ngFor="let song of era.songs" class="song-item">
+                {{ song.title }}
+                <span *ngIf="song.isMashup" class="mashup-badge">Mashup</span>
+              </li>
+            </ol>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

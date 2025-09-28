@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserProfileService } from '../../../../services/user-profile.service';
@@ -11,11 +11,18 @@ import { UserProfile } from '../../../../interfaces/userProfile';
 import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
 import { Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TabbedProfileBaseComponent } from '../tabbed-profile-base/tabbed-profile-base.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    TabbedProfileBaseComponent
+  ],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
@@ -27,21 +34,31 @@ export class UserProfileComponent implements OnInit {
     rankings: { topThirteen: [] },
     profileQuestions: []
   };
+  
   defaultTheme = 'Fearless';
   defaultImage = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
-  defaultQuestions = [
-    { question: 'What is your cry in the car song?', answer: 'Not answered yet' },
-    { question: 'What are your dream surprise songs?', answer: 'Not answered yet' },
-    { question: 'What album made you a Swiftie?', answer: 'Not answered yet' },
+
+  themes = [
+    'Debut',
+    'Fearless', 
+    'Speak Now',
+    'Red',
+    '1989',
+    'Reputation',
+    'Lover',
+    'Folklore',
+    'Evermore',
+    'Midnights',
+    'The Tortured Poets Department'
   ];
-  themes = ['Debut', 'Fearless', 'Speak Now', 'Red', '1989', 'Reputation', 'Lover', 'Folklore', 'Evermore', 'Midnights', 'The Tortured Poets Department'];
+
   profileImages: string[] = [
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989-2.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/1989.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/benjaminButton.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/cats.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/chiefs.webp',
-    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.webp',    
+    'https://d3e29z0m37b0un.cloudfront.net/profile-images/crazy.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/evermore.webp',
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/fearless.webp',
@@ -81,19 +98,6 @@ export class UserProfileComponent implements OnInit {
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/newheights.webp',
   ];
 
-  themeClassMap: { [key: string]: string } = {
-    'Debut': 'Debut',
-    'Fearless': 'Fearless',
-    'Speak Now': 'SpeakNow',
-    'Red': 'Red',
-    '1989': '_1989',
-    'Reputation': 'Reputation',
-    'Lover': 'Lover',
-    'Folklore': 'Folklore',
-    'Evermore': 'Evermore',
-    'Midnights': 'Midnights',
-    'The Tortured Poets Department': 'TorturedPoets'
-  };
   themeBackgrounds: { [key: string]: string } = {
     'Debut': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/debut-profile-bg.webp',
     'Fearless': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/fearless-profile-bg.webp',
@@ -105,8 +109,9 @@ export class UserProfileComponent implements OnInit {
     'Folklore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/folklore-profile-bg.webp',
     'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
     'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
-    'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp'
+    'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
   };
+
   questions = [
     'What album made you a Swiftie?',
     'What are your dream surprise songs? (Mashups allowed!)',
@@ -122,9 +127,9 @@ export class UserProfileComponent implements OnInit {
     'What is your favorite lyric from any song?',
     'Dream artist collaboration with Taylor?'
   ];
+
   isLoading: boolean = false;
   loadingError: string | null = null;
-  isEditing: boolean = false;
   showProfileImageDialog: boolean = false;
   topFiveAlbums: AlbumRanking[] = [];
   hasErasTour: boolean = false;
@@ -137,7 +142,8 @@ export class UserProfileComponent implements OnInit {
     private albumService: AlbumService,
     private toastr: ToastrService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -147,7 +153,7 @@ export class UserProfileComponent implements OnInit {
     this.checkErasTour();
     this.loadCountries();
   }
-  
+
   loadUserProfile() {
     this.isLoading = true;
     this.loadingError = null;
@@ -157,6 +163,9 @@ export class UserProfileComponent implements OnInit {
         this.loadTopThirteenDetails();
         this.checkErasTour(); 
         this.isLoading = false;
+        
+        // Force change detection after profile is loaded
+        this.cdr.detectChanges();
       },
       error => {
         console.error('Error loading user profile', error);
@@ -166,7 +175,7 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
-   private loadCountries(): void {
+  private loadCountries(): void {
     this.userProfileService.getCountries().subscribe({
       next: (countries) => {
         this.countries = countries;
@@ -177,7 +186,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-    getLoginCountDisplay(): string {
+  getLoginCountDisplay(): string {
     if (!this.userProfile.loginCount || this.userProfile.loginCount === 0) {
       return 'First time here!';
     }
@@ -186,18 +195,18 @@ export class UserProfileComponent implements OnInit {
 
   loadTopFiveAlbums() {
     this.RankingsService.getTopFiveAlbums().subscribe(
-      (albums) => {
+      albums => {
         this.topFiveAlbums = albums;
       },
-      (error) => {
+      error => {
         console.error('Error loading top 5 albums:', error);
       }
     );
   }
-  
+
   setDefaultsIfNeeded(profile: any): UserProfile {
     if (!profile) {
-      return {
+      const newProfile = {
         username: 'New Swiftie',
         theme: this.defaultTheme,
         profileImage: this.defaultImage,
@@ -207,9 +216,11 @@ export class UserProfileComponent implements OnInit {
           answer: ''
         }))
       };
+      
+      return newProfile;
     }
-  
-    return {
+
+    const updatedProfile = {
       ...profile,
       theme: profile.theme || this.defaultTheme,
       profileImage: profile.profileImage || this.defaultImage, 
@@ -219,21 +230,36 @@ export class UserProfileComponent implements OnInit {
         return existingAnswer || { question, answer: '' };
       })
     };
+
+    // If theme was missing, save the default to backend
+    if (!profile.theme) {
+      setTimeout(() => {
+        this.userProfileService.updateTheme(this.defaultTheme).subscribe({
+          next: (response) => {
+            console.log('Default theme saved:', this.defaultTheme);
+            this.userProfile.theme = this.defaultTheme;
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Error saving default theme:', error);
+          }
+        });
+      }, 100);
+    }
+
+    return updatedProfile;
   }
 
   checkErasTour() {
-    // Ensure the userProfile is loaded before checking
     if (this.userProfile && this.userProfile.username) {
       this.userProfileService.hasCompletedErasTourSetlist(this.userProfile.username).subscribe(
         (hasErasTour: boolean) => {
           this.hasErasTour = hasErasTour;
         },
-        (error) => {
+        error => {
           console.error('Error checking Eras Tour:', error);
         }
       );
-    } else {
-      
     }
   }
 
@@ -258,49 +284,36 @@ export class UserProfileComponent implements OnInit {
                 ...song,
                 albumImage: songDetails.albumImageSource,
                 audioSource: songDetails.audioSource,
-                albumCover: song.albumCover || songDetails.albumImageSource,
+                albumCover: song.albumCover || songDetails.albumImageSource
               };
             }
-            return song; // Return the original song if no details were found
+            return song;
           });
           this.userProfile.rankings.topThirteen.sort((a, b) => a.slot - b.slot);
-          this.isLoading = false;
         },
         error => {
-          console.error('Error loading song details', error);
-          this.loadingError = 'Failed to load song details. Please try again.';
-          this.isLoading = false;
+          console.error('Error loading Top 13 song details', error);
         }
       );
-    } else {
-      this.userProfile.rankings = this.userProfile.rankings || {};
-      this.userProfile.rankings.topThirteen = [];
-      this.isLoading = false;
     }
   }
 
   disableAudioRightClick() {
-    document.addEventListener('contextmenu', (e: MouseEvent) => {
-      if (e.target instanceof HTMLElement && e.target.tagName === 'AUDIO') {
-        e.preventDefault();
+    document.addEventListener('contextmenu', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName.toLowerCase() === 'audio') {
+        event.preventDefault();
       }
-    }, false);
+    });
   }
 
   handleAudioPlay(event: Event) {
-    const audioElement = event.target as HTMLAudioElement;
-  
-    // Pause all other audio elements
-    document.querySelectorAll('audio').forEach((audio: HTMLAudioElement) => {
-      if (audio !== audioElement && !audio.paused) {
+    const audios = document.querySelectorAll('audio');
+    audios.forEach(audio => {
+      if (audio !== event.target) {
         audio.pause();
       }
     });
-  
-    // Play the clicked audio
-    if (audioElement.paused) {
-      audioElement.play();
-    }
   }
 
   openProfileImageDialog() {
@@ -329,7 +342,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   getThemeClass(): string {
-    return this.themeClassMap[this.userProfile?.theme] || this.themeClassMap[this.defaultTheme];
+    return this.userProfile?.theme ? 
+      this.getThemeClassMapping()[this.userProfile.theme] || 'Fearless' : 'Fearless';
+  }
+
+  private getThemeClassMapping(): { [key: string]: string } {
+    return {
+      'Debut': 'Debut',
+      'Fearless': 'Fearless',
+      'Speak Now': 'SpeakNow',
+      'Red': 'Red',
+      '1989': '_1989',
+      'Reputation': 'Reputation',
+      'Lover': 'Lover',
+      'Folklore': 'Folklore',
+      'Evermore': 'Evermore',
+      'Midnights': 'Midnights',
+      'The Tortured Poets Department': 'TorturedPoets'
+    };
   }
 
   getThemeBackground(): string {
@@ -339,25 +369,11 @@ export class UserProfileComponent implements OnInit {
     return this.themeBackgrounds[this.defaultTheme];
   }
 
-  startEditing() {
-    this.isEditing = true;
-  }
-
-  sanitizeInput(input: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(input);
-  }
-
-  saveAnswers() {
-    this.isEditing = false;
-    this.updateProfileQuestions();
-  }
-
   updateTheme(theme: string) {
     if (this.userProfile) {
       this.userProfile.theme = theme;
       this.userProfileService.updateTheme(theme).subscribe(
         () => {
-          this.loadUserProfile();
           this.toastr.success('Theme updated successfully!', 'Success');
         },
         error => {
@@ -388,68 +404,34 @@ export class UserProfileComponent implements OnInit {
     this.userProfile.profileQuestions[index].answer = answer || '';
   }
 
-  getProfileShareReasons(): string[] {
-    const reasons: string[] = [];
-    if (!this.userProfile?.rankings?.topThirteen?.length) {
-      reasons.push("Add at least one song to your Top 13");
-    }
-    if (!this.userProfile?.profileQuestions?.some(q => q.answer && q.answer !== '')) {
-      reasons.push("Answer at least one question in the Swiftie Questionnaire");
-    }
-    if (this.topFiveAlbums.length < 5) {
-      reasons.push("Rank your top 5 albums");
-    }
-    return reasons;
-  }
-
-  isProfileShareable(): boolean {
-    const hasTopThirteenSong = this.userProfile?.rankings?.topThirteen?.length > 0;
-    const hasAnsweredQuestion = this.userProfile?.profileQuestions?.some(q => q.answer && q.answer !== '');
-    const hasTopFiveAlbums = this.topFiveAlbums.length === 5;
-    return !!hasTopThirteenSong && !!hasAnsweredQuestion && hasTopFiveAlbums;
-  }
-
-  shareProfile() {
-    if (!this.isProfileShareable()) {
-      this.toastr.warning('Please add at least one song to your Top 13 and answer at least one question before sharing your profile.', 'Cannot Share Yet', {
-        timeOut: 5000
-      });
+  onCountryChange(country: string): void {
+    if (country === '') {
       return;
     }
 
-    const shareUrl = `${window.location.origin}/public-profile/${this.userProfile.username}`;
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      this.toastr.success('Profile link copied to clipboard!', 'Success', {
-        timeOut: 3000
-      });
-    }, (err) => {
-      this.toastr.error('Could not copy profile link', 'Error', {
-        timeOut: 3000
-      });
+    this.userProfileService.updateCountry(country).subscribe({
+      next: (updatedProfile) => {
+        this.userProfile = {
+          ...this.userProfile,
+          country: updatedProfile.country,
+          loginCount: updatedProfile.loginCount
+        };
+        this.selectedCountry = country;
+        console.log('Country updated successfully');
+      },
+      error: (error) => {
+        console.error('Error updating country:', error);
+        this.selectedCountry = this.userProfile.country || null;
+      }
     });
   }
 
-onCountryChange(country: string): void {
-  // Don't update if user selected the placeholder option
-  if (country === '') {
-    return;
+  // Event handlers for tabbed profile base
+  onQuestionUpdated(data: { index: number; answer: string }) {
+    this.updateQuestionAnswer(data.index, { target: { textContent: data.answer } });
   }
 
-  this.userProfileService.updateCountry(country).subscribe({
-    next: (updatedProfile) => {
-      this.userProfile = {
-        ...this.userProfile,  // Keep all existing data
-        country: updatedProfile.country,  // Update only the country
-        loginCount: updatedProfile.loginCount,
-      };
-      this.selectedCountry = country;
-      console.log('Country updated successfully');
-    },
-    error: (error) => {
-      console.error('Error updating country:', error);
-      // Reset the dropdown on error
-      this.selectedCountry = this.userProfile.country || null;
-    }
-  });
-}
+  onSaveAnswers() {
+    this.updateProfileQuestions();
+  }
 }

@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
+/* ================================
+   GLOBAL STYLES
+================================ */
 :root {
   font-size: 16px;
 }
@@ -10,6 +13,9 @@ body {
   padding: 0;
 }
 
+/* ================================
+   MAIN CONTAINER
+================================ */
 .login-container {
   display: flex;
   height: 100vh;
@@ -18,6 +24,9 @@ body {
   font-size: 1rem;
 }
 
+/* ================================
+   ALBUM COVERS SECTION
+================================ */
 .album-covers-container {
   position: relative;
   flex: 1;
@@ -30,6 +39,17 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+
+.random-square {
+  position: absolute;
+  border-radius: 8px;
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+}
+
+.random-square:hover {
+  transform: rotate(0deg) scale(1.1);
 }
 
 .album-columns {
@@ -54,7 +74,7 @@ body {
   max-width: 150px;
   height: auto;
   margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -62,6 +82,9 @@ body {
   transform: scale(1.05);
 }
 
+/* ================================
+   LOGIN FORM SECTION
+================================ */
 .login-form-container {
   flex: 1;
   display: flex;
@@ -80,31 +103,41 @@ h1 {
   text-align: center;
 }
 
-.login-form {
+/* ================================
+   FORMS STYLING - FIXED CONSISTENCY
+================================ */
+.login-form,
+.forgot-password-form {
   width: 100%;
-  margin-bottom: 10px;
   max-width: 350px;
+  margin-bottom: 10px;
   z-index: 5;
 }
 
 .form-group {
   margin-bottom: 15px;
+  width: 100%;
 }
 
-.error-message {
-  color: #ff0000;
-  font-size: 0.8em;
-  margin-top: 5px;
-}
-
-.login-form input {
-  width: 94%;
-  max-width: 100%;
-  padding: 10px;
+/* Consistent input styling for all forms */
+.login-form input,
+.forgot-password-form input {
+  width: 100%;
+  padding: 12px 15px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input:focus,
+.forgot-password-form input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
 .login-form p {
@@ -114,105 +147,151 @@ h1 {
   text-align: center;
 }
 
-.login-form button {
+/* ================================
+   PASSWORD INPUT - FIXED OVERFLOW
+================================ */
+.password-input-container {
+  position: relative;
   width: 100%;
-  padding: 10px;
-  background-color: #266DD3;
+  margin-bottom: 10px;
+}
+
+.password-input-container input {
+  width: 100%;
+  padding: 12px 45px 12px 15px; /* Extra right padding for eye icon */
+  margin-bottom: 0; /* Remove margin since container handles spacing */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+.password-input-container input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #266DD3;
+  z-index: 3;
+  font-size: 1rem;
+  padding: 2px;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #1a5bb8;
+}
+
+/* ================================
+   PASSWORD STRENGTH METER
+================================ */
+.password-strength-meter {
+  width: 100%;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  margin: 8px 0 10px 0;
+  overflow: hidden;
+}
+
+.password-strength-meter .meter {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4444 0%, #ffaa00 50%, #00aa00 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* ================================
+   BUTTONS - CONSISTENT WIDTH
+================================ */
+.login-form button,
+.forgot-password-form button {
+  display: block;
+  width: 100%;
+  margin: 15px 0 12px 0;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.1s ease;
-  font-size: 1.1rem; 
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-sizing: border-box;
 }
 
-.login-form button:hover {
-  background-color: #1151aa;
+.login-form button:hover,
+.forgot-password-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
+.login-form button:active,
+.forgot-password-form button:active {
+  transform: translateY(0);
+}
+
+.login-form button:disabled,
+.forgot-password-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ================================
+   ERROR MESSAGES
+================================ */
+.error-message {
+  color: #ff4444;
+  font-size: 0.8em;
+  margin: 5px 0 10px 0;
+  line-height: 1.4;
+  padding: 0;
+}
+
+/* ================================
+   SUB LINKS
+================================ */
 .sub-links {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 0.9rem;
+  width: 100%;
+  max-width: 350px;
 }
 
 .sub-links a {
   cursor: pointer;
   text-align: center;
-  margin: 25px;
+  margin: 0 10px;
   color: #FFF;
   text-decoration: none;
   transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 4px;
 }
 
 .sub-links a:hover {
   color: #a6cafc;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.random-square {
-  position: absolute;
-  border-radius: 8px;
-  transform: rotate(45deg);
-  transition: all 0.3s ease;
-}
-
-.random-square:hover {
-  transform: rotate(0deg) scale(1.1);
-}
-
-.password-input-container {
-  position: relative;
-}
-
-.password-input-container input {
-  display: flex;
-  align-items: center;
-}
-
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #266DD3;
-}
-
-
-
-.forgot-password-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 300px;
-
-  input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-
-  }
-
-  button {
-    padding: 10px;
-    background-color: #266DD3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.1s ease;
-    font-size: 1.1rem;
-
-
-    &:hover {
-      background-color: #1151aa;
-    }
-  }
-}
-
+/* ================================
+   RESPONSIVE DESIGN - MOBILE
+================================ */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
@@ -232,24 +311,76 @@ h1 {
     position: relative;
     z-index: 3;
     justify-content: flex-start;
-    padding-top: 50px;
-    background-color: rgba(52, 64, 85, 0.7);
+    padding: 50px 15px 15px 15px;
+    background-color: rgba(52, 64, 85, 0.9);
   }
 
   h1 {
     font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .login-form,
+  .forgot-password-form {
+    max-width: 320px;
   }
 
   .sub-links {
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    max-width: 320px;
   }
 
   .sub-links a {
-    margin: 10px 0;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Mobile input adjustments */
+  .login-form input,
+  .forgot-password-form input,
+  .password-input-container input {
+    padding: 14px 15px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  .password-input-container input {
+    padding-right: 45px;
+  }
+
+  .password-toggle {
+    right: 12px;
   }
 }
 
+/* ================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+================================ */
+@media screen and (max-width: 480px) {
+  .login-form-container {
+    padding: 40px 10px 10px 10px;
+  }
+
+  .login-form,
+  .forgot-password-form {
+    max-width: 280px;
+  }
+
+  .sub-links {
+    max-width: 280px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    max-width: 280px;
+  }
+}
+
+/* ================================
+   RESPONSIVE DESIGN - LARGER SCREENS
+================================ */
 @media screen and (min-width: 769px) {
   :root {
     font-size: 18px;
@@ -259,5 +390,44 @@ h1 {
 @media screen and (min-width: 1024px) {
   :root {
     font-size: 20px;
+  }
+}
+
+/* ================================
+   ACCESSIBILITY ENHANCEMENTS
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  .album-cover,
+  .random-square,
+  .column,
+  .login-form button,
+  .forgot-password-form button,
+  .login-form input,
+  .forgot-password-form input,
+  .password-toggle {
+    transition: none;
+  }
+
+  .album-cover:hover,
+  .random-square:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .login-form input,
+  .forgot-password-form input,
+  .password-input-container input {
+    border: 2px solid #000;
+  }
+
+  .password-toggle {
+    color: #000;
+  }
+
+  .error-message {
+    color: #ff0000;
+    font-weight: bold;
   }
 }

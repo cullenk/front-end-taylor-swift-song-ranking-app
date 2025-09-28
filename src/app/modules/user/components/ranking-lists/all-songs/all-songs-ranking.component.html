@@ -1,93 +1,111 @@
-<div class="all-songs-ranking-container">
-  <div class="header-container">
-    <img
-      class="background-graphic"
-      src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.png"
-      alt="Background Graphic"
-    />
-    <div class="header-div">
-      <h1 class="header-title">...Ready For It?</h1>
-      <h1 class="header-sub-title">Rank All Taylor Swift Songs</h1>
-    </div>
-  </div>
+<div class="album-ranking-container">
+  <!-- Background overlay for consistency -->
+  <div class="background-overlay"></div>
 
-  <div class="intro-container">
-    <button class="back-btn" (click)="goBackToAlbumRankings()"><i class="fas fa-arrow-left"></i>Back</button>
-    <p>Here are the basic rules:</p>
-    <ul>
-      <li>
-        Rank your favorite songs by dragging them to your preferred position
-        using the drag handle on the left.
-      </li>
-      <li>
-        You may also use the input fields next to each song to manually set a
-        rank and avoid excess scrolling.
-      </li>
-      <li>Each song must have a unique rank number.</li>
-      <li>
-        If two songs have the same rank, you won't be able to save your
-        rankings.
-      </li>
-      <li>
-        To resolve a duplicate ranking, simply drag any song to a new position
-        and it will refresh your list.
-      </li>
-      <li>
-        Make sure to click "Save Ranking" once you're satisfied with your list.
-        Have fun!
-      </li>
-    </ul>
-  </div>
-
-  <div class="save-button-container">
-    <button
-  (click)="saveRanking()"
-  class="save-button"
-  [ngClass]="{'disabled': isLoading || hasDuplicateRanks || hasInvalidRanks}"
-  [disabled]="isLoading || hasDuplicateRanks || hasInvalidRanks"
->
-  Save Ranking
-</button>
-    <div *ngIf="hasInvalidRanks" class="warning">
-      Warning: There are invalid ranks. Please ensure all ranks are whole
-      numbers between 1 and {{ allSongsRanking.length }}.
-    </div>
-    <div *ngIf="hasDuplicateRanks" class="warning">
-      Warning: There are duplicate ranks. Please resolve conflicts for rank(s):
-      {{ duplicateRanks.join(", ") }}.
-    </div>
-  </div>
-  <div *ngIf="isLoading" class="loading-indicator">Loading...</div>
-  <div
-    cdkDropList
-    (cdkDropListDropped)="drop($event)"
-    class="song-list"
-    *ngIf="!isLoading"
-  >
-    <div
-      *ngFor="let song of allSongsRanking"
-      cdkDrag
-      class="song-item"
-      [ngClass]="{ 'duplicate-rank': duplicateRanks.includes(song.rank) }"
-    >
-      <div cdkDragHandle class="drag-handle">☰</div>
-      <img
-        [src]="song.albumImageSource"
-        alt="{{ song.albumName }} cover"
-        class="album-cover"
-      />
-      <div class="song-info">
-        <span class="song-title">{{ song.songTitle }}</span>
-        <span class="album-name">{{ song.albumName }}</span>
+  <div class="media-column">
+    <!-- Header content in media column -->
+    <div class="header-container">
+      <div class="header-div">
+        <h1 class="header-title">...Ready For It?</h1>
+        <h2 class="header-sub-title">Rank All Taylor Swift Songs</h2>
       </div>
-      <input
-        type="number"
-        [(ngModel)]="song.rank"
-        (change)="onRankChange(song, song.rank)"
-        class="rank-input"
-        min="1"
-        [max]="allSongsRanking.length"
-      />
+    </div>
+
+    <!-- Rules moved to media column -->
+    <div class="intro-container">
+      <h3>Here are the basic rules:</h3>
+      <ul>
+        <li>Drag songs to your preferred position using the drag handle</li>
+        <li>Use input fields to manually set ranks and avoid scrolling</li>
+        <li>Each song must have a unique rank number</li>
+        <li>Resolve duplicates by dragging songs to new positions</li>
+        <li>Click "Save Ranking" when satisfied with your list</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ranking-column">
+    <div class="content-div">
+      <button class="back-btn" (click)="goBackToAlbumRankings()">
+        <i class="fas fa-arrow-left"></i>Back
+      </button>
+      <p>My Rankings For:</p>
+      <h1>All Taylor Swift Songs</h1>
+      <p>Released: 2006-Present</p>
+      <p class="helper-text">
+        Ranking {{ allSongsRanking.length }} songs total
+      </p>
+    </div>
+
+    <!-- Save button and warnings -->
+    <div class="save-button-container">
+      <button
+        (click)="saveRanking()"
+        class="save-button"
+        [ngClass]="{
+          disabled: isLoading || hasDuplicateRanks || hasInvalidRanks
+        }"
+        [disabled]="isLoading || hasDuplicateRanks || hasInvalidRanks"
+      >
+        <i class="fas fa-save"></i>
+        {{ isLoading ? "Saving..." : "Save Ranking" }}
+      </button>
+
+      <div *ngIf="hasInvalidRanks" class="warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Warning: Invalid ranks detected. Please ensure all ranks are whole
+        numbers between 1 and {{ allSongsRanking.length }}.
+      </div>
+
+      <div *ngIf="hasDuplicateRanks" class="warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Warning: Duplicate ranks found for: {{ duplicateRanks.join(", ") }}
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <i class="fas fa-spinner fa-spin"></i>
+      Loading songs...
+    </div>
+
+    <!-- Songs list -->
+    <div
+      class="song-list"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+      *ngIf="!isLoading"
+    >
+      <div
+        *ngFor="let song of allSongsRanking; trackBy: trackBySongId"
+        cdkDrag
+        class="song-item"
+        [ngClass]="{ 'duplicate-rank': duplicateRanks.includes(song.rank) }"
+      >
+        <div cdkDragHandle class="drag-handle">
+          <i class="fas fa-grip-vertical"></i>
+        </div>
+        <span class="rank-number">{{ song.rank }}.</span>
+        <img
+          [src]="song.albumImageSource"
+          [alt]="song.albumName + ' cover'"
+          class="album-cover-small"
+          loading="lazy"
+        />
+        <div class="song-info">
+          <strong class="song-title">{{ song.songTitle }}</strong>
+          <span class="album-name">{{ song.albumName }}</span>
+        </div>
+        <input
+          type="number"
+          [(ngModel)]="song.rank"
+          (change)="onRankChange(song, song.rank)"
+          class="rank-input"
+          min="1"
+          [max]="allSongsRanking.length"
+          [attr.aria-label]="'Rank for ' + song.songTitle"
+        />
+      </div>
     </div>
   </div>
 </div>

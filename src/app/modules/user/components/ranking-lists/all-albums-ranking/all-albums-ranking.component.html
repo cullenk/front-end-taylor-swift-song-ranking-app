@@ -1,23 +1,41 @@
 <div class="album-ranking-container">
-    <div class="media-column">
-      <img src="https://d3e29z0m37b0un.cloudfront.net/All-Albums.svg" alt="Album Cover" class="album-cover">
+  <div class="background-overlay"></div>
+
+  <div class="media-column">
+    <img
+      src="https://d3e29z0m37b0un.cloudfront.net/All-Albums.svg"
+      alt="Album Cover"
+      class="album-cover"
+    />
+  </div>
+
+  <div class="ranking-column">
+    <div class="content-div">
+      <button class="back-btn" (click)="goBackToAlbumRankings()">
+        <i class="fas fa-arrow-left"></i>Back
+      </button>
+      <p>My Rankings For:</p>
+      <h1>All Taylor Swift Albums</h1>
+      <p>Released: 2006-Present</p>
+      <p class="helper-text">Click and drag an album to reorder your list!</p>
     </div>
-    <div class="ranking-column">
-      <div class="content-div">
-      <button class="back-btn" (click)="goBackToAlbumRankings()"><i class="fas fa-arrow-left"></i>Back</button>
-        <p>My Rankings For:</p>
-        <h1>All Taylor Swift Albums</h1>
-        <p>Released: 2006-Present</p>
-        <p class="helper-text">Click and drag an album to reorder your list!</p>
-      </div>
-      <div class="album-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
-        <div class="album-item" *ngFor="let album of albums; let i = index" cdkDrag>
-          <span class="rank-number">{{ i + 1 }}.</span>
-          <div class="cover-title-div">
-            <img [src]="album.albumCover" alt="{{ album.title }} Cover" class="album-cover-small">
-            <span class="album-title">{{ album.title }}</span>
-          </div>
+
+    <div class="album-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
+      <div
+        class="album-item"
+        *ngFor="let album of albums; let i = index"
+        cdkDrag
+      >
+        <span class="rank-number">{{ i + 1 }}.</span>
+        <div class="cover-title-div">
+          <img
+            [src]="album.albumCover"
+            alt="{{ album.title }} Cover"
+            class="album-cover-small"
+          />
+          <span class="album-title">{{ album.title }}</span>
         </div>
       </div>
     </div>
   </div>
+</div>
