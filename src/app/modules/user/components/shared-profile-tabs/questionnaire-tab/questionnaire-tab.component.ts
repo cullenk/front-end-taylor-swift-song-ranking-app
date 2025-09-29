@@ -65,14 +65,23 @@ export class QuestionnaireTabComponent {
   }
 
   // Check if a question has been answered
- hasAnswer(answer: any): boolean {
-  if (!answer) {
-    return false;
+  hasAnswer(answer: any): boolean {
+    if (!answer) {
+      return false;
+    }
+    
+    const answerStr = String(answer).trim();
+    return answerStr !== '' && answerStr !== 'undefined' && answerStr !== 'null';
   }
-  
-  const answerStr = String(answer).trim();
-  return answerStr !== '' && answerStr !== 'undefined' && answerStr !== 'null';
-}
+
+  // Check if any questions have been answered
+  hasAnyAnswers(): boolean {
+    if (!this.profileQuestions || this.profileQuestions.length === 0) {
+      return false;
+    }
+    
+    return this.profileQuestions.some(questionObj => this.hasAnswer(questionObj.answer));
+  }
 
   // Get the appropriate unanswered text based on context
   getUnansweredText(): string {

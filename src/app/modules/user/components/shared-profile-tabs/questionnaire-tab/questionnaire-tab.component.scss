@@ -22,6 +22,94 @@
 }
 
 /* ========================================
+   EMPTY STATE STYLING
+   ======================================== */
+.no-answers-message {
+  margin: 40px auto;
+  text-align: center;
+  
+  .empty-state {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      margin: 0 0 15px 0;
+      color: #333;
+      font-weight: 600;
+      font-family: "Caveat", cursive;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #666;
+      margin: 10px 0;
+      line-height: 1.5;
+      font-family: "Lucida Sans", "Lucida Sans Regular", sans-serif;
+
+      &.subtle-text {
+        color: #888;
+        font-size: 1rem;
+        font-style: italic;
+      }
+    }
+  }
+
+  // Special styling for owner's empty state
+  &.owner .empty-state {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+
+    .empty-icon {
+      color: #667eea;
+    }
+
+    h3 {
+      color: #667eea;
+    }
+  }
+}
+
+.get-started-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: "Caveat", cursive;
+  font-size: 1.3em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a42a0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    background: linear-gradient(135deg, #4e5fc4 0%, #5e3a96 100%);
+  }
+}
+
+/* ========================================
    BUTTONS
    ======================================== */
 .edit-button,
@@ -150,6 +238,12 @@
         content: "Type your answer here...";
         color: #667eea;
       }
+
+      .unanswered-text {
+        color: #999;
+        font-style: italic;
+        opacity: 0.8;
+      }
     }
   }
 }
@@ -265,6 +359,24 @@
       }
     }
 
+    .no-answers-message .empty-state {
+      margin: 0 15px;
+      padding: 30px 20px;
+
+      h3 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .get-started-button {
+      font-size: 1.1em;
+      padding: 10px 25px;
+    }
+
     .question-list {
       .question-item {
         padding: 12px;
@@ -291,6 +403,27 @@
       h2 {
         font-size: 1.8rem;
       }
+    }
+
+    .no-answers-message .empty-state {
+      padding: 25px 15px;
+
+      .empty-icon {
+        font-size: 2.5rem;
+      }
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+
+    .get-started-button {
+      font-size: 1rem;
+      padding: 10px 20px;
     }
 
     .question-list {

@@ -15,7 +15,8 @@
     <div class="intro-container">
       <h3>Here are the basic rules:</h3>
       <ul>
-        <li>Drag songs to your preferred position using the drag handle</li>
+        <li class="desktop-rule">Drag songs to your preferred position using the drag handle</li>
+        <li class="mobile-rule">Use the <i class="fas fa-grip-vertical"></i> handle to drag songs on mobile</li>
         <li>Use input fields to manually set ranks and avoid scrolling</li>
         <li>Each song must have a unique rank number</li>
         <li>Resolve duplicates by dragging songs to new positions</li>
@@ -33,7 +34,8 @@
       <h1>All Taylor Swift Songs</h1>
       <p>Released: 2006-Present</p>
       <p class="helper-text">
-        Ranking {{ allSongsRanking.length }} songs total
+        <span class="desktop-text">Ranking {{ allSongsRanking.length }} songs total - drag or use input fields</span>
+        <span class="mobile-text">Ranking {{ allSongsRanking.length }} songs - use <i class="fas fa-grip-vertical"></i> handles or input fields</span>
       </p>
     </div>
 
@@ -82,29 +84,36 @@
         class="song-item"
         [ngClass]="{ 'duplicate-rank': duplicateRanks.includes(song.rank) }"
       >
-        <div cdkDragHandle class="drag-handle">
+        <!-- Drag Handle -->
+        <div class="drag-handle" cdkDragHandle>
           <i class="fas fa-grip-vertical"></i>
         </div>
+        
         <span class="rank-number">{{ song.rank }}.</span>
+        
         <img
           [src]="song.albumImageSource"
           [alt]="song.albumName + ' cover'"
           class="album-cover-small"
           loading="lazy"
         />
+        
         <div class="song-info">
           <strong class="song-title">{{ song.songTitle }}</strong>
           <span class="album-name">{{ song.albumName }}</span>
         </div>
-        <input
-          type="number"
-          [(ngModel)]="song.rank"
-          (change)="onRankChange(song, song.rank)"
-          class="rank-input"
-          min="1"
-          [max]="allSongsRanking.length"
-          [attr.aria-label]="'Rank for ' + song.songTitle"
-        />
+        
+        <div class="rank-input-container">
+          <input
+            type="number"
+            [(ngModel)]="song.rank"
+            (change)="onRankChange(song, song.rank)"
+            class="rank-input"
+            min="1"
+            [max]="allSongsRanking.length"
+            [attr.aria-label]="'Rank for ' + song.songTitle"
+          />
+        </div>
       </div>
     </div>
   </div>

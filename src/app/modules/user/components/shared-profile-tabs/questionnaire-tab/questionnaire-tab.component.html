@@ -19,8 +19,34 @@
       </button>
     </div>
   </div>
+
+  <!-- Show message when no questions are answered (for public profiles only) -->
+  <div *ngIf="!isOwner && !hasAnyAnswers()" class="no-answers-message">
+    <div class="empty-state">
+      <div class="empty-icon">📝</div>
+      <h3>No Questionnaire Answers Yet</h3>
+      <p>{{ userProfile?.username || 'This user' }} hasn't filled out their Swiftie questionnaire yet.</p>
+      <p class="subtle-text">Check back later to see their answers!</p>
+    </div>
+  </div>
+
+  <!-- Show message when no questions are answered (for profile owners) -->
+  <div *ngIf="isOwner && !hasAnyAnswers() && !isEditing" class="no-answers-message owner">
+    <div class="empty-state">
+      <div class="empty-icon">✨</div>
+      <h3>Share Your Swiftie Story!</h3>
+      <p>Let other Swifties get to know you by answering these fun questions.</p>
+      <button
+        (click)="startEditing()"
+        class="get-started-button"
+      >
+        Get Started
+      </button>
+    </div>
+  </div>
   
-  <div class="question-list">
+  <!-- Show questions list when there are answers OR when editing -->
+  <div *ngIf="hasAnyAnswers() || (isOwner && isEditing)" class="question-list">
     <div
       *ngFor="let questionObj of profileQuestions; let i = index"
       class="question-item"

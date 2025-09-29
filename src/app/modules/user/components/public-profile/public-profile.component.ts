@@ -82,33 +82,44 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  ngOnInit() {
-    const username = this.route.snapshot.paramMap.get('username');
-    if (username) {
-      this.userProfileService.getPublicProfile(username).subscribe(
-        (data: UserProfile) => {
-          this.userProfile = this.setDefaultsIfNeeded(data);
-          this.sortProfileQuestions();
-          this.loadTopThirteenDetails();
-          this.loadTopFiveAlbums(username);
-          this.checkErasTourSetlist(username);
-          this.updateMetaTags(username);
-        },
-        (error) => {
-          console.error(`Error fetching public profile for ${username}`, error);
-          this.error = 'Failed to load profile. Please try again.';
-          this.isLoading = false;
-        }
-      );
-    } else {
-      this.error = 'No username provided';
-      this.isLoading = false;
-    }
-
-    if (isPlatformBrowser(this.platformId)) {
-      this.disableAudioRightClick();
-    }
+ngOnInit() {
+  const username = this.route.snapshot.paramMap.get('username');
+  // console.log(`🔍 [PUBLIC-PROFILE] Initializing public profile for: ${username}`);
+  
+  if (username) {
+    this.userProfileService.getPublicProfile(username).subscribe(
+      (data: UserProfile) => {
+        // console.log(`✅ [PUBLIC-PROFILE] Received user profile data for ${username}:`, data);
+        // console.log(`📊 [PUBLIC-PROFILE] User profile rankings structure:`, {
+        //   hasRankings: !!data.rankings,
+        //   hasAlbumRankings: !!(data.rankings?.albumRankings),
+        //   hasAllAlbums: !!(data.rankings?.albumRankings?.allAlbums),
+        //   hasTrackRankings: !!(data.rankings?.trackRankings),
+        //   hasAllSongsRanking: !!(data.rankings?.allSongsRanking),
+        //   allAlbumsCount: data.rankings?.albumRankings?.allAlbums?.length || 0,
+        //   trackRankingsCount: data.rankings?.trackRankings?.length || 0,
+        //   allSongsRankingCount: data.rankings?.allSongsRanking?.length || 0
+        // });
+        
+        this.userProfile = this.setDefaultsIfNeeded(data);
+        this.sortProfileQuestions();
+        this.loadTopThirteenDetails();
+        this.loadTopFiveAlbums(username);
+        this.checkErasTourSetlist(username);
+        this.updateMetaTags(username);
+      },
+      (error) => {
+        console.error(`💥 [PUBLIC-PROFILE] Error fetching public profile for ${username}`, error);
+        this.error = 'Failed to load profile. Please try again.';
+        this.isLoading = false;
+      }
+    );
+  } else {
+    console.error(`❌ [PUBLIC-PROFILE] No username provided`);
+    this.error = 'No username provided';
+    this.isLoading = false;
   }
+}
 
   ngOnDestroy() {
     if (isPlatformBrowser(this.platformId)) {
@@ -120,16 +131,18 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadTopFiveAlbums(username: string) {
-    this.rankingsService.getTopFiveAlbums(username).subscribe(
-      (albums) => {
-        this.topFiveAlbums = albums;
-      },
-      (error) => {
-        console.error('Error loading top 5 albums:', error);
-      }
-    );
-  }
+ loadTopFiveAlbums(username: string) {
+  // console.log(`🔍 [PUBLIC-PROFILE] Loading top 5 albums for: ${username}`);
+  this.rankingsService.getTopFiveAlbums(username).subscribe(
+    (albums) => {
+      // console.log(`✅ [PUBLIC-PROFILE] Received top 5 albums for ${username}:`, albums);
+      this.topFiveAlbums = albums;
+    },
+    (error) => {
+      console.error(`💥 [PUBLIC-PROFILE] Error loading top 5 albums for ${username}:`, error);
+    }
+  );
+}
 
   checkErasTourSetlist(username: string) {
     this.userProfileService.hasCompletedErasTourSetlist(username).subscribe(

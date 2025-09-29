@@ -11,7 +11,6 @@
   <div class="background-overlay"></div>
 
   <div class="media-column">
-    
     <img
       [src]="albumConfig.coverImage"
       [alt]="albumConfig.displayName + ' Cover'"
@@ -21,22 +20,32 @@
 
   <div class="ranking-column">
     <div class="content-div">
-    <button class="back-btn" (click)="goBackToAlbumRankings()">
-      <i class="fas fa-arrow-left"></i>Back
-    </button>
+      <button class="back-btn" (click)="goBackToAlbumRankings()">
+        <i class="fas fa-arrow-left"></i>Back
+      </button>
       <p>My Rankings For:</p>
       <h1>{{ albumConfig.displayName }}</h1>
       <p>Released: {{ albumConfig.releaseDate }}</p>
-      <p class="helper-text">Click and drag a song to reorder your list!</p>
+      <p class="helper-text">
+        <span class="desktop-text">Click and drag a song or use the <i class="fas fa-grip-vertical"></i> handle to reorder your list!</span>
+        <span class="mobile-text">Use the <i class="fas fa-grip-vertical"></i> handle to drag songs!</span>
+      </p>
     </div>
 
     <div class="song-list" cdkDropList (cdkDropListDropped)="onDrop($event)">
       <div class="song-item" *ngFor="let song of songs; let i = index" cdkDrag>
+        <!-- Drag Handle -->
+        <div class="drag-handle" cdkDragHandle>
+          <i class="fas fa-grip-vertical"></i>
+        </div>
+        
         <span class="rank-number">{{ i + 1 }}.</span>
+        
         <div class="song-info">
           <strong class="song-title">{{ song.title }}</strong>
           <span class="album-name">{{ song.album }}</span>
         </div>
+        
         <audio
           #audioPlayer
           controls

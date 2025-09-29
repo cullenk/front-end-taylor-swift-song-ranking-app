@@ -232,19 +232,38 @@ export class AlbumRankingsTabComponent implements OnInit {
   }
 
   // Load perfect album (first song from each track position)
-  loadPerfectAlbum() {
+    loadPerfectAlbum() {
     this.isLoading = true;
-    this.rankingsService.getPerfectAlbum().subscribe(
-      (perfectAlbum: TrackRankingSummary[]) => {
-        this.selectedTrackRankings = perfectAlbum;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error loading perfect album:', error);
-        this.selectedTrackRankings = [];
-        this.isLoading = false;
+    
+    if (this.isOwner) {
+      // Use authenticated endpoint
+      this.rankingsService.getPerfectAlbum().subscribe(
+        (perfectAlbum: TrackRankingSummary[]) => {
+          this.selectedTrackRankings = perfectAlbum;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error loading perfect album:', error);
+          this.selectedTrackRankings = [];
+          this.isLoading = false;
+        }
+      );
+    } else {
+      // Use public endpoint
+      if (this.userProfile?.username) {
+        this.rankingsService.getPublicPerfectAlbum(this.userProfile.username).subscribe(
+          (perfectAlbum: TrackRankingSummary[]) => {
+            this.selectedTrackRankings = perfectAlbum;
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error('Error loading public perfect album:', error);
+            this.selectedTrackRankings = [];
+            this.isLoading = false;
+          }
+        );
       }
-    );
+    }
   }
 
   // Load top songs summary
@@ -293,23 +312,46 @@ export class AlbumRankingsTabComponent implements OnInit {
 
   loadAlbumRankings(albumKey: string) {
     this.isLoading = true;
-    this.rankingsService.getUserRankings().subscribe(
-      (rankings: any) => {
-        if (rankings?.albumRankings?.[albumKey]) {
-          const albumRankings = rankings.albumRankings[albumKey];
-          this.selectedAlbumRankings =
-            this.convertToAlbumSongRankings(albumRankings);
-        } else {
+    
+    if (this.isOwner) {
+      // Use authenticated endpoint for user's own profile
+      this.rankingsService.getUserRankings().subscribe(
+        (rankings: any) => {
+          if (rankings?.albumRankings?.[albumKey]) {
+            const albumRankings = rankings.albumRankings[albumKey];
+            this.selectedAlbumRankings = this.convertToAlbumSongRankings(albumRankings);
+          } else {
+            this.selectedAlbumRankings = [];
+          }
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error loading album rankings:', error);
           this.selectedAlbumRankings = [];
+          this.isLoading = false;
         }
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error loading album rankings:', error);
-        this.selectedAlbumRankings = [];
-        this.isLoading = false;
+      );
+    } else {
+      // Use public endpoint for public profiles
+      if (this.userProfile?.username) {
+        this.rankingsService.getPublicUserRankings(this.userProfile.username).subscribe(
+          (rankings: any) => {
+            if (rankings?.albumRankings?.[albumKey]) {
+              const albumRankings = rankings.albumRankings[albumKey];
+              this.selectedAlbumRankings = this.convertToAlbumSongRankings(albumRankings);
+            } else {
+              this.selectedAlbumRankings = [];
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error('Error loading public album rankings:', error);
+            this.selectedAlbumRankings = [];
+            this.isLoading = false;
+          }
+        );
       }
-    );
+    }
   }
 
   loadMoreSongs() {
@@ -322,83 +364,144 @@ export class AlbumRankingsTabComponent implements OnInit {
     }
   }
 
-  loadAllAlbumRankings() {
-    this.isLoadingAllAlbums = true;
+loadAllAlbumRankings() {
+  // console.log(`🔍 [FRONTEND] Loading all album rankings. isOwner: ${this.isOwner}, username: ${this.userProfile?.username}`);
+  this.isLoadingAllAlbums = true;
+  
+  // Use different endpoints based on whether this is a public profile
+  if (this.isOwner) {
+    // For user's own profile, use authenticated endpoint
     this.rankingsService.getUserRankings().subscribe(
       (rankings: any) => {
+        // console.log(`✅ [FRONTEND-OWNER] Received rankings:`, rankings);
         if (rankings?.albumRankings?.allAlbums) {
+          // console.log(`📋 [FRONTEND-OWNER] Processing allAlbums:`, rankings.albumRankings.allAlbums);
           this.allAlbumRankings = rankings.albumRankings.allAlbums.sort(
             (a: AlbumRanking, b: AlbumRanking) => a.rank - b.rank
           );
         } else {
+          // console.log(`❌ [FRONTEND-OWNER] No allAlbums found in rankings`);
           this.allAlbumRankings = [];
         }
+        // console.log(`🏆 [FRONTEND-OWNER] Final allAlbumRankings:`, this.allAlbumRankings);
         this.isLoadingAllAlbums = false;
       },
       (error) => {
-        console.error('Error loading all album rankings:', error);
+        console.error(`💥 [FRONTEND-OWNER] Error loading all album rankings:`, error);
         this.allAlbumRankings = [];
         this.isLoadingAllAlbums = false;
       }
     );
+  } else {
+    // For public profiles, use the public endpoint
+    if (this.userProfile?.username) {
+      // console.log(`🔍 [FRONTEND-PUBLIC] Fetching public rankings for: ${this.userProfile.username}`);
+      this.rankingsService.getPublicUserRankings(this.userProfile.username).subscribe(
+        (rankings: any) => {
+          // console.log(`✅ [FRONTEND-PUBLIC] Received public rankings for ${this.userProfile?.username}:`, rankings);
+          if (rankings?.albumRankings?.allAlbums) {
+            // console.log(`📋 [FRONTEND-PUBLIC] Processing allAlbums:`, rankings.albumRankings.allAlbums);
+            this.allAlbumRankings = rankings.albumRankings.allAlbums.sort(
+              (a: AlbumRanking, b: AlbumRanking) => a.rank - b.rank
+            );
+          } else {
+            // console.log(`❌ [FRONTEND-PUBLIC] No allAlbums found in public rankings`);
+            this.allAlbumRankings = [];
+          }
+          // console.log(`🏆 [FRONTEND-PUBLIC] Final allAlbumRankings:`, this.allAlbumRankings);
+          this.isLoadingAllAlbums = false;
+        },
+        (error) => {
+          console.error(`💥 [FRONTEND-PUBLIC] Error loading public album rankings for ${this.userProfile?.username}:`, error);
+          this.allAlbumRankings = [];
+          this.isLoadingAllAlbums = false;
+        }
+      );
+    }
   }
+}
 
   getSelectedAlbumInfo() {
     return this.albums.find((album) => album.id === this.selectedView);
   }
 
-  hasRankings(albumId: string): boolean {
-    if (albumId === 'allAlbums') {
-      return this.allAlbumRankings && this.allAlbumRankings.length > 0;
-    }
-
-    if (albumId === 'byTrackNumber') {
-      // Check if trackRankings exists and has content
-      const trackRankings = this.userProfile?.rankings?.trackRankings;
-      if (!trackRankings || !Array.isArray(trackRankings)) {
-        return false;
-      }
-      // Check if any track position has ranked songs
-      return trackRankings.some(
-        (trackList) => Array.isArray(trackList) && trackList.length > 0
-      );
-    }
-
-    if (albumId === 'allSongs') {
-      // Check if allSongsRanking exists and has content
-      const allSongsRanking = this.userProfile?.rankings?.allSongsRanking;
-      if (
-        !allSongsRanking ||
-        !Array.isArray(allSongsRanking) ||
-        allSongsRanking.length === 0
-      ) {
-        return false;
-      }
-
-      // Simply check if there are valid songs in the ranking
-      // If the array has songs with valid data, consider it ranked
-      return (
-        allSongsRanking.length > 0 &&
-        allSongsRanking.some(
-          (song) =>
-            song &&
-            song.songTitle &&
-            song.songTitle.trim() !== '' &&
-            typeof song.rank === 'number'
-        )
-      );
-    }
-
-    const albumInfo = this.albums.find((album) => album.id === albumId);
-    if (!albumInfo) return false;
-
-    const dbKey = albumInfo.dbKey as keyof NonNullable<
-      UserProfile['rankings']['albumRankings']
-    >;
-    const rankings = this.userProfile?.rankings?.albumRankings?.[dbKey];
-
-    return Boolean(rankings && Array.isArray(rankings) && rankings.length > 0);
+hasRankings(albumId: string): boolean {
+  
+  if (albumId === 'allAlbums') {
+    const result = this.allAlbumRankings && this.allAlbumRankings.length > 0;
+    // console.log(`📊 [FRONTEND] allAlbums hasRankings result: ${result}, count: ${this.allAlbumRankings?.length || 0}`);
+    return result;
   }
+
+  if (albumId === 'byTrackNumber') {
+    // Check if trackRankings exists and has content
+    const trackRankings = this.userProfile?.rankings?.trackRankings;
+    // console.log(`🎵 [FRONTEND] Checking trackRankings:`, {
+    //   hasTrackRankings: !!trackRankings,
+    //   isArray: Array.isArray(trackRankings),
+    //   length: trackRankings?.length || 0
+    // });
+    
+    if (!trackRankings || !Array.isArray(trackRankings)) {
+      console.log(`❌ [FRONTEND] byTrackNumber: No trackRankings or not array`);
+      return false;
+    }
+    
+    // Check if any track position has ranked songs
+    const result = trackRankings.some(
+      (trackList) => Array.isArray(trackList) && trackList.length > 0
+    );
+    // console.log(`📊 [FRONTEND] byTrackNumber hasRankings result: ${result}`);
+    return result;
+  }
+
+  if (albumId === 'allSongs') {
+    // Check if allSongsRanking exists and has content
+    const allSongsRanking = this.userProfile?.rankings?.allSongsRanking;
+    // console.log(`🎶 [FRONTEND] Checking allSongsRanking:`, {
+    //   hasAllSongs: !!allSongsRanking,
+    //   isArray: Array.isArray(allSongsRanking),
+    //   length: allSongsRanking?.length || 0
+    // });
+    
+    if (
+      !allSongsRanking ||
+      !Array.isArray(allSongsRanking) ||
+      allSongsRanking.length === 0
+    ) {
+      // console.log(`❌ [FRONTEND] allSongs: No allSongsRanking or empty`);
+      return false;
+    }
+
+    // Simply check if there are valid songs in the ranking
+    const result = (
+      allSongsRanking.length > 0 &&
+      allSongsRanking.some(
+        (song) =>
+          song &&
+          song.songTitle &&
+          song.songTitle.trim() !== '' &&
+          typeof song.rank === 'number'
+      )
+    );
+    // console.log(`📊 [FRONTEND] allSongs hasRankings result: ${result}`);
+    return result;
+  }
+
+  const albumInfo = this.albums.find((album) => album.id === albumId);
+  if (!albumInfo) {
+    console.log(`❌ [FRONTEND] Album info not found for: ${albumId}`);
+    return false;
+  }
+
+  const dbKey = albumInfo.dbKey as keyof NonNullable<
+    UserProfile['rankings']['albumRankings']
+  >;
+  const rankings = this.userProfile?.rankings?.albumRankings?.[dbKey];
+  const result = Boolean(rankings && Array.isArray(rankings) && rankings.length > 0);
+  
+  return result;
+}
 
   get isTrackRankingsView(): boolean {
     return (

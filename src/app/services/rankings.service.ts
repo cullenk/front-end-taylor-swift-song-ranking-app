@@ -176,4 +176,18 @@ getAllSongsSummary(page: number = 1, limit: number = 20, username?: string): Obs
     catchError(this.handleError)
   );
 }
+
+getPublicUserRankings(username: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/rankings/user/${username}/rankings`)
+    .pipe(
+      catchError(this.handleError)
+    );
+}
+
+getPublicPerfectAlbum(username: string): Observable<TrackRankingSummary[]> {
+  return this.http.get<TrackRankingSummary[]>(`${this.apiUrl}/rankings/user/${username}/perfect-album`)
+    .pipe(
+      catchError(this.handleError)
+    );
+}
 }
