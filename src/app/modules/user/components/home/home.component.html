@@ -21,7 +21,7 @@
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
-      <source src="https://d3e29z0m37b0un.cloudfront.net/Apple+Animations/TTPD2_Phone.mp4" type="video/mp4">
+      <source src="https://all-taylor-swift-album-covers.s3.us-east-2.amazonaws.com/Apple+Animations/Showgirl_Phone.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <video class="video-item" autoplay loop muted playsinline>
@@ -98,25 +98,9 @@
     <div class="countdown-content">
       <h2 class="welcome-text">Welcome TS12!</h2>
       <h3 class="album-title">The Life Of A Showgirl</h3>
-      <div class="countdown-timer">
-        <div class="time-unit">
-          <span class="time-value">{{ timeRemaining.days }}</span>
-          <span class="time-label">Days</span>
-        </div>
-        <div class="time-unit">
-          <span class="time-value">{{ timeRemaining.hours }}</span>
-          <span class="time-label">Hours</span>
-        </div>
-        <div class="time-unit">
-          <span class="time-value">{{ timeRemaining.minutes }}</span>
-          <span class="time-label">Minutes</span>
-        </div>
-        <div class="time-unit">
-          <span class="time-value">{{ timeRemaining.seconds }}</span>
-          <span class="time-label">Seconds</span>
-        </div>
-      </div>
-      <p class="release-text">Until October 3rd Release</p>
+      <button class="view-all-btn" (click)="navigateTo('user/rankings/album/the-life-of-a-showgirl')">
+          <span>Rank Now</span>
+        </button>
     </div>
   </div>
 </div>

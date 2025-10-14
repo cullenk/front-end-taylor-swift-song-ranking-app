@@ -19,8 +19,16 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   
   readonly releaseNotes: ReleaseNote[] = [
+      {
+      version: '2.0.1',
+      date: 'October 14th, 2025',
+      type: 'minor',
+      features: [
+        'Added "The Life of a Showgirl" songs and content'
+      ]
+    },
     {
-      version: '2.0.',
+      version: '2.0.0',
       date: 'September 28th, 2025',
       type: 'major',
       features: [

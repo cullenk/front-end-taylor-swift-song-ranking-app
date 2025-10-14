@@ -44,5 +44,9 @@ export const albumThemes: { [key: string]: AlbumTheme } = {
   'The Tortured Poets Department': {
     backgroundImage: 'url(https://d3e29z0m37b0un.cloudfront.net/graphics/song+panels/ttpd-panel.webp)',
     overlay: 'linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1))'
+  },
+  'The Life of a Showgirl': {
+    backgroundImage: 'url(https://d3e29z0m37b0un.cloudfront.net/graphics/song+panels/loasg-panel.webp)',
+    overlay: 'linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1))'
   }
 };

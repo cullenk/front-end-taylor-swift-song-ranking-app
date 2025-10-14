@@ -462,7 +462,7 @@
     background-color: rgb(227, 224, 200);
   }
   &.LifeOfAShowgirl::before {
-    background-color: orange;
+    background-color: rgb(174, 84, 59, 0.7)
   }
 }
 
@@ -570,7 +570,7 @@
   &.LifeOfAShowgirl {
     color: #202020;
     .welcome-column {
-      background-color: rgba(227, 103, 42, 0.3);
+      background-color: rgb(73 147 124 / 39%);
     }
   }
 }

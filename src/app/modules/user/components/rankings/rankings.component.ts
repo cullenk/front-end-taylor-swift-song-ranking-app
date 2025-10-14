@@ -139,15 +139,15 @@ export class RankingsComponent implements OnInit, OnDestroy {
       routerLink: './album/tortured-poets-department',
       category: 'album'
     },
-    // { 
-    //   id: 'thelifeofashowgirl', 
-    //   title: 'The Life of a Showgirl', 
-    //   displayTitle: 'The Life of a Showgirl',
-    //   coverImage: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp', 
-    //   sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/ttpd-sound-clip.mp3', 
-    //   routerLink: './album/the-life-of-a-showgirl',
-    //   category: 'album'
-    // },
+    { 
+      id: 'thelifeofashowgirl', 
+      title: 'The Life of a Showgirl', 
+      displayTitle: 'The Life of a Showgirl',
+      coverImage: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp', 
+      sampleAudio: 'https://all-taylor-swift-albums.s3.us-east-2.amazonaws.com/Sound+Clips/showgirl-sound-clip.mp3', 
+      routerLink: './album/the-life-of-a-showgirl',
+      category: 'album'
+    },
     { 
       id: 'singles', 
       title: 'Singles', 

@@ -3,11 +3,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { isPlatformBrowser } from '@angular/common';
 
-declare global {
-  interface Window {
-    adsbygoogle: any[];
-  }
-}
 
 interface FooterLink {
   label: string;
@@ -27,7 +22,7 @@ interface FooterLinkGroup {
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
   currentYear = new Date().getFullYear();
   
   // Organized footer navigation links
@@ -56,23 +51,6 @@ export class FooterComponent implements OnInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngOnInit(): void {
-    this.initializeAds();
-  }
-
-  /**
-   * Initialize AdSense ads if running in browser
-   */
-  private initializeAds(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      try {
-        // Initialize AdSense
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (error) {
-        console.error('AdSense initialization error:', error);
-      }
-    }
-  }
 
   scrollToTop(): void {
     if (isPlatformBrowser(this.platformId)) {

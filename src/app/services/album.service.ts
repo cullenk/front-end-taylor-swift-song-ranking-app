@@ -26,6 +26,7 @@ export class AlbumService {
     'Evermore': 'evermore',
     'Midnights': 'Midnights',
     'The Tortured Poets Department': 'The Tortured Poets Department',
+    'The Life of a Showgirl': 'The Life of a Showgirl',
     'Singles': 'Singles'
   };
 

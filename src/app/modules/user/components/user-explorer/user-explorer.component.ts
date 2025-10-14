@@ -47,7 +47,7 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
     Evermore: 'rgba(219, 134, 30, 0.7)',
     Midnights: 'rgba(25, 25, 112, 0.7)',
     'The Tortured Poets Department': '#E3E0C8',
-    'The Life of a Showgirl': 'rgba(255, 182, 193, 0.7)',
+    'The Life of a Showgirl': 'rgb(174, 84, 59, 0.7)'
   };
 
   private searchTermSubject = new Subject<string>();

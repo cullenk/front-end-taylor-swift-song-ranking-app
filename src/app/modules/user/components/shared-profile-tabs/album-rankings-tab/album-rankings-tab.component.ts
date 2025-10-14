@@ -117,6 +117,12 @@ export class AlbumRankingsTabComponent implements OnInit {
       coverImage: 'https://d3e29z0m37b0un.cloudfront.net/ttpd.webp',
       dbKey: 'theTorturedPoetsDepartment',
     },
+     {
+      id: 'thelifeofashowgirl',
+      name: 'The Life of a Showgirl',
+      coverImage: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
+      dbKey: 'theLifeOfAShowgirl',
+    },
     {
       id: 'singles',
       name: 'Singles',
@@ -509,25 +515,31 @@ hasRankings(albumId: string): boolean {
     );
   }
 
-  navigateToRanking(albumId: string): string {
-    const routes: { [key: string]: string } = {
-      debut: '/user/rankings/debut',
-      fearless: '/user/rankings/fearless',
-      speakNow: '/user/rankings/speak-now',
-      red: '/user/rankings/red',
-      '1989': '/user/rankings/nineteen-eighty-nine',
-      reputation: '/user/rankings/reputation',
-      lover: '/user/rankings/lover',
-      folklore: '/user/rankings/folklore',
-      evermore: '/user/rankings/evermore',
-      midnights: '/user/rankings/midnights',
-      ttpd: '/user/rankings/tortured-poets-department',
-      singles: '/user/rankings/singles',
-      allAlbums: '/user/rankings/allAlbums',
-      byTrackNumber: '/user/rankings/byTrackNumber',
-      allSongs: '/user/rankings/allSongs',
-    };
+// src/app/modules/user/components/shared-profile-tabs/album-rankings-tab/album-rankings-tab.component.ts
 
-    return routes[albumId] || '/user/rankings';
-  }
+navigateToRanking(albumId: string): string {
+  const routes: { [key: string]: string } = {
+    // Individual Albums - match the album IDs from your albums array
+    'debut': '/user/rankings/album/debut',
+    'fearless': '/user/rankings/album/fearless', 
+    'speakNow': '/user/rankings/album/speak-now',
+    'red': '/user/rankings/album/red',
+    '1989': '/user/rankings/album/nineteen-eighty-nine',
+    'reputation': '/user/rankings/album/reputation',
+    'lover': '/user/rankings/album/lover',
+    'folklore': '/user/rankings/album/folklore',
+    'evermore': '/user/rankings/album/evermore',
+    'midnights': '/user/rankings/album/midnights',
+    'ttpd': '/user/rankings/album/tortured-poets-department',
+    'thelifeofashowgirl': '/user/rankings/album/the-life-of-a-showgirl', 
+    'singles': '/user/rankings/album/singles',
+    
+    // Special Rankings - these should go to direct pages
+    'allAlbums': '/user/rankings/allAlbums',
+    'byTrackNumber': '/user/rankings/byTrackNumber', 
+    'allSongs': '/user/rankings/allSongs',
+  };
+
+  return routes[albumId] || '/user/rankings';
+}
 }

@@ -49,7 +49,8 @@ export class UserProfileComponent implements OnInit {
     'Folklore',
     'Evermore',
     'Midnights',
-    'The Tortured Poets Department'
+    'The Tortured Poets Department',
+    'The Life of a Showgirl'
   ];
 
   profileImages: string[] = [
@@ -110,6 +111,8 @@ export class UserProfileComponent implements OnInit {
     'Evermore': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
     'Midnights': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
     'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
+    'The Life of a Showgirl': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/life-of-a-showgirl-bg.webp',
+
   };
 
   questions = [
@@ -358,7 +361,8 @@ export class UserProfileComponent implements OnInit {
       'Folklore': 'Folklore',
       'Evermore': 'Evermore',
       'Midnights': 'Midnights',
-      'The Tortured Poets Department': 'TorturedPoets'
+      'The Tortured Poets Department': 'TorturedPoets',
+      'The Life of a Showgirl': 'LifeOfAShowgirl'
     };
   }
 

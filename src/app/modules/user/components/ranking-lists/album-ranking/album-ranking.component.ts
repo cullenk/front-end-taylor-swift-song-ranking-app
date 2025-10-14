@@ -122,14 +122,14 @@ export class AlbumRankingComponent implements OnInit, OnDestroy {
       backgroundImage: 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/ttpd-grid.webp',
       dbKey: 'theTorturedPoetsDepartment'
     },
-    //  'the-life-of-a-showgirl': {
-    //   title: 'The Life of a Showgirl',
-    //   displayName: 'The Life of a Showgirl',
-    //   releaseDate: 'October 3rd, 2025',
-    //   coverImage: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
-    //   backgroundImage: 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/lifeofashowgirl-grid.webp',
-    //   dbKey: 'theLifeOfAShowgirl'
-    // },
+     'the-life-of-a-showgirl': {
+      title: 'The Life of a Showgirl',
+      displayName: 'The Life of a Showgirl',
+      releaseDate: 'October 3rd, 2025',
+      coverImage: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
+      backgroundImage: 'https://d3e29z0m37b0un.cloudfront.net/photo-grids/lifeofashowgirl-grid.webp',
+      dbKey: 'theLifeOfAShowgirl'
+    },
     'singles': {
       title: 'Singles',
       displayName: 'Taylor\'s Singles & Features',

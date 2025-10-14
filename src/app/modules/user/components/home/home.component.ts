@@ -272,6 +272,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       overlay:
         'linear-gradient(to right, rgba(245, 245, 220, 0.7), rgba(245, 245, 220, 0.3))',
     },
+     {
+      title: 'The Fate Of Ophelia',
+      albumName: 'The Life of a Showgirl',
+      albumCover: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
+      overlay:
+        'linear-gradient(to right, rgba(245, 245, 220, 0.7), rgba(245, 245, 220, 0.3))',
+    },
+      {
+      title: 'Opalite',
+      albumName: 'The Life of a Showgirl',
+      albumCover: 'https://d3e29z0m37b0un.cloudfront.net/life-of-a-showgirl.webp',
+      overlay:
+        'linear-gradient(to right, rgba(245, 245, 220, 0.7), rgba(245, 245, 220, 0.3))',
+    },
   ];
 
   displayedSongs: Song[] = [];
