@@ -154,20 +154,66 @@ saveRanking() {
     return;
   }
   
+  console.log('💾 [COMPONENT] Starting save process');
+  console.log('📊 [COMPONENT] Current ranking state - first 5 songs:', 
+    this.allSongsRanking.slice(0, 5).map(s => ({ 
+      rank: s.rank, 
+      title: s.songTitle,
+      songId: s.songId,
+      hasRequiredFields: !!(s.rank && s.songTitle && s.songId)
+    }))
+  );
+  
+  // Validate data before saving
+  const invalidItems = this.allSongsRanking.filter(item => 
+    !item.songId || 
+    !item.songTitle || 
+    !item.rank || 
+    typeof item.rank !== 'number'
+  );
+  
+  if (invalidItems.length > 0) {
+    console.error('❌ [COMPONENT] Invalid items detected:', invalidItems.slice(0, 3));
+    this.toastr.error(`Cannot save: ${invalidItems.length} songs have invalid data`);
+    return;
+  }
+  
   this.isLoading = true;
   
   this.allSongsRankingService.saveAllSongsRanking(this.allSongsRanking).subscribe({
     next: (response) => {
-      // Don't replace the array - keep the current state since it's already correct
-      // Just update the loading state and show success message
+      console.log('✅ [COMPONENT] Save successful');
+      console.log('📊 [COMPONENT] Server response:', response.length, 'songs');
+      
       this.isLoading = false;
       this.toastr.success('All songs ranking saved successfully!');
       
+      // Optionally verify the save worked by logging current state
+      console.log('🔄 [COMPONENT] Final state after save - first 5 songs:', 
+        this.allSongsRanking.slice(0, 5).map(s => ({ rank: s.rank, title: s.songTitle }))
+      );
     },
     error: (error) => {
-      console.error('Error saving all songs ranking:', error);
+      console.error('❌ [COMPONENT] Error saving all songs ranking:', error);
       this.isLoading = false;
-      this.toastr.error('Failed to save ranking. Please try again.');
+      
+      // Show more specific error message
+      const errorMessage = error.message || 'Failed to save ranking. Please try again.';
+      this.toastr.error(errorMessage);
+    }
+  });
+}
+
+// Add method to verify saved data (for debugging)
+verifySave() {
+  console.log('🔍 [COMPONENT] Verifying save by fetching fresh data');
+  this.allSongsRankingService.forceRefresh().subscribe({
+    next: (freshData) => {
+      console.log('📊 [COMPONENT] Fresh data from server:', 
+        freshData.slice(0, 5).map(s => ({ rank: s.rank, title: s.songTitle })));
+    },
+    error: (error) => {
+      console.error('❌ [COMPONENT] Error verifying save:', error);
     }
   });
 }
