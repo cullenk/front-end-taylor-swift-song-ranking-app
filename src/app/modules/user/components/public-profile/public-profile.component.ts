@@ -54,6 +54,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     Evermore: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/evermore-profile-bg.webp',
     Midnights: 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/midnights-profile-bg.webp',
     'The Tortured Poets Department': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/ttpd-profile-bg.webp',
+    'The Life of a Showgirl': 'https://d3e29z0m37b0un.cloudfront.net/profile+backgrounds/life-of-a-showgirl-bg.webp',
   };
 
   orderedQuestions = [

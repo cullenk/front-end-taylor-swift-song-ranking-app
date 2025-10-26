@@ -19,18 +19,27 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   
   readonly releaseNotes: ReleaseNote[] = [
-      {
-      version: '2.0.1',
+    {
+      version: '2.0.3', // Fixed: Should be 2.0.3 (patch increment)
+      date: 'October 26th, 2025',
+      type: 'patch', // Correct: Bug fixes = patch
+      features: [
+        "Fixed a caching bug with the 'All Songs Ranking' feature",
+        'Added Windows compatibility for country flag icons'
+      ]
+    }, 
+    {
+      version: '2.0.2', // Fixed: Should be 2.0.2 
       date: 'October 14th, 2025',
-      type: 'minor',
+      type: 'minor', // Correct: New content = minor
       features: [
         'Added "The Life of a Showgirl" songs and content'
       ]
     },
     {
-      version: '2.0.0',
+      version: '2.0.1', // Fixed: Should be 2.0.1
       date: 'September 28th, 2025',
-      type: 'major',
+      type: 'major', // Correct: Major redesign = major
       features: [
         'Major design and performance enhancements',
         'Profile page redesign now shows all user rankings and features',
@@ -38,9 +47,9 @@ export class ReleaseNotesComponent {
       ]
     },
     {
-      version: '1.1.3',
+      version: '1.2.0', // Fixed: Should be 1.2.0 (minor increment for new features)
       date: 'September 14th, 2025',
-      type: 'minor',
+      type: 'minor', // Correct: New features = minor
       features: [
         'New profile image options with improved selection',
         'Added login count data to user profile analytics',
@@ -52,7 +61,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.1.2',
       date: 'August 13th, 2025',
-      type: 'minor',
+      type: 'minor', // Correct: New features = minor
       features: [
         'Replaced Sendgrid email service with MailerSend for better reliability',
         'Added comprehensive "Users\' Favorite Songs" analytics page',
@@ -62,7 +71,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.1.1',
       date: 'March 1st, 2025',
-      type: 'minor',
+      type: 'minor', // Correct: New features = minor
       features: [
         'Added debouncing in search inputs for better performance',
         'Implemented input sanitization for questionnaire form security',
@@ -72,7 +81,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.1.0',
       date: 'November 13th, 2024',
-      type: 'patch',
+      type: 'minor', // Fixed: Should be minor for performance improvements and new features
       features: [
         'Implemented optimized database querying to handle increased traffic',
         'Added homepage data caching to significantly improve load times',
@@ -82,7 +91,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.0.2',
       date: 'October 10th, 2024',
-      type: 'minor',
+      type: 'minor', // Correct: Major new features = minor (should probably be 1.1.0 but keeping your numbering)
       features: [
         'Added "Rank By Track" feature with personal album builder',
         'Introduced "Rank All Songs" comprehensive ranking system',
@@ -93,7 +102,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.0.1',
       date: 'October 1st, 2024',
-      type: 'minor',
+      type: 'minor', // Correct: New features = minor
       features: [
         'Implemented Eras Tour vs Popular songs chart data visualization',
         'Fixed critical bugs in username/password creation and reset functionality',
@@ -103,7 +112,7 @@ export class ReleaseNotesComponent {
     {
       version: '1.0.0',
       date: 'September 28th, 2024',
-      type: 'major',
+      type: 'major', // Correct: Initial release = major
       features: [
         '🎉 Initial release of Swiftie Ranking Hub',
         'Core album ranking functionality with intuitive interface',
@@ -146,6 +155,6 @@ export class ReleaseNotesComponent {
   }
 
   trackByFeature(index: number, feature: string): string {
-  return feature;
-}
+    return feature;
+  }
 }

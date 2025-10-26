@@ -78,7 +78,7 @@ export class TabbedProfileBaseComponent {
   ];
 
   constructor(
-    private countryFlagsService: CountryFlagsService,
+    public countryFlagsService: CountryFlagsService,
     private toastr: ToastrService 
   ) {}
 

@@ -1,5 +1,4 @@
 /* Main body styling for whole application */
-
 @import 'ngx-toastr/toastr';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
@@ -21,5 +20,23 @@ body {
   padding: 0;
   background-color: #344055;
 
+}
+
+// Custom flag styling
+.country-flag {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.125em;
+  border-radius: 2px;
+  
+  &.small {
+    width: 1.2em;
+    height: 0.9em;
+  }
+  
+  &.large {
+    width: 2em;
+    height: 1.5em;
+  }
 }
 

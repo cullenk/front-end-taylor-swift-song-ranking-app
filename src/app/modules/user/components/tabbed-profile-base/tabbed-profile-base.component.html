@@ -24,7 +24,11 @@
           <span class="stat-value">{{ getLoginCountDisplay() }}</span>
         </div>
         <div class="stat-item" *ngIf="shouldShowCountry()">
-          <span class="country-flag">{{ getCountryFlag() }}</span>
+          <!-- Updated flag display using CSS classes -->
+          <span 
+            class="{{ countryFlagsService.getCountryFlagClass(userProfile.country) }} country-flag"
+            [title]="userProfile.country">
+          </span>
           <span class="stat-label">Country:</span>
           <span class="stat-value">{{ userProfile.country }}</span>
         </div>

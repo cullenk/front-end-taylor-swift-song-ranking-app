@@ -56,7 +56,7 @@ export class UserExplorerComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private userProfileService: UserProfileService,
-    private countryFlagsService: CountryFlagsService
+    public countryFlagsService: CountryFlagsService
   ) {}
 
   ngOnInit(): void {
