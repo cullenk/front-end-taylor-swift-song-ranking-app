@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.swiftierankinghub.com/api'
+  apiUrl: '/api'  // NEW - same domain, relative URL
 };
