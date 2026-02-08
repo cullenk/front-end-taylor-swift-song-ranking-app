@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,12 @@ export class MailService {
 
   sendContactFormEmail(formData: any): Observable<any> {
     console.log('Sending contact form email');
-    return this.http.post(`${this.apiUrl}/sendMail/sendMail`, { ...formData, type: 'contact' });
+    return this.http.post(`${this.apiUrl}/sendMail/sendMail`, 
+      { ...formData, type: 'contact' },
+      { 
+        headers: { 'Content-Type': 'application/json' },
+        responseType: 'text' as 'json' // Handle text responses
+      }
+    );
   }
 }

@@ -114,6 +114,18 @@
           </li>
         </ul>
       </div>
+
+      <!-- Delete Profile Button -->
+      <div class="delete-profile-section">
+        <button 
+          class="delete-profile-btn"
+          (click)="openDeleteConfirmDialog()"
+          type="button"
+        >
+          <i class="fas fa-trash-alt" aria-hidden="true"></i>
+          Delete Profile
+        </button>
+      </div>
     </div>
   </div>
 
@@ -177,6 +189,52 @@
           [isOwner]="isOwner">
         </app-eras-tour-tab>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Profile Confirmation Dialog -->
+<div
+  *ngIf="showDeleteConfirmDialog"
+  class="delete-confirm-dialog-overlay"
+  (click)="closeDeleteConfirmDialog()"
+>
+  <div class="delete-confirm-dialog" (click)="$event.stopPropagation()">
+    <div class="delete-dialog-header">
+      <i class="fas fa-exclamation-triangle warning-icon" aria-hidden="true"></i>
+      <h2>Delete Your Profile?</h2>
+    </div>
+    
+    <div class="delete-dialog-content">
+      <p><strong>This action cannot be undone!</strong></p>
+      <p>Deleting your profile will permanently remove:</p>
+      <ul>
+        <li>Your profile information and settings</li>
+        <li>All your song and album rankings</li>
+        <li>Your profile questions and answers</li>
+        <li>All data associated with your account</li>
+      </ul>
+      <p>Are you sure you want to delete your profile?</p>
+    </div>
+
+    <div class="delete-dialog-actions">
+      <button 
+        (click)="closeDeleteConfirmDialog()" 
+        class="cancel-button"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button 
+        (click)="deleteProfile()" 
+        class="confirm-delete-button"
+        [disabled]="isDeletingProfile"
+        type="button"
+      >
+        <i class="fas fa-spinner fa-spin" *ngIf="isDeletingProfile" aria-hidden="true"></i>
+        <i class="fas fa-trash-alt" *ngIf="!isDeletingProfile" aria-hidden="true"></i>
+        {{ isDeletingProfile ? 'Deleting...' : 'Yes, Delete My Profile' }}
+      </button>
     </div>
   </div>
 </div>

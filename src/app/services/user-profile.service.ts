@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserProfile } from '../interfaces/userProfile';
 import { EraSetList } from '../interfaces/EraSetList';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 interface CountryStats {
   totalUsersWithCountry: number;
@@ -97,5 +97,12 @@ export class UserProfileService {
    */
   getCountryStats(): Observable<CountryStats> {
     return this.http.get<CountryStats>(`${this.apiUrl}/profile/country-stats`);
+  }
+
+  /**
+   * Delete user profile and all associated data
+   */
+  deleteProfile(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/profile/delete-profile`, { headers: this.getHeaders() });
   }
 }

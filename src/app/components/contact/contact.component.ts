@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
+import { MailService } from '../../services/mail.service';
 
 @Component({
   selector: 'app-contact',
@@ -20,7 +21,8 @@ export class ContactComponent {
   constructor(
     private fb: FormBuilder,
     private meta: Meta,
-    private title: Title
+    private title: Title,
+    private mailService: MailService
   ) {
     this.updateMetaTags();
     this.contactForm = this.createContactForm();
@@ -57,20 +59,37 @@ export class ContactComponent {
       this.submitError = false;
       this.submitSuccess = false;
 
-      // Simulate form submission
-      setTimeout(() => {
-        // In a real application, you would send this to your backend
-        console.log('Contact form submitted:', this.contactForm.value);
-        
-        this.isSubmitting = false;
-        this.submitSuccess = true;
-        this.contactForm.reset();
-        
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          this.submitSuccess = false;
-        }, 5000);
-      }, 1500);
+      const formData = this.contactForm.value;
+      
+      this.mailService.sendContactFormEmail(formData).subscribe({
+        next: (response) => {
+          console.log('Contact form sent successfully', response);
+          this.isSubmitting = false;
+          this.submitSuccess = true;
+          this.contactForm.reset();
+          
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            this.submitSuccess = false;
+          }, 5000);
+        },
+        error: (error) => {
+          console.error('Error sending contact form', error);
+          console.error('Error details:', {
+            status: error.status,
+            statusText: error.statusText,
+            url: error.url,
+            message: error.message
+          });
+          this.isSubmitting = false;
+          this.submitError = true;
+          
+          // Hide error message after 5 seconds
+          setTimeout(() => {
+            this.submitError = false;
+          }, 5000);
+        }
+      });
     }
   }
 

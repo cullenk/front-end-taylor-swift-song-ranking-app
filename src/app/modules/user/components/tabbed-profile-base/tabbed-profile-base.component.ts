@@ -8,6 +8,8 @@ import { ErasTourTabComponent } from '../shared-profile-tabs/eras-tour-tab/eras-
 import { UserProfile } from '../../../../interfaces/userProfile';
 import { AlbumRanking } from '../../../../interfaces/AlbumRanking';
 import { CountryFlagsService } from '../../../../services/country-flags.service';
+import { UserProfileService } from '../../../../services/user-profile.service';
+import { AuthService } from '../../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -49,6 +51,10 @@ export class TabbedProfileBaseComponent {
     'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
   isEditing = false;
   shelfImage = 'https://d3e29z0m37b0un.cloudfront.net/graphics/shelf.webp';
+  
+  // Delete Profile properties
+  showDeleteConfirmDialog: boolean = false;
+  isDeletingProfile: boolean = false;
 
   // Theme mappings
   themeClassMap: { [key: string]: string } = {
@@ -79,6 +85,8 @@ export class TabbedProfileBaseComponent {
 
   constructor(
     public countryFlagsService: CountryFlagsService,
+    private userProfileService: UserProfileService,
+    private authService: AuthService,
     private toastr: ToastrService 
   ) {}
 
@@ -187,5 +195,36 @@ export class TabbedProfileBaseComponent {
         });
       }
     );
+  }
+
+  // Delete Profile Methods
+  openDeleteConfirmDialog() {
+    this.showDeleteConfirmDialog = true;
+  }
+
+  closeDeleteConfirmDialog() {
+    this.showDeleteConfirmDialog = false;
+  }
+
+  deleteProfile() {
+    if (this.isDeletingProfile) return;
+
+    this.isDeletingProfile = true;
+    
+    this.userProfileService.deleteProfile().subscribe({
+      next: (response) => {
+        console.log('Profile deleted successfully:', response);
+        this.toastr.success('Your profile has been deleted successfully', 'Profile Deleted');
+        
+        // Log out the user and redirect to home
+        this.authService.logout();
+      },
+      error: (error) => {
+        console.error('Error deleting profile:', error);
+        this.toastr.error('There was an error deleting your profile. Please try again.', 'Delete Failed');
+        this.isDeletingProfile = false;
+        this.closeDeleteConfirmDialog();
+      }
+    });
   }
 }
