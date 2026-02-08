@@ -1,0 +1,214 @@
+<div class="contact-container">
+  <!-- Header Section -->
+  <header class="header-container">
+    <img 
+      src="https://d3e29z0m37b0un.cloudfront.net/graphics/bracelets.webp" 
+      alt="Friendship bracelets decoration" 
+      class="background-graphic"
+      loading="lazy"
+    >
+    <div class="header-div">
+      <h1 class="header-title">...Question?</h1>
+      <h2 class="header-subtitle">Let's Chat!</h2>
+      <p class="header-description">
+        Got feedback, suggestions, or just want to say hi? I'd love to hear from you!
+      </p>
+    </div>
+  </header>
+
+  <!-- Contact Form -->
+  <section class="form-section">
+    <form 
+      [formGroup]="contactForm" 
+      (ngSubmit)="onSubmit()" 
+      class="contact-form"
+      novalidate
+    >
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name" class="form-label">
+          <i class="fas fa-user" aria-hidden="true"></i>
+          Name <span class="required">*</span>
+        </label>
+        <input 
+          id="name" 
+          type="text" 
+          formControlName="name" 
+          class="form-input"
+          [class.error]="isFieldInvalid('name')"
+          placeholder="Enter your name"
+          maxlength="50"
+          autocomplete="name"
+        >
+        <div class="error-message" *ngIf="isFieldInvalid('name')">
+          {{ getFieldError('name') }}
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          Email <span class="required">*</span>
+        </label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          class="form-input"
+          [class.error]="isFieldInvalid('email')"
+          placeholder="Enter your email"
+          maxlength="100"
+          autocomplete="email"
+        >
+        <div class="error-message" *ngIf="isFieldInvalid('email')">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <!-- Subject Field -->
+      <div class="form-group">
+        <label for="subject" class="form-label">
+          <i class="fas fa-tag" aria-hidden="true"></i>
+          Subject <span class="required">*</span>
+        </label>
+        <input 
+          id="subject" 
+          type="text" 
+          formControlName="subject" 
+          class="form-input"
+          [class.error]="isFieldInvalid('subject')"
+          placeholder="What's this about?"
+          maxlength="100"
+        >
+        <div class="error-message" *ngIf="isFieldInvalid('subject')">
+          {{ getFieldError('subject') }}
+        </div>
+      </div>
+
+      <!-- Message Field -->
+      <div class="form-group">
+        <label for="message" class="form-label">
+          <i class="fas fa-comment" aria-hidden="true"></i>
+          Message <span class="required">*</span>
+        </label>
+        <textarea 
+          id="message" 
+          formControlName="message" 
+          class="form-textarea"
+          [class.error]="isFieldInvalid('message')"
+          placeholder="Tell me how I can help you..."
+          rows="6"
+          maxlength="1000"
+        ></textarea>
+        <div class="character-count">
+          {{ contactForm.get('message')?.value?.length || 0 }}/1000 characters
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('message')">
+          {{ getFieldError('message') }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="contactForm.invalid || isSubmitting"
+        >
+          <i class="fas fa-paper-plane" *ngIf="!isSubmitting" aria-hidden="true"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting" aria-hidden="true"></i>
+          {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+        </button>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" *ngIf="submitSuccess">
+        <div class="success-content">
+          <i class="fas fa-check-circle" aria-hidden="true"></i>
+          <p>Thank you for your message! I'll get back to you soon.</p>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-message-global" *ngIf="submitError">
+        <div class="error-content">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          <p>Sorry, there was an error sending your message. Please try again later.</p>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- Contact Info -->
+  <section class="contact-info-section">
+    <div class="contact-info-card">
+      <h2>
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        Get In Touch
+      </h2>
+      
+      <div class="contact-method">
+        <div class="contact-details">
+          <h3>Email Me</h3>
+          <p>For all questions, feedback, support, or just to say hi!</p>
+          <a href="mailto:swiftierankinghub@gmail.com" class="contact-link">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            swiftierankinghub&#64;gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div class="response-info">
+        <h3>Response Time</h3>
+        <p>
+          I typically respond within 24-48 hours. For urgent issues, I'll do my best to get back to you sooner!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>How do I reset my password?</h4>
+        <p>You can reset your password by clicking "Forgot Password" on the sign-in page.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h4>Can I delete my account?</h4>
+        <p>Yes, you can delete your account from your profile settings. This action is permanent.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h4>How are rankings calculated?</h4>
+        <p>Rankings are based on user preferences and our proprietary algorithm that considers various factors.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h4>Is this app affiliated with Taylor Swift?</h4>
+        <p>No, this is a fan-created platform and is not officially affiliated with Taylor Swift or her team.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h4>Can I share my rankings publicly?</h4>
+        <p>Yes! You can share your profile and rankings with other users through your public profile page.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h4>How do I update my profile theme?</h4>
+        <p>Visit your profile settings to change your theme to any of Taylor's album eras.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Home -->
+  <div class="back-to-home">
+    <a routerLink="/" class="back-btn">
+      <i class="fas fa-arrow-left" aria-hidden="true"></i>
+      Back to Home
+    </a>
+  </div>
+</div>

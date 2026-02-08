@@ -8,13 +8,17 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { PublicHomeComponent } from './components/public-home/public-home.component';
 import { AboutComponent } from './components/about/about.component'
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-service.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: SignInComponent },
   { path: 'home', component: PublicHomeComponent }, 
   { path: 'about', component: AboutComponent },
-  { path: 'privacy', component: PrivacyPolicyComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'terms-of-service', component: TermsOfServiceComponent },
+  { path: 'contact', component: ContactComponent },
   { path: 'reset-password/:token', component: PasswordResetComponent },
   { path: 'public-profile/:username', component: PublicProfileComponent },
   { path: 'share-setlist/:username', component: ShareSetlistComponent },

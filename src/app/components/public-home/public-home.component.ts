@@ -38,6 +38,18 @@ export class PublicHomeComponent implements AfterViewInit {
   ];
 
   floatingAlbums: FloatingAlbum[] = [];
+  
+  // Dynamic copyright year calculation
+  get copyrightYears(): string {
+    const currentYear = new Date().getFullYear();
+    const startYear = 2024;
+    
+    if (currentYear === startYear) {
+      return startYear.toString();
+    } else {
+      return `${startYear}-${currentYear}`;
+    }
+  }
 
   constructor(private meta: Meta, private title: Title, private renderer: Renderer2) {
     this.updateMetaTags();

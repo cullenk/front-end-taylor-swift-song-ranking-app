@@ -163,7 +163,7 @@
           [isEditable]="isEditable"
           [isOwner]="isOwner"
           [isEditing]="isEditing"
-          [theme]="userProfile?.theme || 'Fearless'"
+          [theme]="userProfile.theme || 'Fearless'"
           (editingChange)="onEditingChanged($event)"
           (questionUpdated)="onQuestionUpdated($event)"
           (saveAnswers)="onSaveAnswers()">
