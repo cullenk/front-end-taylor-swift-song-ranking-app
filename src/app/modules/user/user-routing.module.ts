@@ -17,6 +17,7 @@ import { RankByTrackComponent } from './components/ranking-lists/rank-by-track/r
 import { ReleaseNotesComponent } from './components/release-notes/release-notes.component';
 import { AllSongsRankingComponent } from './components/ranking-lists/all-songs/all-songs-ranking.component';
 import { AllFavoriteSongsComponent } from './components/all-favorite-songs/all-favorite-songs.component';
+import { UserActivityComponent } from './components/admin-dashboard/user-activity.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
       
       { path: 'contact', component: ContactComponent },
       { path: 'releaseNotes', component: ReleaseNotesComponent },
+      
+      // Hidden admin route - only accessible to admin users
+      { path: 'admin', component: UserActivityComponent },
+      
       { path: '', redirectTo: '/user/userProfile', pathMatch: 'full' },
       { path: '**', component: DashboardNotFoundComponent },
     ],

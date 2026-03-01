@@ -1,0 +1,205 @@
+<div class="activity-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <i class="fas fa-chart-line"></i>
+        User Activity Dashboard
+      </h1>
+      <p class="dashboard-subtitle">Real-time monitoring of user activity and engagement</p>
+      
+      <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="eventType">Event Type:</label>
+        <select 
+          id="eventType" 
+          [(ngModel)]="selectedEventType" 
+          (ngModelChange)="onFilterChange()"
+          class="filter-select"
+        >
+          <option *ngFor="let type of eventTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="timeRange">Time Range:</label>
+        <select 
+          id="timeRange" 
+          [(ngModel)]="selectedTimeRange" 
+          (ngModelChange)="onFilterChange()"
+          class="filter-select"
+        >
+          <option *ngFor="let range of timeRanges" [value]="range.value">
+            {{ range.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="stats-summary">
+        <span class="stat-item">
+          <i class="fas fa-users"></i>
+          {{ totalItems }} Events
+        </span>
+        <span class="stat-item">
+          <i class="fas fa-clock"></i>
+          {{ selectedTimeRange === '24h' ? 'Last 24 Hours' : 
+             selectedTimeRange === '7d' ? 'Last 7 Days' : 
+             selectedTimeRange === '30d' ? 'Last 30 Days' : 
+             selectedTimeRange === '1h' ? 'Last Hour' : 'All Time' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading user activities...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <div class="error-message">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Error Loading Data</h3>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="refreshData()">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Activity Timeline -->
+  <div *ngIf="!isLoading && !error" class="activity-timeline">
+    <div *ngIf="activities.length === 0" class="no-activities">
+      <div class="no-activities-message">
+        <i class="fas fa-inbox"></i>
+        <h3>No Activities Found</h3>
+        <p>No user activities match the selected filters.</p>
+      </div>
+    </div>
+
+    <div *ngIf="activities.length > 0" class="timeline-container">
+      <div 
+        *ngFor="let activity of activities; trackBy: trackByActivityId" 
+        class="activity-item"
+        [class]="'activity-' + activity.eventType"
+      >
+        <div class="activity-icon" [style.background-color]="getEventColor(activity.eventType)">
+          <i [class]="getEventIcon(activity.eventType)"></i>
+        </div>
+        
+        <div class="activity-content">
+          <div class="activity-header">
+            <div class="user-info">
+              <img 
+                [src]="getProfileImage(activity)" 
+                [alt]="activity.username + ' profile'"
+                class="user-avatar"
+                [class]="getThemeClass(getUserTheme(activity))"
+                onerror="this.src='assets/default-profile.png'"
+              >
+              <div class="user-details">
+                <h4 class="username">{{ activity.username }}</h4>
+                <span *ngIf="getUserTheme(activity) && getUserTheme(activity) !== 'Default'" class="user-theme">{{ getUserTheme(activity) }}</span>
+                <span *ngIf="getUserCountry(activity)" class="user-country">
+                  <i class="fas fa-flag"></i>
+                  {{ getUserCountry(activity) }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="activity-meta">
+              <span class="activity-time">{{ getTimeAgo(activity.timestamp) }}</span>
+              <span class="activity-date">{{ activity.timestamp | date:'MMM d, y h:mm a' }}</span>
+            </div>
+          </div>
+
+          <div class="activity-description">
+            <p>{{ getEventDescription(activity) }}</p>
+            
+            <!-- Additional event data -->
+            <div *ngIf="activity.eventData" class="event-details">
+              <div *ngIf="activity.eventType === 'ranking_updated'" class="ranking-details">
+                <i class="fas fa-list-ol"></i>
+                Updated rankings for {{ activity.eventData.albumCount || 0 }} albums
+              </div>
+              <div *ngIf="activity.eventType === 'profile_updated'" class="profile-details">
+                <i class="fas fa-user-edit"></i>
+                Updated profile information
+              </div>
+            </div>
+          </div>
+
+          <!-- Technical details (only for admin) -->
+          <div class="technical-info">
+            <details>
+              <summary>Technical Details</summary>
+              <div class="tech-details">
+                <p><strong>User ID:</strong> {{ getUserId(activity) }}</p>
+                <p *ngIf="activity.ipAddress"><strong>IP Address:</strong> {{ activity.ipAddress }}</p>
+                <p *ngIf="activity.userAgent"><strong>User Agent:</strong> {{ activity.userAgent }}</p>
+                <p><strong>Event ID:</strong> {{ activity._id }}</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1" class="pagination-container">
+      <nav class="pagination">
+        <button 
+          class="page-btn prev-btn" 
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage <= 1"
+        >
+          <i class="fas fa-chevron-left"></i>
+          Previous
+        </button>
+
+        <div class="page-numbers">
+          <button 
+            *ngFor="let page of [].constructor(totalPages); let i = index"
+            class="page-btn"
+            [class.active]="currentPage === i + 1"
+            (click)="goToPage(i + 1)"
+          >
+            {{ i + 1 }}
+          </button>
+        </div>
+
+        <button 
+          class="page-btn next-btn" 
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage >= totalPages"
+        >
+          Next
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </nav>
+
+      <div class="pagination-info">
+        <span>
+          Showing {{ ((currentPage - 1) * itemsPerPage) + 1 }} - 
+          {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} activities
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
