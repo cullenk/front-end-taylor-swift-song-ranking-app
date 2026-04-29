@@ -113,24 +113,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Close mobile menu on escape key press
-   */
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent): void {
-    if (this.isMobileMenuOpen) {
-      event.preventDefault();
-      this.closeMobileMenu();
-    }
+/**
+ * Close mobile menu on escape key press
+ */
+@HostListener('document:keydown', ['$event'])
+onEscapeKey(event: KeyboardEvent): void {
+  if (event.key === 'Escape' && this.isMobileMenuOpen) {
+    event.preventDefault();
+    this.closeMobileMenu();
   }
+}
 
-  /**
-   * Handle window resize to close mobile menu on desktop
-   */
-  @HostListener('window:resize', ['$event'])
-  onWindowResize(): void {
-    if (window.innerWidth > 768 && this.isMobileMenuOpen) {
-      this.closeMobileMenu();
-    }
+/**
+ * Handle window resize to close mobile menu on desktop
+ */
+@HostListener('window:resize')  // Remove ['$event'] since resize doesn't pass event data
+onWindowResize(): void {  // Remove event parameter
+  if (window.innerWidth > 768 && this.isMobileMenuOpen) {
+    this.closeMobileMenu();
   }
+}
 }

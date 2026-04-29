@@ -181,14 +181,26 @@ export class UserActivityComponent implements OnInit {
     }
   }
 
-  getProfileImage(activity: ActivityItem): string {
-    // Check if userId is populated with user data
-    if (typeof activity.userId === 'object' && activity.userId.profileImage) {
-      return activity.userId.profileImage;
-    }
-    // Fallback to direct profileImage property
-    return activity.profileImage || 'assets/default-profile.png';
+getProfileImage(activity: ActivityItem): string {
+  let profileImage: string | null = null;
+  
+  // Check if userId is populated with user data (from backend populate)
+  if (typeof activity.userId === 'object' && activity.userId?.profileImage) {
+    profileImage = activity.userId.profileImage;
   }
+  // Fallback to direct profileImage property
+  else if (activity.profileImage) {
+    profileImage = activity.profileImage;
+  }
+  
+  // Return the image URL or fallback if empty/invalid
+  if (profileImage && profileImage.trim() !== '') {
+    return profileImage;
+  }
+  
+  // Default fallback image
+  return 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
+}
 
   getUserTheme(activity: ActivityItem): string {
     // Check if userId is populated with user data
@@ -208,9 +220,6 @@ export class UserActivityComponent implements OnInit {
     return activity.country || '';
   }
 
-  getDefaultProfileImage(): string {
-    return 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
-  }
 
   getTimeAgo(timestamp: string): string {
     const now = new Date();
@@ -260,6 +269,10 @@ export class UserActivityComponent implements OnInit {
   trackByActivityId(index: number, activity: ActivityItem): string {
     return activity._id;
   }
+
+  onImageError(event: any): void {
+  event.target.src = 'https://d3e29z0m37b0un.cloudfront.net/profile-images/debut.webp';
+}
 
   // Expose Math to template
   Math = Math;

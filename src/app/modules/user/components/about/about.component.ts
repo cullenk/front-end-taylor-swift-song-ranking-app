@@ -158,25 +158,21 @@ export class AboutComponent implements OnInit {
   }
 
   // Keyboard navigation handlers
-  @HostListener('document:keydown.arrowright', ['$event'])
-  onArrowRight(event: KeyboardEvent): void {
-    if (this.lightboxVisible) {
-      this.navigate(event, 1);
-    }
-  }
-  
-  @HostListener('document:keydown.arrowleft', ['$event'])
-  onArrowLeft(event: KeyboardEvent): void {
-    if (this.lightboxVisible) {
-      this.navigate(event, -1);
-    }
-  }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent): void {
-    if (this.lightboxVisible) {
-      event.preventDefault();
-      this.closeLightboxDirect();
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.lightboxVisible) return;
+    
+    switch (event.key) {
+      case 'ArrowRight':
+        this.navigate(event, 1);
+        break;
+      case 'ArrowLeft':
+        this.navigate(event, -1);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        this.closeLightboxDirect();
+        break;
     }
   }
 

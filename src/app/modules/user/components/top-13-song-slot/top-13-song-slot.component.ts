@@ -63,7 +63,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
         this.isSearching = true;
         this.albumService.searchSongs(query).subscribe(
           (results: SearchResult[]) => {
-            console.log('Search results:', results);
+            // console.log('Search results:', results);
             this.searchResults = results;
             this.isSearching = false;
           },
@@ -117,7 +117,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
             this.selectedSong = song;
             this.updateAlbumTheme();
           } else {
-            console.log(`No song details found for ID: ${existingSong.songId}`);
+            // console.log(`No song details found for ID: ${existingSong.songId}`);
             this.selectedSong = null;
             this.updateAlbumTheme();
           }
@@ -140,7 +140,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
   }
 
   selectSong(song: SearchResult) {
-    console.log('Selected song:', song.title);
+    // console.log('Selected song:', song.title);
     this.fetchSongDetails(song._id);
   }
 
@@ -155,7 +155,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
         if (song) {
           this.checkAndUpdateTopThirteen(song);
         } else {
-          console.log('No song found with the given ID');
+          // console.log('No song found with the given ID');
           this.toastr.warning('Song not found', 'Warning');
         }
       },
@@ -200,7 +200,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
       updatedList.push(newItem);
     }
 
-    console.log('Updating local top thirteen:', updatedList);
+    // console.log('Updating local top thirteen:', updatedList);
     this.topThirteenStateService.updateTopThirteen(updatedList);
     this.toastr.success('Song added to slot ' + this.slotIndex + '! Remember to save your changes.', 'Success');
     this.songUpdated.emit();
@@ -248,7 +248,7 @@ export class Top13SongSlotComponent implements OnInit, OnDestroy {
       return item;
     });
 
-    console.log('Removing song from local state:', updatedList);
+    // console.log('Removing song from local state:', updatedList);
     this.topThirteenStateService.updateTopThirteen(updatedList);
     this.selectedSong = null;
     this.updateAlbumTheme();

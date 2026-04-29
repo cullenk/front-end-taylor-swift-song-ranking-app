@@ -31,21 +31,21 @@ export class Top13SongSlotListComponent implements OnInit {
     private topThirteenService: TopThirteenService,
     private toastr: ToastrService
   ) {
-    console.log('Top13SongSlotListComponent constructor called');
+    // console.log('Top13SongSlotListComponent constructor called');
   }
 
   ngOnInit() {
-    console.log('Top13SongSlotListComponent.ngOnInit() called');
+    // console.log('Top13SongSlotListComponent.ngOnInit() called');
     this.updateMetaTags();
     this.loadTopThirteen();
     this.loadFreshData();
   }
 
   loadFreshData() {
-    console.log('Loading fresh data from backend');
+    // console.log('Loading fresh data from backend');
     this.topThirteenService.getTopThirteen().subscribe(
       (data) => {
-        console.log('Fresh data loaded:', data);
+        // console.log('Fresh data loaded:', data);
         const paddedData = this.padTopThirteenList(data);
         this.topThirteen = paddedData;
         this.topThirteenStateService.updateTopThirteen(paddedData);

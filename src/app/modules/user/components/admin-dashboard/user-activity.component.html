@@ -6,9 +6,15 @@
         <i class="fas fa-chart-line"></i>
         User Activity Dashboard
       </h1>
-      <p class="dashboard-subtitle">Real-time monitoring of user activity and engagement</p>
-      
-      <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+      <p class="dashboard-subtitle">
+        Real-time monitoring of user activity and engagement
+      </p>
+
+      <button
+        class="refresh-btn"
+        (click)="refreshData()"
+        [disabled]="isLoading"
+      >
         <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
         Refresh
       </button>
@@ -20,9 +26,9 @@
     <div class="filters-container">
       <div class="filter-group">
         <label for="eventType">Event Type:</label>
-        <select 
-          id="eventType" 
-          [(ngModel)]="selectedEventType" 
+        <select
+          id="eventType"
+          [(ngModel)]="selectedEventType"
           (ngModelChange)="onFilterChange()"
           class="filter-select"
         >
@@ -34,9 +40,9 @@
 
       <div class="filter-group">
         <label for="timeRange">Time Range:</label>
-        <select 
-          id="timeRange" 
-          [(ngModel)]="selectedTimeRange" 
+        <select
+          id="timeRange"
+          [(ngModel)]="selectedTimeRange"
           (ngModelChange)="onFilterChange()"
           class="filter-select"
         >
@@ -53,10 +59,17 @@
         </span>
         <span class="stat-item">
           <i class="fas fa-clock"></i>
-          {{ selectedTimeRange === '24h' ? 'Last 24 Hours' : 
-             selectedTimeRange === '7d' ? 'Last 7 Days' : 
-             selectedTimeRange === '30d' ? 'Last 30 Days' : 
-             selectedTimeRange === '1h' ? 'Last Hour' : 'All Time' }}
+          {{
+            selectedTimeRange === "24h"
+              ? "Last 24 Hours"
+              : selectedTimeRange === "7d"
+                ? "Last 7 Days"
+                : selectedTimeRange === "30d"
+                  ? "Last 30 Days"
+                  : selectedTimeRange === "1h"
+                    ? "Last Hour"
+                    : "All Time"
+          }}
         </span>
       </div>
     </div>
@@ -94,51 +107,71 @@
     </div>
 
     <div *ngIf="activities.length > 0" class="timeline-container">
-      <div 
-        *ngFor="let activity of activities; trackBy: trackByActivityId" 
+      <div
+        *ngFor="let activity of activities; trackBy: trackByActivityId"
         class="activity-item"
         [class]="'activity-' + activity.eventType"
       >
-        <div class="activity-icon" [style.background-color]="getEventColor(activity.eventType)">
+        <div
+          class="activity-icon"
+          [style.background-color]="getEventColor(activity.eventType)"
+        >
           <i [class]="getEventIcon(activity.eventType)"></i>
         </div>
-        
+
         <div class="activity-content">
           <div class="activity-header">
             <div class="user-info">
-              <img 
-                [src]="getProfileImage(activity)" 
+              <img
+                [src]="getProfileImage(activity)"
                 [alt]="activity.username + ' profile'"
                 class="user-avatar"
                 [class]="getThemeClass(getUserTheme(activity))"
-                onerror="this.src='assets/default-profile.png'"
-              >
+              />
               <div class="user-details">
                 <h4 class="username">{{ activity.username }}</h4>
-                <span *ngIf="getUserTheme(activity) && getUserTheme(activity) !== 'Default'" class="user-theme">{{ getUserTheme(activity) }}</span>
+                <span
+                  *ngIf="
+                    getUserTheme(activity) &&
+                    getUserTheme(activity) !== 'Default'
+                  "
+                  class="user-theme"
+                  >{{ getUserTheme(activity) }}</span
+                >
                 <span *ngIf="getUserCountry(activity)" class="user-country">
                   <i class="fas fa-flag"></i>
                   {{ getUserCountry(activity) }}
                 </span>
               </div>
             </div>
-            
+
             <div class="activity-meta">
-              <span class="activity-time">{{ getTimeAgo(activity.timestamp) }}</span>
-              <span class="activity-date">{{ activity.timestamp | date:'MMM d, y h:mm a' }}</span>
+              <span class="activity-time">{{
+                getTimeAgo(activity.timestamp)
+              }}</span>
+              <span class="activity-date">{{
+                activity.timestamp | date: "MMM d, y h:mm a"
+              }}</span>
             </div>
           </div>
 
           <div class="activity-description">
             <p>{{ getEventDescription(activity) }}</p>
-            
+
             <!-- Additional event data -->
             <div *ngIf="activity.eventData" class="event-details">
-              <div *ngIf="activity.eventType === 'ranking_updated'" class="ranking-details">
+              <div
+                *ngIf="activity.eventType === 'ranking_updated'"
+                class="ranking-details"
+              >
                 <i class="fas fa-list-ol"></i>
-                Updated rankings for {{ activity.eventData.albumCount || 0 }} albums
+                Updated rankings for
+                {{ activity.eventData.albumCount || 0 }} albums
               </div>
-              <div *ngIf="activity.eventType === 'profile_updated'" class="profile-details">
+              <div
+                *ngIf="activity.eventType === 'profile_updated'"
+                class="profile-details"
+              >
                 <i class="fas fa-user-edit"></i>
                 Updated profile information
               </div>
@@ -151,8 +184,12 @@
               <summary>Technical Details</summary>
               <div class="tech-details">
                 <p><strong>User ID:</strong> {{ getUserId(activity) }}</p>
-                <p *ngIf="activity.ipAddress"><strong>IP Address:</strong> {{ activity.ipAddress }}</p>
-                <p *ngIf="activity.userAgent"><strong>User Agent:</strong> {{ activity.userAgent }}</p>
+                <p *ngIf="activity.ipAddress">
+                  <strong>IP Address:</strong> {{ activity.ipAddress }}
+                </p>
+                <p *ngIf="activity.userAgent">
+                  <strong>User Agent:</strong> {{ activity.userAgent }}
+                </p>
                 <p><strong>Event ID:</strong> {{ activity._id }}</p>
               </div>
             </details>
@@ -164,8 +201,8 @@
     <!-- Pagination -->
     <div *ngIf="totalPages > 1" class="pagination-container">
       <nav class="pagination">
-        <button 
-          class="page-btn prev-btn" 
+        <button
+          class="page-btn prev-btn"
           (click)="goToPage(currentPage - 1)"
           [disabled]="currentPage <= 1"
         >
@@ -174,7 +211,7 @@
         </button>
 
         <div class="page-numbers">
-          <button 
+          <button
             *ngFor="let page of [].constructor(totalPages); let i = index"
             class="page-btn"
             [class.active]="currentPage === i + 1"
@@ -184,8 +221,8 @@
           </button>
         </div>
 
-        <button 
-          class="page-btn next-btn" 
+        <button
+          class="page-btn next-btn"
           (click)="goToPage(currentPage + 1)"
           [disabled]="currentPage >= totalPages"
         >
@@ -196,8 +233,9 @@
 
       <div class="pagination-info">
         <span>
-          Showing {{ ((currentPage - 1) * itemsPerPage) + 1 }} - 
-          {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} activities
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} -
+          {{ Math.min(currentPage * itemsPerPage, totalItems) }} of
+          {{ totalItems }} activities
         </span>
       </div>
     </div>

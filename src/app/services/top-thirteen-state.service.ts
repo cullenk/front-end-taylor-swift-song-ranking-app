@@ -10,18 +10,18 @@ export class TopThirteenStateService {
   topThirteen$ = this.topThirteenSubject.asObservable();
 
   constructor() {
-    console.log('TopThirteenStateService initialized');
+    // console.log('TopThirteenStateService initialized');
   }
 
   updateTopThirteen(newList: TopThirteenItem[]) {
-    console.log('TopThirteenStateService.updateTopThirteen() called with:', newList);
+    // console.log('TopThirteenStateService.updateTopThirteen() called with:', newList);
     this.topThirteenSubject.next(newList);
-    console.log('TopThirteenStateService - Current state updated, subscribers will be notified');
+    // console.log('TopThirteenStateService - Current state updated, subscribers will be notified');
   }
 
   getTopThirteen() {
     const currentValue = this.topThirteenSubject.value;
-    console.log('TopThirteenStateService.getTopThirteen() called, current value:', currentValue);
+    // console.log('TopThirteenStateService.getTopThirteen() called, current value:', currentValue);
     return currentValue;
   }
 }
