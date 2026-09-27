@@ -19,6 +19,14 @@ interface ReleaseNote {
 export class ReleaseNotesComponent {
   
   readonly releaseNotes: ReleaseNote[] = [
+     {
+      version: '2.0.4', 
+      date: 'September 27th, 2026',
+      type: 'minor', 
+      features: [
+        "Added 4 new songs from 'The Life of a Showgirl: The Encore'",
+      ]
+    },
     {
       version: '2.0.3', // Fixed: Should be 2.0.3 (patch increment)
       date: 'October 26th, 2025',
